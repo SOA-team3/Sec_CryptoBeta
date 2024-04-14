@@ -11,6 +11,10 @@ All routes return Json
 - GET `api/v1/calenders/[ID]`: returns details about a single calenders with given ID
 - POST `api/v1/calenders/`: creates a new calenders
 
+## google-apis-calendar_v3
+- ref: https://rubygems.org/gems/google-apis-calendar_v3/versions/0.5.0?locale=zh-TW
+- gem install google-apis-calendar_v3 -v 0.5.0
+
 ## Install
 
 Install this API by cloning the *relevant branch* and installing required gems from `Gemfile.lock`:

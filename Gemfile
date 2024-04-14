@@ -7,6 +7,9 @@ gem 'json'
 gem 'puma', '~>6.1'
 gem 'roda', '~>3.1'
 
+# Google Calender API
+gem 'google-apis-calendar_v3', '~> 0.5.0'
+
 # Security
 gem 'rbnacl', '~>7.1'
 
