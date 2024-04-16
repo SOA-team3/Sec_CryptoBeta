@@ -2,4 +2,4 @@
 
 # Specify Rack class to run
 require './app/controllers/app'
-run Calender::Api.freeze.app
+run Calendar::Api.freeze.app

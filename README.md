@@ -1,4 +1,4 @@
-# Calender API
+# calendar API
 
 API to store and retrieve confidential development files (configuration, credentials)
 
@@ -7,9 +7,9 @@ API to store and retrieve confidential development files (configuration, credent
 All routes return Json
 
 - GET `/`: Root route shows if Web API is running
-- GET `api/v1/calenders/`: returns all confiugration IDs
-- GET `api/v1/calenders/[ID]`: returns details about a single calenders with given ID
-- POST `api/v1/calenders/`: creates a new calenders
+- GET `api/v1/calendars/`: returns all confiugration IDs
+- GET `api/v1/calendars/[ID]`: returns details about a single calendars with given ID
+- POST `api/v1/calendars/`: creates a new calendars
 
 ## google-apis-calendar_v3
 - ref: https://rubygems.org/gems/google-apis-calendar_v3/versions/0.5.0?locale=zh-TW
