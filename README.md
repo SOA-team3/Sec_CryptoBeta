@@ -2,6 +2,9 @@
 
 API to store and retrieve confidential development files (configuration, credentials)
 
+## Vulnerabilites
+https://docs.google.com/document/d/1_DufdMLVxXIdT0sk0V0GbFlayJkandcalPLfxe_eugo/edit?usp=drive_link 
+
 ## Routes
 
 All routes return Json
