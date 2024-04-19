@@ -10,6 +10,17 @@ Metrics/BlockLength:
   Enabled: true
   Exclude:
     - spec/**/*
+    - app/controllers/app.rb
+
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - app/controllers/app.rb
+
+Layout/LineLength:
+  Enabled: true
+  Exclude:
+    - app/db/seeds/seeds_transformation.rb
 
 Security/YAMLLoad:
   Enabled: true

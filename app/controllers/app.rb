@@ -17,13 +17,13 @@ module Calendar
 
     # Google Calendar API configuration
     CALENDAR_SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
-    TOKEN_PATH = 'token.yaml'
+    TOKEN_PATH = 'token.yml'
 
     configure do
       Event.setup
     end
 
-    route do |routing| # rubocop:disable Metrics/BlockLength
+    route do |routing|
       response['Content-Type'] = 'application/json'
 
       routing.root do

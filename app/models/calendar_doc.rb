@@ -14,23 +14,24 @@ module Calendar
       @id = new_event['id'] || new_id
       @title = new_event['title']
       @description = new_event['description']
-      @location     = new_event['location']
-      @start_date   = new_event['start_date']
+      @location = new_event['location']
+      @start_date = new_event['start_date']
       @start_datetime = new_event['start_datetime']
       @end_date = new_event['end_date']
       @end_dateime = new_event['end_datetime']
-      @organizer    = new_event['organizer']
-      @attendees    = new_event['attendees']
+      @organizer = new_event['organizer']
+      @attendees = new_event['attendees']
     end
 
-    attr_reader :id, :filename, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime,
+    attr_reader :id, :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime,
                 :organizer, :attendees
 
-    # represent a resource object as json
+    # Represent a resource object as json
     def to_json(options = {})
       JSON(
         {
-          type: 'event', id:, filename:, description:, location:, start_date:, start_datetime:,
+          type: 'event', id:, title:,
+          description:, location:, start_date:, start_datetime:,
           end_date:, end_datetime:, organizer:, attendees:
         },
         options
