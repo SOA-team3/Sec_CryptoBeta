@@ -1,0 +1,17 @@
+---
+# Specify style preferences
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable         # enable new upcoming cops for rubocop
+  Exclude:
+    - _snippets/**/*
+# Follow block length rules except for testing code
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - spec/**/*
+
+Security/YAMLLoad:
+  Enabled: true
+  Exclude:
+    - spec/**/*
