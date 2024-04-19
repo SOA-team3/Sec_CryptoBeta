@@ -23,7 +23,7 @@ module Calendar
       Event.setup
     end
 
-    route do |routing| # rubocop:disable Metrics/BlockLength
+    route do |routing|
       response['Content-Type'] = 'application/json'
 
       routing.root do

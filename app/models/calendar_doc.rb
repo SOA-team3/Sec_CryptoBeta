@@ -15,7 +15,7 @@ module Calendar
       @title = new_event['title']
       @description = new_event['description']
       @location = new_event['location']
-      @start_date  = new_event['start_date']
+      @start_date = new_event['start_date']
       @start_datetime = new_event['start_datetime']
       @end_date = new_event['end_date']
       @end_dateime = new_event['end_datetime']

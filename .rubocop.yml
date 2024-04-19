@@ -17,6 +17,10 @@ Metrics/MethodLength:
   Exclude:
     - app/controllers/app.rb
 
+Layout/LineLength:
+  Enabled: true
+  Exclude:
+    - app/db/seeds/seeds_transformation.rb
 
 Security/YAMLLoad:
   Enabled: true
