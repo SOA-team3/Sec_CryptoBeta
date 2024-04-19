@@ -17,7 +17,7 @@ module Calendar
 
     # Google Calendar API configuration
     CALENDAR_SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
-    TOKEN_PATH = 'token.yaml'
+    TOKEN_PATH = 'token.yml'
 
     configure do
       Event.setup

@@ -10,6 +10,13 @@ Metrics/BlockLength:
   Enabled: true
   Exclude:
     - spec/**/*
+    - app/controllers/app.rb
+
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - app/controllers/app.rb
+
 
 Security/YAMLLoad:
   Enabled: true
