@@ -6,13 +6,14 @@ require 'rack/test'
 require 'yaml'
 
 require_relative '../app/controllers/app'
-require_relative '../app/models/calendar_doc'
+require_relative '../app/models/calendar'
 
 def app
   Calendar::Api
 end
 
 DATA = YAML.safe_load_file('app/db/seeds/event_seeds.yml')
+puts DATA[1]
 
 describe 'Test Calendar Web API' do
   include Rack::Test::Methods
@@ -34,6 +35,7 @@ describe 'Test Calendar Web API' do
 
       get 'api/v1/calendars'
       result = JSON.parse last_response.body
+      puts result
       _(result['event_ids'].count).must_equal 2
     end
 
