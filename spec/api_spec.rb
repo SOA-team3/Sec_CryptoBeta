@@ -6,7 +6,7 @@ require 'rack/test'
 require 'yaml'
 
 require_relative '../app/controllers/app'
-require_relative '../app/models/calendar_doc'
+require_relative '../app/models/calendar'
 
 def app
   Calendar::Api

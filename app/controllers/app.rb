@@ -6,7 +6,7 @@ require 'google/apis/calendar_v3'
 require 'googleauth'
 require 'googleauth/stores/file_token_store'
 
-require_relative '../models/calendar_doc'
+require_relative '../models/calendar'
 
 module Calendar
   # Web controller for Calendar API
@@ -14,10 +14,6 @@ module Calendar
     plugin :environments
     # halt hard return from routes
     plugin :halt
-
-    # Google Calendar API configuration
-    CALENDAR_SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
-    TOKEN_PATH = 'token.yml'
 
     configure do
       Event.setup
@@ -78,27 +74,6 @@ module Calendar
           end
         end
       end
-    end
-
-    private
-
-    def authorize
-      client_id = Google::Auth::ClientId.from_file('google_api.json')
-      token_store = Google::Auth::Stores::FileTokenStore.new(file: TOKEN_PATH)
-      authorizer = Google::Auth::UserAuthorizer.new(client_id, CALENDAR_SCOPE, token_store)
-
-      user_id = 'default'
-      credentials = authorizer.get_credentials(user_id)
-      if credentials.nil?
-        url = authorizer.get_authorization_url(base_url: OOB_URI)
-        puts 'Open the following URL in the browser and enter the ' \
-             "resulting code after authorization:\n#{url}"
-        code = gets
-        credentials = authorizer.get_and_store_credentials_from_code(
-          user_id:, code:, base_url: OOB_URI
-        )
-      end
-      credentials
     end
   end
 end
