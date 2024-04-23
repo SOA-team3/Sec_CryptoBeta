@@ -5,7 +5,7 @@ require 'sequel'
 
 module Credence
   # Models a secret document
-  class Document < Sequel::Model
+  class Event < Sequel::Model
     many_to_one :calendar
 
     plugin :timestamps
