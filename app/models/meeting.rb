@@ -19,6 +19,7 @@ module No2Date
           type: 'meeting',
           attributes: {
             id: id,
+            name: name,
             url: url,
             owner: owner
           }

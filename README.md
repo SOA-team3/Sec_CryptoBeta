@@ -10,12 +10,12 @@ https://docs.google.com/document/d/1_DufdMLVxXIdT0sk0V0GbFlayJkandcalPLfxe_eugo/
 All routes return Json
 
 - GET `/`: Root route shows if Web API is running
-- GET `api/v1/meetings/[meet_id]/schedules/[sched_id]`: Get a schedule
-- GET `api/v1/meetings/[meet_id]/schedules`: Get list of schedules for meeting
-- POST `api/v1/meetings/[ID]/schedules`: Create schedule for a meeting
 - GET `api/v1/meetings/[ID]`: Get information about a meeting
 - GET `api/v1/meetings`: Get list of all meetings
 - POST `api/v1/meetings`: Create new meeting
+- GET `api/v1/meetings/[meet_id]/schedules/[sched_id]`: Get a schedule
+- GET `api/v1/meetings/[meet_id]/schedules`: Get list of schedules for meeting
+- POST `api/v1/meetings/[ID]/schedules`: Create a schedule for a meeting (ID would be where the schedule should be saved in)
 
 ## google-apis-calendar_v3
 - ref: https://rubygems.org/gems/google-apis-calendar_v3/versions/0.5.0?locale=zh-TW
@@ -63,17 +63,17 @@ rake api_spec
 ```
 
 ```shell
-#Run all spec
+# Run all spec
 rake spec
 ```
 
 ```shell
-#Run spec and audit tasks first before rubocop
+# Run spec and audit tasks first before rubocop
 rake style
 ```
 
 ```shell
-#List all rake tasks
+# List all rake tasks
 rake -T
 ```
 ## Release check
@@ -81,7 +81,7 @@ rake -T
 Before submitting pull requests, please check if specs, style, and dependency audits pass:
 
 ```shell
-#List all rake tasks
+# List all rake tasks
 rake release?
 ```
 
@@ -97,48 +97,56 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "owner": "Ella"
 }' http://0.0.0.0:9292/api/v1/meetings
 ```
-The id will be generated automatically by time-stamp and hashing.
+The id will be generated automatically in numerical order.
 The empty colomns will be noted as null.
 
 The response message would be:
 ```shell
 {
     "message": "Meeting saved",
-    "id": "Hashed(time-stamp) of the created schedule"
+    "data":
+      {"data":
+        {"type": "meeting",
+          "attributes":
+            { "name": 1,
+              "url": "https://www.google.com.tw",
+              "owner": "Ella"
+            }
+        }
+      }
 }
+
 ```
-### Get an schedule
-Retrieve the details of a specific schedule by its id.
+### Get a meeting
+Retrieve the details of a specific meeting by its id.
 Run the GET message with the specific id and your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:9292/api/v1/meetings/XcqOOSSR3S
+curl -X GET http://0.0.0.0:9292/api/v1/meetings/[ID]
 # or
-curl http://0.0.0.0:9292/api/v1/meetings/XcqOOSSR3S
+curl http://0.0.0.0:9292/api/v1/meetings/[ID]
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:9292/api/v1/meetings/XcqOOSSR3S
+http://localhost:9292/api/v1/meetings/[ID]
 ```
 
 The response message would be (for example):
 ```shell
 {
-    "type":"schedule",
-    "id":"XcqOOSSR3S",
-    "title":"Meeting with Client",
-    "description":"Discuss project requirements and timelines.",
-    "location":"123 Main Street, Cityville",
-    "start_date":"2024-05-01",
-    "start_datetime":"2024-05-01T09:00:00",
-    "end_date":"2024-05-01",
-    "end_datetime":null,"organizer":"John Doe",
-    "attendees":
-        ["Jane Smith","Mike Johnson"]
+  {"data":
+      {"type": "meeting",
+        "attributes":
+          { "name": 1,
+            "url": "https://www.google.com.tw",
+            "owner": "Ella"
+          }
+      }
+    }
 }
 ```
 
-### Listing all schedules
-Retrieve all schedules' ids.
+### Listing all meetings
+Retrieve all meetings' ids.
 Run the GET message with your local endpoint address.
 ```shell
 curl -X GET http://0.0.0.0:9292/api/v1/meetings
@@ -153,9 +161,88 @@ http://localhost:9292/api/v1/meetings
 The response message would be a list of sched_ids:
 ```shell
 {
-  "sched_ids": [
-    "KDIVnk5YRF",
-    "XcqOOSSR3S"
+  "data": [
+    {
+      "data": {
+        "type": "meeting",
+        "attributes": {
+          "id": 1,
+          "url": "https://www.google.com.tw",
+          "owner": "Ella"
+        }
+      }
+    },
+    {
+      "data": {
+        "type": "meeting",
+        "attributes": {
+          "id": 2,
+          "url": "https://www.netflix.com",
+          "owner": "Ella"
+        }
+      }
+    }
   ]
 }
+```
+
+### Create a schedule
+After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:9292
+Run the POST message with new information and your local endpoint address.
+You should assign the [ID] to the specific ID to save your info to the specific meeting.
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{
+  "title": "Discussion for SEC project",
+  "description": null,
+  "location": "TSMC building, NTHU",
+  "start_date": "2024-04-19",
+  "start_datetime": "2024-04-19T09:00:00",
+  "end_date": "2024-04-19",
+  "end_datetime": null,
+  "organizer": "Brian",
+  "attendees": "Ella"
+}' http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules
+```
+The id will be generated automatically in numerical order.
+The empty colomns will be noted as null.
+
+The response message would be:
+```shell
+
+```
+### Get a schedule
+Retrieve the details of a specific schedule by its id.
+Run the GET message with the specific id and your local endpoint address.
+```shell
+curl -X GET http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules/[ID]
+# or
+curl http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules/[ID]
+```
+Or we can enter the GET message on browser's address bar (URL bar).
+```shell
+http://localhost:9292/api/v1/meetings/[ID]/schedules/[ID]
+```
+
+The response message would be (for example):
+```shell
+
+```
+
+### Listing all schedules
+Retrieve all schedules' ids.
+Run the GET message with your local endpoint address.
+```shell
+curl -X GET http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules/
+# or
+curl http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules/
+```
+Or we can enter the GET message on browser's address bar (URL bar).
+```shell
+http://localhost:9292/api/v1/meetings/[ID]/schedules/
+```
+
+The response message would be a list of sched_ids:
+```shell
+
 ```
