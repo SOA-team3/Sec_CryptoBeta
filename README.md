@@ -290,7 +290,7 @@ http://localhost:9292/api/v1/meetings/[ID]/schedules/
 
 The response message would be a list of sched_ids:
 ```shell
-# http://0.0.0.0:9292/api/v1/meetings/1/schedules/2
+# http://0.0.0.0:9292/api/v1/meetings/1/schedules
 {
   "data": [
     {
