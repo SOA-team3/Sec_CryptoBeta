@@ -9,10 +9,10 @@ require 'yaml'
 require_relative 'test_load_all'
 
 def wipe_database
-  app.DB[:calendars].delete
-  app.DB[:events].delete
+  app.DB[:schedules].delete
+  app.DB[:meetings].delete
 end
 
 DATA = {} # rubocop:disable Style/MutableConstant
-DATA['calendars'] = YAML.safe_load_file('app/db/seeds/calendar_seeds.yml')
-DATA['events'] = YAML.safe_load_file('app/db/seeds/event_seeds.yml')
+DATA['schedules'] = YAML.safe_load_file('app/db/seeds/schedule_seeds.yml')
+DATA['meetings'] = YAML.safe_load_file('app/db/seeds/meeting_seeds.yml')

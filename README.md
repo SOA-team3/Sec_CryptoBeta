@@ -100,7 +100,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "end_datetime": "2024-04-19T10:00:00",
   "organizer": "Brian",
   "attendees": ["Adrian", "Ella"]
-}' http://0.0.0.0:9292/api/v1/meetings
+}' http://0.0.0.0:9292/api/v1/meetings/
 ```
 The id will be generated automatically by time-stamp and hashing.
 The empty colomns will be noted as null.

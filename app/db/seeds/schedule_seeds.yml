@@ -1,4 +1,4 @@
-- type: event
+- type: schedule
   id: XcqOOSSR3S
   title: Meeting with Client
   description: Discuss project requirements and timelines.
@@ -12,7 +12,7 @@
     - Jane Smith
     - Mike Johnson
 
-- type: event
+- type: schedule
   id: sfymQ3a_g4
   title: Discussion for SEC project
   description: null
