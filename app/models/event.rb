@@ -38,6 +38,3 @@ module Credence
     # rubocop:enable Metrics/MethodLength
   end
 end
-
-
-

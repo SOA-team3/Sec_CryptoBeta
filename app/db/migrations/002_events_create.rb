@@ -20,8 +20,6 @@ Sequel.migration do
 
       DateTime :created_at
       DateTime :updated_at
-
     end
   end
 end
-

@@ -19,17 +19,20 @@ gem 'rbnacl', '~>7.1'
 gem 'hirb'
 gem 'sequel', '~>5.55'
 group :development, :test do
-    gem 'sqlite3', '~>1.4'
+  gem 'sqlite3', '~>1.4'
 end
 
 # Performance
-gem 'rubocup-performance'
+
+# Run `sudo apt-get install pkg-config`` to solve the issue of:
+# "Could not find gem 'rubocup-performance' in rubygems repository https://rubygems.org/ or installed locally."
+gem 'rubocop-performance'
 
 # Testing
 group :test do
-    gem 'minitest'
-    gem 'minitest-rg'
-    gem 'rack-test'
+  gem 'minitest'
+  gem 'minitest-rg'
+  gem 'rack-test'
 end
 
 # Development

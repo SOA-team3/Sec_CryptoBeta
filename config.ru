@@ -5,4 +5,3 @@ require './require_app'
 require_app
 
 run No2Date::Api.freeze.app
- 

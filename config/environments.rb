@@ -5,15 +5,15 @@ require 'roda'
 require 'figaro'
 require 'sequel'
 
-module Calendar
-  # Configuration for the Calendar API
+module No2Date
+  # Configuration for the No2Date API
   class Api < Roda
     plugin :environments
 
     # Load config secrets into local environment variables (ENV)
     Figaro.application = Figaro::Application.new(
-    (environment: environment, # rubocop:disable Lint/ShadowingOuterLocalVariable
-    path: 'config/secrets.yml')
+      environment: environment, # rubocop:disable Lint/ShadowingOuterLocalVariable
+      path: File.expand_path('config/secrets.yml')
     )
     Figaro.load
 
@@ -21,8 +21,8 @@ module Calendar
     def self.config = Figaro.env
 
     # Connect and make the database accessible to other classes
-    db_url = ENV.delete['DATABASE_URL']
-    DB = Sequel.connect("#{db_url}?ecoding=utf8")
+    db_url = ENV.delete('DATABASE_URL')
+    DB = Sequel.connect("#{db_url}?encoding=utf8")
     def self.DB = DB # rubocop:disable Naming/MethodName
 
     configure :development, :test do

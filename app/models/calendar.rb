@@ -24,7 +24,7 @@ module Calendar
           owner:
         }
       }
-    },options
+    }, options
   )
   end
   # rubocop:enable Metrics/MethodLength

@@ -65,7 +65,7 @@ describe 'Test event Handling' do
     _(last_response.headers['Location'].size).must_be :>, 0
 
     created = JSON.parse(last_response.body)['data']['data']['attributes']
-    event = No2Date::event.first
+    event = No2Date.event.first
 
     _(created['id']).must_equal event.id
     _(result['data']['attributes']['title']).must_equal event_data['title']

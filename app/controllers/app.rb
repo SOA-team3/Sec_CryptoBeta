@@ -25,7 +25,7 @@ module No2Date
               @event_route = "#{@api_root}/calendars/#{calendar_id}/events"
               # GET api/v1/calendars/[calendar_id]/events/[event_id]
               routing.get String do |event_id|
-                event = Event.where(calendar_id: calendar_id, id: event_id).first
+                event = Event.where(calendar_id:, id: event_id).first
                 event ? event.to_json : raise('Event not found')
               rescue StandardError => e
                 routing.halt 404, { message: e.message }.to_json

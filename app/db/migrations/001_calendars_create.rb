@@ -11,8 +11,8 @@ Sequel.migration do
             String :url, unique: true
             String :owner
 
-            DateTime : created_at
-            DateTime : updated_at
+            DateTime :created_at
+            DateTime :updated_at
         end
     end
 end
