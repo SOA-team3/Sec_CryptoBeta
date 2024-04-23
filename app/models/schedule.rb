@@ -3,10 +3,10 @@
 require 'json'
 require 'sequel'
 
-module Credence
+module No2Date
   # Models a secret document
-  class Event < Sequel::Model
-    many_to_one :calendar
+  class Schedule < Sequel::Model
+    many_to_one :meeting
 
     plugin :timestamps
 
@@ -15,7 +15,7 @@ module Credence
       JSON(
         {
           data: {
-            type: 'event',
+            type: 'schedule',
             attributes: {
               id:,
               title:,
@@ -30,7 +30,7 @@ module Credence
             }
           },
           included: {
-            calendar:
+            meeting:
           }
         }, options
       )

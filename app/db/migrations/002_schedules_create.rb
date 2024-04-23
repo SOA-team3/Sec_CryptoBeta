@@ -4,9 +4,9 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:events) do
+    create_table(:schedules) do
       primary_key :id
-      foreign_key :calendar_id, table: :calendars
+      foreign_key :meeting_id, table: :meetings
 
       String :title, null: false
       String :description

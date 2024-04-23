@@ -4,10 +4,11 @@ require 'json'
 require 'sequel'
 
 module No2Date
-  # Models a calendar
-  class Calendar < Sequel::Model
-    one_to_many :events
-    plugin :association_dependencies, events: :destroy
+  # Models a meeting
+  class Meeting < Sequel::Model
+    one_to_many :schedules
+    plugin :association_dependencies, schedules: :destroy
+    
     plugin :timestamps
 
     # rubocop:enable Metrics/MethodLength
@@ -15,7 +16,7 @@ module No2Date
     JSON(
       {
         data: {
-          type: 'calendar',
+          type: 'meeting',
           attributes: {
             id:,
             url:,

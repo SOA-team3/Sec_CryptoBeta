@@ -4,7 +4,7 @@ require 'sequel'
 
 Sequel.migration do
     change do
-        create_table(:calendars) do
+        create_table(:meetings) do
             primary_key :id
 
             String :name, unique: true, null: false
