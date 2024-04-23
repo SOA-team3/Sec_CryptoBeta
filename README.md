@@ -209,7 +209,23 @@ The empty colomns will be noted as null.
 
 The response message would be:
 ```shell
-
+{
+  "data": {
+    "type": "schedule",
+    "attributes": {
+      "id": 1,
+      "title": "Discussion for SEC project",
+      "description": null,
+      "location": "TSMC building, NTHU",
+      "start_date": "2024-04-19",
+      "start_datetime": "2024-04-19 09:00:00 +0800",
+      "end_date": "2024-04-19",
+      "end_datetime": null,
+      "organizer": "Brian",
+      "attendees": "Ella"
+    }
+  }
+}
 ```
 ### Get a schedule
 Retrieve the details of a specific schedule by its id.
@@ -226,7 +242,37 @@ http://localhost:9292/api/v1/meetings/[ID]/schedules/[ID]
 
 The response message would be (for example):
 ```shell
-
+# http://localhost:9292/api/v1/meetings/1/schedules/1
+{
+  "data": {
+    "type": "schedule",
+    "attributes": {
+      "id": 1,
+      "title": "Discussion for SEC project",
+      "description": null,
+      "location": "TSMC building, NTHU",
+      "start_date": "2024-04-19",
+      "start_datetime": "2024-04-19 09:00:00 +0800",
+      "end_date": "2024-04-19",
+      "end_datetime": null,
+      "organizer": "Brian",
+      "attendees": "Ella"
+    }
+  },
+  "included": {
+    "meeting": {
+      "data": {
+        "type": "meeting",
+        "attributes": {
+          "id": 1,
+          "name": "Security meetings",
+          "url": "https://www.google.com.tw",
+          "owner": "Ella"
+        }
+      }
+    }
+  }
+}
 ```
 
 ### Listing all schedules
@@ -244,5 +290,69 @@ http://localhost:9292/api/v1/meetings/[ID]/schedules/
 
 The response message would be a list of sched_ids:
 ```shell
-
+# http://0.0.0.0:9292/api/v1/meetings/1/schedules/2
+{
+  "data": [
+    {
+      "data": {
+        "type": "schedule",
+        "attributes": {
+          "id": 1,
+          "title": "Discussion for SEC project",
+          "description": null,
+          "location": "TSMC building, NTHU",
+          "start_date": "2024-04-19",
+          "start_datetime": "2024-04-19 09:00:00 +0800",
+          "end_date": "2024-04-19",
+          "end_datetime": null,
+          "organizer": "Brian",
+          "attendees": "Ella"
+        }
+      },
+      "included": {
+        "meeting": {
+          "data": {
+            "type": "meeting",
+            "attributes": {
+              "id": 1,
+              "name": "Security meetings",
+              "url": "https://www.google.com.tw",
+              "owner": "Ella"
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "type": "schedule",
+        "attributes": {
+          "id": 3,
+          "title": "Discussion for no2date project",
+          "description": null,
+          "location": "TSMC building, NTHU",
+          "start_date": "2024-04-25",
+          "start_datetime": "2024-04-25 09:00:00 +0800",
+          "end_date": "2024-04-25",
+          "end_datetime": null,
+          "organizer": "Adrian",
+          "attendees": "Ella"
+        }
+      },
+      "included": {
+        "meeting": {
+          "data": {
+            "type": "meeting",
+            "attributes": {
+              "id": 1,
+              "name": "Security meetings",
+              "url": "https://www.google.com.tw",
+              "owner": "Ella"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
 ```
