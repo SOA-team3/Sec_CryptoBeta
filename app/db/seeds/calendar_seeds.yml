@@ -1,11 +1,11 @@
 ---
-- calendar_name: Security meetings
-  calendar_url: https://www.google.com.tw/?gfe_rd=cr&ei=m730VpunDqmwmQXHhZLYAQ&gws_rd=ssl
-  calendar_owner: Ella
-  
-- calendar_name: SOA meetings
-  calendar_url: https://www.google.com.tw/?gfe_rd=cr&ei=m730VpunDqmwmQXHhZLYAQ&gws_rd=ssl
-  calendar_owner: 
+- name: Security meetings
+  url: https://www.google.com.tw/?gfe_rd=cr&ei=m730VpunDqmwmQXHhZLYAQ&gws_rd=ssl
+  owner: Ella
+
+- name: SOA meetings
+  url: https://www.google.com.tw/?gfe_rd=cr&ei=m730VpunDqmwmQXHhZLYAQ&gws_rd=ssl
+  owner: 
     - Adrian
     - Brian
 

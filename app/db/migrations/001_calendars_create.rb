@@ -7,9 +7,9 @@ Sequel.migration do
         create_table(:calendars) do
             primary_key :id
 
-            String :calendar_name, unique: true, null: false
-            String :calendar_url, unique: true
-            String :calendar_owner
+            String :name, unique: true, null: false
+            String :url, unique: true
+            String :owner
 
             DateTime : created_at
             DateTime : updated_at

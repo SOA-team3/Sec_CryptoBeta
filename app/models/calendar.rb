@@ -1,72 +1,32 @@
 # frozen_string_literal: true
 
 require 'json'
-require 'base64'
-require 'rbnacl'
+require 'sequel'
 
 module Calendar
-  STORE_DIR = 'app/db/store'
+  # Models a calendar
+  class Calendar < Sequel::Model
+    one_to_many :events
+  end
+  plugin :association_dependencies, doccument: :destroy
 
-  # Holds a full secret event
-  class Event
-    # Create a new event by passing in hash of attributes
-    def initialize(new_event)
-      @id = new_event['id'] || new_id
-      @title = new_event['title']
-      @description = new_event['description']
-      @location = new_event['location']
-      @start_date = new_event['start_date']
-      @start_datetime = new_event['start_datetime']
-      @end_date = new_event['end_date']
-      @end_dateime = new_event['end_datetime']
-      @organizer = new_event['organizer']
-      @attendees = new_event['attendees']
-    end
+  plugin :timestamps
 
-    attr_reader :id, :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime,
-                :organizer, :attendees
-
-    # Represent a resource object as json
-    def to_json(options = {})
-      JSON(
-        {
-          type: 'event', id:, title:,
-          description:, location:, start_date:, start_datetime:,
-          end_date:, end_datetime:, organizer:, attendees:
-        },
-        options
-      )
-    end
-
-    # File store must be setup once when application runs
-    def self.setup
-      FileUtils.mkdir_p(Calendar::STORE_DIR)
-    end
-
-    # Stores event in file store
-    def save
-      File.write("#{Calendar::STORE_DIR}/#{id}.txt", to_json)
-    end
-
-    # Query method to find one event
-    def self.find(find_id)
-      event_file = File.read("#{Calendar::STORE_DIR}/#{find_id}.txt")
-      Event.new JSON.parse(event_file)
-    end
-
-    # Query method to retrieve index of all events
-    def self.all
-      Dir.glob("#{Calendar::STORE_DIR}/*.txt").map do |file|
-        file.match(%r{#{Regexp.quote(Calendar::STORE_DIR)}/(.*)\.txt})[1]
-      end
-    end
-
-    private
-
-    # create unique IDs for new objects
-    def new_id
-      timestamp = Time.now.to_f.to_s
-      Base64.urlsafe_encode64(RbNaCl::Hash.sha256(timestamp))[0..9]
-    end
+  # rubocop:enable Metrics/MethodLength
+  def to_json(options = {})
+  JSON(
+    {
+      data: {
+        type: 'calendar',
+        attributes: {
+          id:,
+          url:,
+          owner:
+        }
+      }
+    },options
+  )
+  end
+  # rubocop:enable Metrics/MethodLength
   end
 end
