@@ -8,7 +8,7 @@ module No2Date
   class Meeting < Sequel::Model
     one_to_many :schedules
     plugin :association_dependencies, schedules: :destroy
-    
+
     plugin :timestamps
 
     # rubocop:enable Metrics/MethodLength
@@ -18,9 +18,9 @@ module No2Date
         data: {
           type: 'meeting',
           attributes: {
-            id:,
-            url:,
-            owner:
+            id: id,
+            url: url,
+            owner: owner
           }
         }
       }, options

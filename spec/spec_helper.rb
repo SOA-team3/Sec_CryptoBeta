@@ -14,5 +14,5 @@ def wipe_database
 end
 
 DATA = {} # rubocop:disable Style/MutableConstant
-DATA['schedules'] = YAML.safe_load_file('app/db/seeds/schedule_seeds.yml')
-DATA['meetings'] = YAML.safe_load_file('app/db/seeds/meeting_seeds.yml')
+DATA[:schedules] = YAML.safe_load_file('app/db/seeds/schedule_seeds.yml')
+DATA[:meetings] = YAML.safe_load_file('app/db/seeds/meeting_seeds.yml')

@@ -1,10 +1,11 @@
----
-- name: Security meetings
-  url: https://www.google.com.tw/?gfe_rd=cr&ei=m730VpunDqmwmQXHhZLYAQ&gws_rd=ssl
-  owner: Ella
+- type: meeting
+  attribute:
+    name: Security meetings
+    url: https://www.google.com.tw/?gfe_rd=cr&ei=m730VpunDqmwmQXHhZLYAQ&gws_rd=ssl
+    owner: Ella
 
-- name: SOA meetings
-  url: https://www.google.com.tw/?gfe_rd=cr&ei=m730VpunDqmwmQXHhZLYAQ&gws_rd=ssl
-  owner: 
-    - Adrian
-    - Brian
+- type: meeting
+  attribute:
+    name: SOA meetings
+    url: https://www.google.com.tw/?gfe_rd=cr&ei=m730VpunDqmwmQXHhZLYAQ&gws_rd=ssl
+    owner: Adrian

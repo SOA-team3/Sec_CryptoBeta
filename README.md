@@ -12,7 +12,7 @@ All routes return Json
 - GET `/`: Root route shows if Web API is running
 - GET `api/v1/meetings/[meet_id]/schedules/[sched_id]`: Get a schedule
 - GET `api/v1/meetings/[meet_id]/schedules`: Get list of schedules for meeting
-- GET `api/v1/meetings/[ID]/schedules`: Create schedule for a meeting
+- POST `api/v1/meetings/[ID]/schedules`: Create schedule for a meeting
 - GET `api/v1/meetings/[ID]`: Get information about a meeting
 - GET `api/v1/meetings`: Get list of all meetings
 - POST `api/v1/meetings`: Create new meeting
@@ -87,20 +87,15 @@ rake release?
 
 ##  Simple file-based POST / GET Usage
 
-### Create an schedule
+### Create a meeting
 After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:9292
 Run the POST message with new information and your local endpoint address.
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{
-  "title": "Discussion for SEC project",
-  "location": "TSMC building, NTHU",
-  "start_date": "2024-04-19",
-  "start_datetime": "2024-04-19T09:00:00",
-  "end_date": "2024-04-19",
-  "end_datetime": "2024-04-19T10:00:00",
-  "organizer": "Brian",
-  "attendees": ["Adrian", "Ella"]
-}' http://0.0.0.0:9292/api/v1/meetings/
+    "name": "Security meetings",
+    "url": "https://www.google.com.tw",
+    "owner": "Ella"
+}' http://0.0.0.0:9292/api/v1/meetings
 ```
 The id will be generated automatically by time-stamp and hashing.
 The empty colomns will be noted as null.
