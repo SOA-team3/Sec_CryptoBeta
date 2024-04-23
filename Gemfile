@@ -7,20 +7,37 @@ gem 'json'
 gem 'puma', '~>6.1'
 gem 'roda', '~>3.1'
 
-# Google Calender API
-gem 'google-apis-calendar_v3', '~> 0.5.0'
+# Configuration
+gem 'figaro', '~>1.2'
+gem 'rake'
 
 # Security
+gem 'bundle-audit'
 gem 'rbnacl', '~>7.1'
 
-# Testing
-gem 'minitest'
-gem 'minitest-rg'
-gem 'rack-test'
+# Database
+gem 'hirb'
+gem 'sequel', '~>5.55'
+group :development, :test do
+    gem 'sqlite3', '~>1.4'
+end
 
-# Debugging
+# Performance
+gem 'rubocup-performance'
+
+# Testing
+group :test do
+    gem 'minitest'
+    gem 'minitest-rg'
+    gem 'rack-test'
+end
+
+# Development
 gem 'pry'
 gem 'rerun'
 
 # Quality
 gem 'rubocop'
+
+# Google Calender API
+gem 'google-apis-calendar_v3', '~> 0.5.0'

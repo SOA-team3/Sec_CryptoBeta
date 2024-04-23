@@ -10,9 +10,12 @@ https://docs.google.com/document/d/1_DufdMLVxXIdT0sk0V0GbFlayJkandcalPLfxe_eugo/
 All routes return Json
 
 - GET `/`: Root route shows if Web API is running
-- GET `api/v1/calendars/`: returns all confiugration IDs
-- GET `api/v1/calendars/[ID]`: returns details about a single calendars with given ID
-- POST `api/v1/calendars/`: creates a new calendars
+- GET `api/v1/calendars/[calendar_id]/evens/[event_id]`: Get a event
+- GET `api/v1/calendars/[calendar_id]/events`: Get list of events for calendar
+- GET `api/v1/calendars/[ID]/events`: Create event for a calendar
+- GET `api/v1/calendars/[ID]`: Get information about a calendar
+- GET `api/v1/calendars`: Get list of all calendars
+- POST `api/v1/calendars/`: Creates a new calendars
 
 ## google-apis-calendar_v3
 - ref: https://rubygems.org/gems/google-apis-calendar_v3/versions/0.5.0?locale=zh-TW
@@ -25,13 +28,10 @@ Install this API by cloning the *relevant branch* and installing required gems f
 ```shell
 bundle install
 ```
-
-## Test
-
-Run the test script:
+Setup development database once:
 
 ```shell
-ruby spec/api_spec.rb
+rake db:migrate
 ```
 
 ## Execute
@@ -40,6 +40,49 @@ Run this API using:
 
 ```shell
 puma
+```
+
+## Test
+
+Setup test database once:
+
+```shell
+RACK_ENV=test rake db:migrate
+```
+
+Run the test specification script in `Rakefile`:
+
+```shell
+rake spec
+```
+
+Run the test script:
+
+```shell
+rake api_spec
+```
+
+```shell
+#Run all spec
+rake spec
+```
+
+```shell
+#Run spec and audit tasks first before rubocop
+rake style
+```
+
+```shell
+#List all rake tasks
+rake -T
+```
+## Release check
+
+Before submitting pull requests, please check if specs, style, and dependency audits pass:
+
+```shell
+#List all rake tasks
+rake release?
 ```
 
 ##  Simple file-based POST / GET Usage

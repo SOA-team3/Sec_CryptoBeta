@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
 # Specify Rack class to run
-require './app/controllers/app'
-run Calendar::Api.freeze.app
+require './require_app'
+require_app
+
+run No2Date::Api.freeze.app
+ 
