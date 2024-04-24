@@ -11,22 +11,20 @@ module No2Date
 
     plugin :timestamps
 
-    # rubocop:enable Metrics/MethodLength
     def to_json(options = {})
-    JSON(
-      {
-        data: {
-          type: 'meeting',
-          attributes: {
-            id: id,
-            name: name,
-            url: url,
-            owner: owner
+      JSON(
+        {
+          data: {
+            type: 'meeting',
+            attributes: {
+              id:,
+              name:,
+              url:,
+              owner:
+            }
           }
-        }
-      }, options
-    )
+        }, options
+      )
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # set up all the configurations information for need
 # forzen_string_literal: true
 
@@ -12,7 +14,7 @@ module No2Date
 
     # Load config secrets into local environment variables (ENV)
     Figaro.application = Figaro::Application.new(
-      environment: environment, # rubocop:disable Lint/ShadowingOuterLocalVariable
+      environment:,
       path: File.expand_path('config/secrets.yml')
     )
     Figaro.load
@@ -26,7 +28,7 @@ module No2Date
     def self.DB = DB # rubocop:disable Naming/MethodName
 
     configure :development, :test do
-        require 'pry'
+      require 'pry'
     end
   end
 end

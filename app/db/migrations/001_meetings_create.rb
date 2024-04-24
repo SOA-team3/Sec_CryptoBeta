@@ -3,16 +3,16 @@
 require 'sequel'
 
 Sequel.migration do
-    change do
-        create_table(:meetings) do
-            primary_key :id
+  change do
+    create_table(:meetings) do
+      primary_key :id
 
-            String :name, unique: true, null: false
-            String :url, unique: true
-            String :owner
+      String :name, unique: true, null: false
+      String :url, unique: true
+      String :owner
 
-            DateTime :created_at
-            DateTime :updated_at
-        end
+      DateTime :created_at
+      DateTime :updated_at
     end
+  end
 end

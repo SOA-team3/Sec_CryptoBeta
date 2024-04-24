@@ -16,3 +16,6 @@ end
 DATA = {} # rubocop:disable Style/MutableConstant
 DATA[:schedules] = YAML.safe_load_file('app/db/seeds/schedule_seeds.yml')
 DATA[:meetings] = YAML.safe_load_file('app/db/seeds/meeting_seeds.yml')
+
+puts DATA
+puts DATA[:meetings][0]

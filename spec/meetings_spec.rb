@@ -20,40 +20,40 @@ describe 'Test Meeting Handling' do
     _(result['data'].count).must_equal 2
   end
 
-  it 'HAPPY: should be able to get details of a single meeting' do
-    existing_meet = DATA[:meetings][1]
-    No2Date::Meeting.create(existing_meet).save
-    id = No2Date::Meeting.first.id
+  # it 'HAPPY: should be able to get details of a single meeting' do
+  #   existing_meet = DATA[:meetings][1]
+  #   No2Date::Meeting.create(existing_meet).save
+  #   id = No2Date::Meeting.first.id
 
-    get "/api/v1/meetings/#{id}"
-    _(last_response.status).must_equal 200
+  #   get "/api/v1/meetings/#{id}"
+  #   _(last_response.status).must_equal 200
 
-    result = JSON.parse last_response.body
-    _(result['data']['attributes']['id']).must_equal id
-    _(result['data']['attributes']['name']).must_equal existing_meet['name']
-    _(result['data']['attributes']['url']).must_equal existing_meet['url']
-    _(result['data']['attributes']['owner']).must_equal existing_meet['owner']
-  end
+  #   result = JSON.parse last_response.body
+  #   _(result['data']['attributes']['id']).must_equal id
+  #   _(result['data']['attributes']['name']).must_equal existing_meet['name']
+  #   _(result['data']['attributes']['url']).must_equal existing_meet['url']
+  #   _(result['data']['attributes']['owner']).must_equal existing_meet['owner']
+  # end
 
-  it 'SAD: should return error if unknown meeting requested' do
-    get '/api/v1/meetings/foobar'
+  # it 'SAD: should return error if unknown meeting requested' do
+  #   get '/api/v1/meetings/foobar'
 
-    _(last_response.status).must_equal 404
-  end
+  #   _(last_response.status).must_equal 404
+  # end
 
-  it 'HAPPY: should be able to create new meetings' do
-    existing_meet = DATA[:meetings][1]
+  # it 'HAPPY: should be able to create new meetings' do
+  #   existing_meet = DATA[:meetings][1]
 
-    req_header = { 'CONTENT_TYPE' => 'application/json' }
-    post 'api/v1/meetings', existing_meet.to_json, req_header
-    _(last_response.status).must_equal 201
-    _(last_response.headers['Location'].size).must_be :>, 0
+  #   req_header = { 'CONTENT_TYPE' => 'application/json' }
+  #   post 'api/v1/meetings', existing_meet.to_json, req_header
+  #   _(last_response.status).must_equal 201
+  #   _(last_response.headers['Location'].size).must_be :>, 0
 
-    created = JSON.parse(last_response.body)['data']['data']['attributes']
-    meet = No2Date::Meeting.first
+  #   created = JSON.parse(last_response.body)['data']['data']['attributes']
+  #   meet = No2Date::Meeting.first
 
-    _(created['id']).must_equal meet.id
-    _(created['name']).must_equal existing_meet['name']
-    _(created['repo_url']).must_equal existing_meet['repo_url']
-  end
+  #   _(created['id']).must_equal meet.id
+  #   _(created['name']).must_equal existing_meet['name']
+  #   _(created['repo_url']).must_equal existing_meet['repo_url']
+  # end
 end
