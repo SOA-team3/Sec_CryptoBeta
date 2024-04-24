@@ -16,7 +16,7 @@ describe 'Test Schedule Handling' do
   it 'HAPPY: should be able to get list of all schedules' do
     meet = No2Date::Meeting.first
     DATA[:schedules].each do |sched|
-      sched.add_schedule(sched)
+      meet.add_schedule(sched)
     end
 
     get "api/v1/meetings/#{meet.id}/schedules"
@@ -68,14 +68,14 @@ describe 'Test Schedule Handling' do
     sched = No2Date::Schedule.first
 
     _(created['id']).must_equal sched.id
-    _(result['data']['attributes']['title']).must_equal sched_data['title']
-    _(result['data']['attributes']['description']).must_equal sched_data['description']
-    _(result['data']['attributes']['location']).must_equal sched_data['location']
-    _(result['data']['attributes']['start_date']).must_equal sched_data['start_date']
-    _(result['data']['attributes']['start_datetime']).must_equal sched_data['start_datetime']
-    _(result['data']['attributes']['end_date']).must_equal sched_data['end_date']
-    _(result['data']['attributes']['end_datetime']).must_equal sched_data['end_datetime']
-    _(result['data']['attributes']['organizer']).must_equal sched_data['organizer']
-    _(result['data']['attributes']['attendees']).must_equal sched_data['attendees']
+    _(created['title']).must_equal sched_data['title']
+    _(created['description']).must_equal sched_data['description']
+    _(created['location']).must_equal sched_data['location']
+    _(created['start_date']).must_equal sched_data['start_date']
+    _(created['start_datetime']).must_equal sched_data['start_datetime']
+    _(created['end_date']).must_equal sched_data['end_date']
+    _(created['end_datetime']).must_equal sched_data['end_datetime']
+    _(created['organizer']).must_equal sched_data['organizer']
+    _(created['attendees']).must_equal sched_data['attendees']
   end
 end

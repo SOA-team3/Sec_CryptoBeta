@@ -1,27 +1,19 @@
-- type: schedule
-  id: XcqOOSSR3S
-  title: Meeting with Client
+- title: Meeting with Client
   description: Discuss project requirements and timelines.
   location: 123 Main Street, Cityville
   start_date: '2024-05-01'
-  start_datetime: '2024-05-01T09:00:00'
+  start_datetime: '2024-04-19 09:00:00 +0800'
   end_date: '2024-05-01'
-  end_datetime: "2024-04-19T10:00:00"
+  end_datetime: "2024-04-19 10:00:00 +0800"
   organizer: John Doe
-  attendees:
-    - Jane Smith
-    - Mike Johnson
+  attendees: Mike Johnson
 
-- type: schedule
-  id: sfymQ3a_g4
-  title: Discussion for SEC project
+- title: Discussion for SEC project
   description: null
   location: TSMC building, NTHU
   start_date: '2024-04-19'
-  start_datetime: '2024-04-19T09:00:00'
+  start_datetime: '2024-04-20 09:00:00 +0800'
   end_date: '2024-04-19'
-  end_datetime: null
+  end_datetime: '2024-04-20 10:00:00 +0800'
   organizer: Brian
-  attendees:
-    - Adrian
-    - Ella
+  attendees: Adrian
