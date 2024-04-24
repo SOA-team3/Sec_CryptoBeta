@@ -7,7 +7,7 @@ Sequel.migration do
     create_table(:meetings) do
       primary_key :id
 
-      String :name, unique: true, null: false
+      String :name, null: false
       String :description
       String :organizer
       String :attendees # should be array

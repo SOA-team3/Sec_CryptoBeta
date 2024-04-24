@@ -15,8 +15,6 @@ Sequel.migration do
       DateTime :start_datetime, null: false
       Date :end_date, null: false
       DateTime :end_datetime, null: false
-      String :organizer
-      String :attendees
       TrueClass :is_regular # bool
       TrueClass :is_flexible
 
