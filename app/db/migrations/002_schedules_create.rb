@@ -8,15 +8,17 @@ Sequel.migration do
       primary_key :id
       foreign_key :meeting_id, table: :meetings
 
-      String :title, null: false
+      String :title
       String :description
       String :location
-      Date :start_date
-      DateTime :start_datetime
-      Date :end_date
-      DateTime :end_datetime
+      Date :start_date, null: false
+      DateTime :start_datetime, null: false
+      Date :end_date, null: false
+      DateTime :end_datetime, null: false
       String :organizer
       String :attendees
+      TrueClass :is_regular # bool
+      TrueClass :is_flexible
 
       DateTime :created_at
       DateTime :updated_at

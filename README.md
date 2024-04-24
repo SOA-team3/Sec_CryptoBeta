@@ -85,7 +85,7 @@ Before submitting pull requests, please check if specs, style, and dependency au
 rake release?
 ```
 
-##  Simple file-based POST / GET Usage
+##  Sequel DB POST / GET Usage
 
 ### Create a meeting
 After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:9292

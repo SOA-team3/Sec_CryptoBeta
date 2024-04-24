@@ -8,8 +8,9 @@ Sequel.migration do
       primary_key :id
 
       String :name, unique: true, null: false
-      String :url, unique: true
-      String :owner
+      String :description
+      String :organizer
+      String :attendees # should be array
 
       DateTime :created_at
       DateTime :updated_at
