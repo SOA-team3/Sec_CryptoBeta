@@ -11,6 +11,7 @@ module No2Date
 
     plugin :timestamps
 
+    # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
         {
@@ -26,5 +27,6 @@ module No2Date
         }, options
       )
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end
