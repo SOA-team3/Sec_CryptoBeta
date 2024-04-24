@@ -2,6 +2,7 @@
 require: rubocop-performance
 
 AllCops:
+  SuggestExtensions: false
   TargetRubyVersion: 3.2
   NewCops: enable         # enable new upcoming cops for rubocop
   Exclude:
@@ -30,3 +31,8 @@ Style/SymbolArray:
   Exclude:
     - Rakefile
     - app/db/migrations/*.rb
+
+Layout/LineLength:
+  Enabled: true
+  Exclude:
+    - app/db/seeds/seeds_transformation.rb
