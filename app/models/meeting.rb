@@ -20,8 +20,9 @@ module No2Date
             attributes: {
               id:,
               name:,
-              url:,
-              owner:
+              description:,
+              organizer:,
+              attendees:
             }
           }
         }, options

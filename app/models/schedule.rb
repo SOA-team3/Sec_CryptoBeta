@@ -25,8 +25,8 @@ module No2Date
               start_datetime:,
               end_date:,
               end_datetime:,
-              organizer:,
-              attendees:
+              is_regular:, # bool
+              is_flexible:,
             }
           },
           included: {

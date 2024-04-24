@@ -5,7 +5,7 @@
   start_date: '2024-05-01'
   start_datetime: '2024-04-19 09:00:00 +0800'
   end_date: '2024-05-01'
-  end_datetime: "2024-04-19 10:00:00 +0800"
+  end_datetime: '2024-04-19 10:00:00 +0800'
   is_regular: true
   is_flexible: false
 

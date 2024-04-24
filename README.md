@@ -93,8 +93,8 @@ Run the POST message with new information and your local endpoint address.
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{
     "name": "Security meetings",
-    "url": "https://www.google.com.tw",
-    "owner": "Ella"
+    "organizer": "Brian",
+    "attendees": "Ella"
 }' http://0.0.0.0:9292/api/v1/meetings
 ```
 The id will be generated automatically in numerical order.
@@ -103,19 +103,23 @@ The empty colomns will be noted as null.
 The response message would be:
 ```shell
 {
-    "message": "Meeting saved",
+  "message": "Meeting saved",
+  "data":
+  {
     "data":
-      {"data":
-        {"type": "meeting",
-          "attributes":
-            { "name": 1,
-              "url": "https://www.google.com.tw",
-              "owner": "Ella"
-            }
-        }
+    {
+      "type": "meeting",
+      "attributes":
+      {
+        "id": 2,
+        "name": "Security meetings",
+        "description": null,
+        "organizer": "Brian",
+        "attendees": "Ella"
       }
+    }
+  }
 }
-
 ```
 ### Get a meeting
 Retrieve the details of a specific meeting by its id.
@@ -133,14 +137,17 @@ http://localhost:9292/api/v1/meetings/[ID]
 The response message would be (for example):
 ```shell
 {
-  {"data":
-      {"type": "meeting",
-        "attributes":
-          { "name": 1,
-            "url": "https://www.google.com.tw",
-            "owner": "Ella"
-          }
-      }
+  "data":
+    {
+      "type": "meeting",
+      "attributes":
+        {
+          "id": 1,
+          "name": "Security meetings",
+          "description": null,
+          "organizer": "Brian",
+          "attendees": "Ella"
+        }
     }
 }
 ```
@@ -163,23 +170,31 @@ The response message would be a list of sched_ids:
 {
   "data": [
     {
-      "data": {
+      "data":
+        {
         "type": "meeting",
-        "attributes": {
-          "id": 1,
-          "url": "https://www.google.com.tw",
-          "owner": "Ella"
+          "attributes":
+          {
+            "id": 1,
+            "name": "Security meetings",
+            "description": null,
+            "organizer": "Brian",
+            "attendees": "Ella"
+          }
         }
-      }
     },
     {
-      "data": {
-        "type": "meeting",
-        "attributes": {
-          "id": 2,
-          "url": "https://www.netflix.com",
-          "owner": "Ella"
-        }
+      "data":
+        {
+          "type": "meeting",
+          "attributes":
+          {
+            "id": 2,
+            "name": "Security meetings",
+            "description": null,
+            "organizer": "Brian",
+            "attendees": "Ella"
+          }
       }
     }
   ]
@@ -193,15 +208,15 @@ You should assign the [ID] to the specific ID to save your info to the specific 
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{
-  "title": "Discussion for SEC project",
+  "title": "Discussion for SOA project",
   "description": null,
   "location": "TSMC building, NTHU",
   "start_date": "2024-04-19",
-  "start_datetime": "2024-04-19T09:00:00",
+  "start_datetime": "2024-04-19 09:00:00 +0800",
   "end_date": "2024-04-19",
-  "end_datetime": null,
-  "organizer": "Brian",
-  "attendees": "Ella"
+  "end_datetime": "2024-04-19 10:00:00 +0800",
+  "is_regular": true,
+  "is_flexible": false
 }' http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules
 ```
 The id will be generated automatically in numerical order.
@@ -210,21 +225,45 @@ The empty colomns will be noted as null.
 The response message would be:
 ```shell
 {
-  "data": {
-    "type": "schedule",
-    "attributes": {
-      "id": 1,
-      "title": "Discussion for SEC project",
-      "description": null,
-      "location": "TSMC building, NTHU",
-      "start_date": "2024-04-19",
-      "start_datetime": "2024-04-19 09:00:00 +0800",
-      "end_date": "2024-04-19",
-      "end_datetime": null,
-      "organizer": "Brian",
-      "attendees": "Ella"
+  "message": "Schedule saved",
+  "data":
+    {
+      "data":
+      {
+        "type": "schedule",
+        "attributes":
+        {
+          "id": 3,
+          "title": "Discussion for SOA project",
+          "description": null,
+          "location": "TSMC building, NTHU",
+          "start_date": "2024-04-19",
+          "start_datetime": "2024-04-19 09:00:00 +0800",
+          "end_date": "2024-04-19",
+          "end_datetime": "2024-04-19 10:00:00 +0800",
+          "is_regular": true,
+          "is_flexible": false
+        }
+      },
+      "included":
+        {
+        "meeting":
+          {
+          "data":
+            {
+              "type": "meeting",
+              "attributes":
+                {
+                  "id": 1,
+                  "name": "Security meetings",
+                  "description": null,
+                  "organizer": "Brian",
+                  "attendees": "Ella"
+                }
+            }
+          }
+        }
     }
-  }
 }
 ```
 ### Get a schedule
@@ -244,34 +283,41 @@ The response message would be (for example):
 ```shell
 # http://localhost:9292/api/v1/meetings/1/schedules/1
 {
-  "data": {
-    "type": "schedule",
-    "attributes": {
-      "id": 1,
-      "title": "Discussion for SEC project",
-      "description": null,
-      "location": "TSMC building, NTHU",
-      "start_date": "2024-04-19",
-      "start_datetime": "2024-04-19 09:00:00 +0800",
-      "end_date": "2024-04-19",
-      "end_datetime": null,
-      "organizer": "Brian",
-      "attendees": "Ella"
-    }
-  },
-  "included": {
-    "meeting": {
-      "data": {
-        "type": "meeting",
-        "attributes": {
+  "data":
+    {
+      "type": "schedule",
+      "attributes":
+        {
           "id": 1,
-          "name": "Security meetings",
-          "url": "https://www.google.com.tw",
-          "owner": "Ella"
+          "title": "Discussion for SEC project",
+          "description": null,
+          "location": "TSMC building, NTHU",
+          "start_date": "2024-04-19",
+          "start_datetime": "2024-04-19 09:00:00 +0800",
+          "end_date": "2024-04-19",
+          "end_datetime": "2024-04-19 10:00:00 +0800",
+          "is_regular": null,
+          "is_flexible": null
         }
-      }
+    },
+  "included":
+    {
+      "meeting":
+        {
+          "data":
+            {
+              "type": "meeting",
+              "attributes":
+                {
+                  "id": 1,
+                  "name": "Security meetings",
+                  "description": null,
+                  "organizer": "Brian",
+                  "attendees": "Ella"
+                }
+            }
+        }
     }
-  }
 }
 ```
 
@@ -294,64 +340,78 @@ The response message would be a list of sched_ids:
 {
   "data": [
     {
-      "data": {
-        "type": "schedule",
-        "attributes": {
-          "id": 1,
-          "title": "Discussion for SEC project",
-          "description": null,
-          "location": "TSMC building, NTHU",
-          "start_date": "2024-04-19",
-          "start_datetime": "2024-04-19 09:00:00 +0800",
-          "end_date": "2024-04-19",
-          "end_datetime": null,
-          "organizer": "Brian",
-          "attendees": "Ella"
-        }
-      },
-      "included": {
-        "meeting": {
-          "data": {
-            "type": "meeting",
-            "attributes": {
+      "data":
+        {
+          "type": "schedule",
+          "attributes":
+            {
               "id": 1,
-              "name": "Security meetings",
-              "url": "https://www.google.com.tw",
-              "owner": "Ella"
+              "title": "Discussion for SEC project",
+              "description": null,
+              "location": "TSMC building, NTHU",
+              "start_date": "2024-04-19",
+              "start_datetime": "2024-04-19 09:00:00 +0800",
+              "end_date": "2024-04-19",
+              "end_datetime": "2024-04-19 10:00:00 +0800",
+              "is_regular": null,
+              "is_flexible": null
             }
-          }
+        },
+      "included":
+        {
+          "meeting":
+            {
+              "data":
+                {
+                  "type": "meeting",
+                  "attributes":
+                    {
+                      "id": 1,
+                      "name": "Security meetings",
+                      "description": null,
+                      "organizer": "Brian",
+                      "attendees": "Ella"
+                    }
+                }
+            }
         }
-      }
     },
     {
-      "data": {
-        "type": "schedule",
-        "attributes": {
-          "id": 3,
-          "title": "Discussion for no2date project",
-          "description": null,
-          "location": "TSMC building, NTHU",
-          "start_date": "2024-04-25",
-          "start_datetime": "2024-04-25 09:00:00 +0800",
-          "end_date": "2024-04-25",
-          "end_datetime": null,
-          "organizer": "Adrian",
-          "attendees": "Ella"
-        }
-      },
-      "included": {
-        "meeting": {
-          "data": {
-            "type": "meeting",
-            "attributes": {
-              "id": 1,
-              "name": "Security meetings",
-              "url": "https://www.google.com.tw",
-              "owner": "Ella"
+      "data":
+        {
+          "type": "schedule",
+          "attributes":
+            {
+              "id": 2,
+              "title": "Discussion for SOA project",
+              "description": null,
+              "location": "TSMC building, NTHU",
+              "start_date": "2024-04-20",
+              "start_datetime": "2024-04-19 09:00:00 +0800",
+              "end_date": "2024-04-20",
+              "end_datetime": "2024-04-19 10:00:00 +0800",
+              "is_regular": true,
+              "is_flexible": false
             }
-          }
+        },
+      "included":
+        {
+          "meeting":
+            {
+              "data":
+                {
+                  "type": "meeting",
+                  "attributes":
+                    {
+                      "id": 1,
+                      "name": "Security meetings",
+                      "description": null,
+                      "organizer": "Brian",
+                      "attendees": "Ella"
+                    }
+                }
+            }
         }
-      }
     }
   ]
 }
