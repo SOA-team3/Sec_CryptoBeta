@@ -43,8 +43,8 @@ describe 'Test Schedule Handling' do
     _(result['data']['attributes']['start_datetime']).must_equal sched_data['start_datetime']
     _(result['data']['attributes']['end_date']).must_equal sched_data['end_date']
     _(result['data']['attributes']['end_datetime']).must_equal sched_data['end_datetime']
-    _(result['data']['attributes']['organizer']).must_equal sched_data['organizer']
-    _(result['data']['attributes']['attendees']).must_equal sched_data['attendees']
+    _(result['data']['attributes']['is_regular']).must_equal sched_data['is_regular']
+    _(result['data']['attributes']['is_flexible']).must_equal sched_data['is_flexible']
   end
 
   it 'SAD: should return error if unknown schedule requested' do
@@ -75,7 +75,7 @@ describe 'Test Schedule Handling' do
     _(created['start_datetime']).must_equal sched_data['start_datetime']
     _(created['end_date']).must_equal sched_data['end_date']
     _(created['end_datetime']).must_equal sched_data['end_datetime']
-    _(created['organizer']).must_equal sched_data['organizer']
-    _(created['attendees']).must_equal sched_data['attendees']
+    _(created['is_regular']).must_equal sched_data['is_regular']
+    _(created['is_flexible']).must_equal sched_data['is_flexible']
   end
 end

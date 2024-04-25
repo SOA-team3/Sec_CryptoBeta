@@ -10,6 +10,8 @@ describe 'Test Meeting Handling' do
   end
 
   it 'HAPPY: should be able to get list of all meetings' do
+    puts "meetings spec: #{DATA[:meetings][0]}"
+
     No2Date::Meeting.create(DATA[:meetings][0]).save
     No2Date::Meeting.create(DATA[:meetings][1]).save
 
@@ -31,8 +33,9 @@ describe 'Test Meeting Handling' do
     result = JSON.parse last_response.body
     _(result['data']['attributes']['id']).must_equal id
     _(result['data']['attributes']['name']).must_equal existing_meet['name']
-    _(result['data']['attributes']['url']).must_equal existing_meet['url']
-    _(result['data']['attributes']['owner']).must_equal existing_meet['owner']
+    _(result['data']['attributes']['description']).must_equal existing_meet['description']
+    _(result['data']['attributes']['organizer']).must_equal existing_meet['organizer']
+    _(result['data']['attributes']['attendees']).must_equal existing_meet['attendees']
   end
 
   it 'SAD: should return error if unknown meeting requested' do
@@ -54,7 +57,8 @@ describe 'Test Meeting Handling' do
 
     _(created['id']).must_equal meet.id
     _(created['name']).must_equal existing_meet['name']
-    _(created['url']).must_equal existing_meet['url']
-    _(created['owner']).must_equal existing_meet['owner']
+    _(created['description']).must_equal existing_meet['description']
+    _(created['organizer']).must_equal existing_meet['organizer']
+    _(created['attendees']).must_equal existing_meet['attendees']
   end
 end

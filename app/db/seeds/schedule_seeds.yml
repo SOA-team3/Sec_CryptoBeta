@@ -8,7 +8,6 @@
   end_datetime: '2024-04-19 10:00:00 +0800'
   is_regular: true
   is_flexible: false
-
 - title: Discussion for SEC project
   description: null
   location: TSMC building, NTHU
