@@ -1,28 +1,38 @@
 ---
-# Specify style preferences
+require: rubocop-performance
+
 AllCops:
+  SuggestExtensions: false
   TargetRubyVersion: 3.2
   NewCops: enable         # enable new upcoming cops for rubocop
   Exclude:
     - _snippets/**/*
-# Follow block length rules except for testing code
+
+# ignore block length where unavoidable (e.g., framework requires it)
 Metrics/BlockLength:
   Enabled: true
   Exclude:
-    - spec/**/*
-    - app/controllers/app.rb
-
-Metrics/MethodLength:
-  Enabled: true
-  Exclude:
-    - app/controllers/app.rb
-
-Layout/LineLength:
-  Enabled: true
-  Exclude:
-    - app/db/seeds/seeds_transformation.rb
+    - app/controllers/*.rb # Roda's nested controllers require large blocks
+    - spec/**/* # Minitest's nested test structure requires large blocks
+    - Rakefile # Rake namespaces produce large blocks
 
 Security/YAMLLoad:
   Enabled: true
   Exclude:
     - spec/**/*
+
+Style/HashSyntax:
+  Enabled: true
+  Exclude:
+    - Rakefile
+
+Style/SymbolArray:
+  Enabled: true
+  Exclude:
+    - Rakefile
+    - app/db/migrations/*.rb
+
+Layout/LineLength:
+  Enabled: true
+  Exclude:
+    - app/db/seeds/seeds_transformation.rb
