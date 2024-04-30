@@ -57,11 +57,11 @@ describe 'Test Meeting Handling' do
   describe 'Creating New Meetings' do
     before do
       @req_header = { 'CONTENT_TYPE' => 'application/json' }
-      @proj_data = DATA[:meetings][1]
+      @meet_data = DATA[:meetings][1]
     end
 
     it 'HAPPY: should be able to create new meetings' do
-      post 'api/v1/meetings', @proj_data.to_json, req_header
+      post 'api/v1/meetings', @meet_data.to_json, @req_header
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
@@ -69,14 +69,14 @@ describe 'Test Meeting Handling' do
       meet = No2Date::Meeting.first
 
       _(created['id']).must_equal meet.id
-      _(created['name']).must_equal @proj_data['name']
-      _(created['description']).must_equal @proj_data['description']
-      _(created['organizer']).must_equal @proj_data['organizer']
-      _(created['attendees']).must_equal @proj_data['attendees']
+      _(created['name']).must_equal @meet_data['name']
+      _(created['description']).must_equal @meet_data['description']
+      _(created['organizer']).must_equal @meet_data['organizer']
+      _(created['attendees']).must_equal @meet_data['attendees']
     end
 
     it 'SECURITY: should not create project with mass assignment' do
-      bad_data = @proj_data.clone
+      bad_data = @meet_data.clone
       bad_data['organizer'] = 'Nobody'
       post 'api/v1/meetings', bad_data.to_json, @req_header
 

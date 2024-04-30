@@ -64,7 +64,7 @@ describe 'Test Schedule Handling' do
     it 'HAPPY: should be able to create new schedules' do
       req_header = { 'CONTENT_TYPE' => 'application/json' }
       post "api/v1/meetings/#{meet.id}/schedules",
-           sched_data.to_json, req_header
+           @sched_data.to_json, req_header
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
