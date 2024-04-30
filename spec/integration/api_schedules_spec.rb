@@ -78,4 +78,7 @@ describe 'Test Schedule Handling' do
     _(created['is_regular']).must_equal sched_data['is_regular']
     _(created['is_flexible']).must_equal sched_data['is_flexible']
   end
+
+  # should add new tests
+
 end

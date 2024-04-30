@@ -61,4 +61,7 @@ describe 'Test Meeting Handling' do
     _(created['organizer']).must_equal existing_meet['organizer']
     _(created['attendees']).must_equal existing_meet['attendees']
   end
+
+  # should add new tests
+
 end
