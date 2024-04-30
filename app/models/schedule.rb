@@ -7,17 +7,17 @@ module No2Date
   # Models a secret document
   class Schedule < Sequel::Model
     many_to_one :meeting
-    
+
     plugin :uuid, field: :id
     plugin :timestamps
     plugin :whitelist_security
-    set_allowed_columns :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime, :is_regular, :is_flexible :is_flexible
-    
+    set_allowed_columns :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime, :is_regular, :is_flexible
+
     # Secure getters and setters
     def description
       SecureDB.decrypt(description_secure)
     end
-    
+
     def description=(plaintext)
       self.description_secure = SecureDB.encrypt(plaintext)
     end

@@ -30,7 +30,7 @@ desc 'Checks for release'
 task :release? => [:spec, :style, :audit] do
   puts "\nReady for release!"
 end
-
+Rake::TestTask
 task :print_env do
   puts "Environment: #{ENV['RACK_ENV'] || 'development'}"
 end
