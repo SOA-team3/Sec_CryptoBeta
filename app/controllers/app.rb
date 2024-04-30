@@ -44,7 +44,7 @@ module No2Date
                 new_data = JSON.parse(routing.body.read)
                 meet = Meeting.first(id: meet_id)
                 new_sched = meet.add_schedule(new_data)
-                raise 'Could not save document' unless new_doc
+                raise 'Could not save schedule' unless new_sched
 
                 response.status = 201
                 response['Location'] = "#{@sched_route}/#{new_sched.id}"
