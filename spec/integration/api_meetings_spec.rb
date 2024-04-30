@@ -44,9 +44,9 @@ describe 'Test Meeting Handling' do
     end
 
     it 'SECURITY: should prevent basic SQL injection targeting IDs' do
-      No2Date::Meeting.create(name: 'New Meeting')
-      No2Date::Meeting.create(name: 'Newer Meeting')
-      get 'api/v1/projects/2%20or%20id%3E0'
+      No2Date::Meeting.create(name: 'New Meeting', organizer: 'Me', attendees: 'You')
+      No2Date::Meeting.create(name: 'Newer Meeting', organizer: 'Me2', attendees: 'You2')
+      get 'api/v1/meetings/2%20or%20id%3E0'
 
       # deliberately not reporting error -- don't give attacker information
       _(last_response.status).must_equal 404
