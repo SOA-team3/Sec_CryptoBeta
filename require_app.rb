@@ -7,8 +7,9 @@
 #  require_app
 #  require_app('config')
 #  require_app(['config', 'models'])
-def require_app(folders = %w[models controllers])
+def require_app(folders = %w[config lib models controllers], config: true)
   app_list = Array(folders).map { |folder| "app/#{folder}" }
+  app_list = ['config', app_list] if config
   full_list = ['config', app_list].flatten.join(',')
 
   Dir.glob("./{#{full_list}}/**/*.rb").each do |file|

@@ -17,6 +17,8 @@ Sequel.migration do
       DateTime :end_datetime, null: false
       TrueClass :is_regular # bool
       TrueClass :is_flexible
+      String :description_secure
+      String :content_secure, null: false, default: ''
 
       DateTime :created_at
       DateTime :updated_at
