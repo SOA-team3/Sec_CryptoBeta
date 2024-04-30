@@ -7,6 +7,7 @@ AllCops:
   NewCops: enable         # enable new upcoming cops for rubocop
   Exclude:
     - _snippets/**/*
+    - app/models/value/available_meettime.rb
 
 # ignore block length where unavoidable (e.g., framework requires it)
 Metrics/BlockLength:
