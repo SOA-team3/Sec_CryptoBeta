@@ -84,4 +84,8 @@ namespace :newkey do
     puts "DB_KEY: #{SecureDB.generate_key}"
   end
 end
+<<<<<<< HEAD
 # rubocop:enable Style/HashSyntax, Style/SymbolArray
+=======
+# rubocop:enable Style/HashSyntax, Style/SymbolArray
+>>>>>>> 112f80a6ef32053642f3de64a86c437695ad9e71
