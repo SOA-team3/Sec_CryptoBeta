@@ -8,6 +8,7 @@ module No2Date
   class Schedule < Sequel::Model
     many_to_one :meeting
 
+    plugin :whitelist_security
     plugin :timestamps
 
     # rubocop:disable Metrics/MethodLength
@@ -26,7 +27,7 @@ module No2Date
               end_date:,
               end_datetime:,
               is_regular:, # bool
-              is_flexible:,
+              is_flexible:
             }
           },
           included: {

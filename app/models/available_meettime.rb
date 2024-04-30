@@ -29,7 +29,7 @@ module No2Date
         # e.g. [[{'start_datetime': '09:00:00', 'end_datetime': '10:00:00'},
         # {'start_datetime': '19:30:00', 'end_datetime': '21:15:00'}],
         # [], [], [], [], [], []]
-        return available_meettimes
+        available_meettimes
       end
 
       def get_attendees_schedules_by_date(_attendees_scheds, _date)
@@ -39,7 +39,7 @@ module No2Date
 
         # some code...
 
-        return attendees_scheds_by_date
+        attendees_scheds_by_date
       end
 
       # Find overlapped schedules in one specific date
@@ -51,19 +51,17 @@ module No2Date
         # some code...
 
         #  return ideal overlapped times
-        if (overlap_counts + 1) == ATTENDEES
-          return overlapped_times
-        else
-          # some code...
+        return overlapped_times if (overlap_counts + 1) == ATTENDEES
 
-          flexible_overlapped_times = flexible_adjustment
-          if flexible_overlapped_times != overlapped_times
-            return flexible_overlapped_times
-          elsif majortiy_meet == true
-            return majority_meet(overlap_counts)
-          else
-            return overlapped_times
-          end
+        # some code...
+
+        flexible_overlapped_times = flexible_adjustment
+        if flexible_overlapped_times != overlapped_times
+          flexible_overlapped_times
+        elsif majortiy_meet == true
+          majority_meet(overlap_counts)
+        else
+          overlapped_times
         end
       end
 
@@ -71,13 +69,13 @@ module No2Date
       # Create a majority vote that at least n attendees overlap the available meetime
       def majority_meet(_n)
         # some code...
-        return majority_overlapped_time
+        majority_overlapped_time
       end
 
       # Some code about check the is_flexible in attendees_scheds and make(unblock) them able to overlap
       def flexible_adjustment(_attendees_scheds)
         # some code...
-        return flexible_overlapped_times
+        flexible_overlapped_times
       end
     end
   end

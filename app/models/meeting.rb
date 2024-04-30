@@ -9,6 +9,7 @@ module No2Date
     one_to_many :schedules
     plugin :association_dependencies, schedules: :destroy
 
+    plugin :whitelist_security
     plugin :timestamps
 
     # rubocop:disable Metrics/MethodLength
