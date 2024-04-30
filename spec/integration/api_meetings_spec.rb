@@ -77,7 +77,7 @@ describe 'Test Meeting Handling' do
 
     it 'SECURITY: should not create project with mass assignment' do
       bad_data = @meet_data.clone
-      bad_data['organizer'] = 'Nobody'
+      bad_data['created_at'] = '1990-01-01'
       post 'api/v1/meetings', bad_data.to_json, @req_header
 
       _(last_response.status).must_equal 400

@@ -85,7 +85,7 @@ describe 'Test Schedule Handling' do
 
     it 'SECURITY: should not create schedules with mass assignment' do
       bad_data = @sched_data.clone
-      bad_data['start_datetime'] = '1990-01-01 09:00:00 +0800'
+      bad_data['created_at'] = '1990-01-01'
       post "api/v1/meetings/#{@meet.id}/schedules",
            bad_data.to_json, @req_header
 
