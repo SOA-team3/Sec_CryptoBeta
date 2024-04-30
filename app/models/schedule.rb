@@ -15,19 +15,19 @@ module No2Date
 
     # Secure getters and setters
     def description
-      SecureDB.decrypt(description_secure)
+      SecureDB.decrypt(secure_description)
     end
 
     def description=(plaintext)
-      self.description_secure = SecureDB.encrypt(plaintext)
+      self.secure_description = SecureDB.encrypt(plaintext)
     end
 
-    def content
-      SecureDB.decrypt(location_secure)
+    def location
+      SecureDB.decrypt(secure_location)
     end
 
-    def content=(plaintext)
-      self.content_secure = SecureDB.encrypt(plaintext)
+    def location=(plaintext)
+      self.secure_location = SecureDB.encrypt(plaintext)
     end
 
     # rubocop:disable Metrics/MethodLength
