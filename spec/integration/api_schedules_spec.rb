@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'spec_helper'
+require_relative '../spec_helper'
 
 describe 'Test Schedule Handling' do
   include Rack::Test::Methods
@@ -54,31 +54,43 @@ describe 'Test Schedule Handling' do
     _(last_response.status).must_equal 404
   end
 
-  it 'HAPPY: should be able to create new schedules' do
-    meet = No2Date::Meeting.first
-    sched_data = DATA[:schedules][1]
+  describe 'Creating Schedules' do
+    before do
+      @meet = No2Date::Meeting.first
+      @sched_data = DATA[:schedules][1]
+      @req_header = { 'CONTENT_TYPE' => 'application/json' }
+    end
 
-    req_header = { 'CONTENT_TYPE' => 'application/json' }
-    post "api/v1/meetings/#{meet.id}/schedules",
-         sched_data.to_json, req_header
-    _(last_response.status).must_equal 201
-    _(last_response.headers['Location'].size).must_be :>, 0
+    it 'HAPPY: should be able to create new schedules' do
+      req_header = { 'CONTENT_TYPE' => 'application/json' }
+      post "api/v1/meetings/#{meet.id}/schedules",
+          sched_data.to_json, req_header
+      _(last_response.status).must_equal 201
+      _(last_response.headers['Location'].size).must_be :>, 0
 
-    created = JSON.parse(last_response.body)['data']['data']['attributes']
-    sched = No2Date::Schedule.first
+      created = JSON.parse(last_response.body)['data']['data']['attributes']
+      sched = No2Date::Schedule.first
 
-    _(created['id']).must_equal sched.id
-    _(created['title']).must_equal sched_data['title']
-    _(created['description']).must_equal sched_data['description']
-    _(created['location']).must_equal sched_data['location']
-    _(created['start_date']).must_equal sched_data['start_date']
-    _(created['start_datetime']).must_equal sched_data['start_datetime']
-    _(created['end_date']).must_equal sched_data['end_date']
-    _(created['end_datetime']).must_equal sched_data['end_datetime']
-    _(created['is_regular']).must_equal sched_data['is_regular']
-    _(created['is_flexible']).must_equal sched_data['is_flexible']
+      _(created['id']).must_equal sched.id
+      _(created['title']).must_equal @sched_data['title']
+      _(created['description']).must_equal @sched_data['description']
+      _(created['location']).must_equal @sched_data['location']
+      _(created['start_date']).must_equal @sched_data['start_date']
+      _(created['start_datetime']).must_equal @sched_data['start_datetime']
+      _(created['end_date']).must_equal @sched_data['end_date']
+      _(created['end_datetime']).must_equal @sched_data['end_datetime']
+      _(created['is_regular']).must_equal @sched_data['is_regular']
+      _(created['is_flexible']).must_equal @sched_data['is_flexible']
+    end
+
+    it 'SECURITY: should not create schedules with mass assignment' do
+      bad_data = @sched_data.clone
+      bad_data['start_datetime'] = '1990-01-01 09:00:00 +0800'
+      post "api/v1/meetings/#{@meet.id}/schedules",
+           bad_data.to_json, @req_header
+
+      _(last_response.status).must_equal 400
+      _(last_response.headers['Location']).must_be_nil
+    end
   end
-
-  # should add new tests
-
 end
