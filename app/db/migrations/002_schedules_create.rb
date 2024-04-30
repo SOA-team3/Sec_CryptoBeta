@@ -9,8 +9,8 @@ Sequel.migration do
       foreign_key :meeting_id, table: :meetings
 
       String :title
-      String :description
-      String :location
+      String :description_secure
+      String :location_secure
       Date :start_date, null: false
       DateTime :start_datetime, null: false
       Date :end_date, null: false

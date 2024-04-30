@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-# No2Date::Available_MeetTime::Available_MeetTime.new(...).get_available_meettimes(attendees_scheds, week)
-
 module No2Date
-  module Available_MeetTime
+  module Value
     # Get Available Meet Time
     class Available_MeetTime
       # Numebers of attendees required to retrieve from the room?
@@ -80,3 +78,6 @@ module No2Date
     end
   end
 end
+
+# Test the module
+# No2Date::Value::Available_MeetTime.new(...).get_available_meettimes(attendees_scheds, week)

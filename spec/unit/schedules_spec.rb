@@ -13,8 +13,8 @@ describe 'Test Schedule Handling' do
 
   it 'HAPPY: should retrieve correct data from database' do
     sched_data = DATA[:schedules][1]
-    sched = No2Date::Schedule.first
-    new_sched = sched.add_schedule(sched_data)
+    meet = No2Date::Schedule.first 
+    new_sched = meet.add_schedule(sched_data)
 
     sched = No2Date::Schedule.find(id: new_sched.id)
     _(sched.title).must_equal sched_data[:title]
@@ -30,19 +30,19 @@ describe 'Test Schedule Handling' do
 
   it 'SECURITY: should not use deterministic integers' do
     sched_data = DATA[:schedules][1]
-    sched = No2Date::Schedule.first
-    new_sched = sched.add_schedule(sched_data)
+    meet = No2Date::Schedule.first
+    new_sched = meet.add_schedule(sched_data)
 
     _(new_sched.id.is_a?(Numeric)).must_equal false
   end
 
   it 'SECURITY: should secure sensitive attributes' do
     sched_data = DATA[:schedules][1]
-    sched = No2Date::Schedule.first
-    sched.add_schedule(sched_data)
+    meet = No2Date::Schedule.first
+    new_sched = meet.add_schedule(sched_data)
     stored_sched = app.DB[:schedules].first
 
-    _(stored_sched[:title_secure]).wont_equal sched_data.title
-    _(stored_sched[:description_secure]).wont_equal sched_data.description
+    _(stored_sched[:description_secure]).wont_equal new_sched.description
+    _(stored_sched[:location_secure]).wont_equal new_sched.location
   end
 end

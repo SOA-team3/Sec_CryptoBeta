@@ -29,7 +29,7 @@ describe 'Test Schedule Handling' do
   it 'HAPPY: should be able to get details of a single schedule' do
     sched_data = DATA[:schedules][1]
     meet = No2Date::Meeting.first
-    sched = meet.add_schedule(sched_data).save
+    sched = meet.add_schedule(sched_data)
 
     get "/api/v1/meetings/#{meet.id}/schedules/#{sched.id}"
     _(last_response.status).must_equal 200
