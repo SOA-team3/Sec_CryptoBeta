@@ -52,7 +52,6 @@ describe 'Test Meeting Handling' do
       _(last_response.status).must_equal 404
       _(last_response.body['data']).must_be_nil
     end
-
   end
 
   describe 'Creating New Meetings' do
