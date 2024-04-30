@@ -13,7 +13,7 @@ end
 desc 'Test all the specs'
 Rake::TestTask.new(:spec) do |t|
   # t.pattern = 'spec/**/*_spec.rb'
-  t.pattern = 'spec/unit/schedules_spec.rb'
+  t.pattern = 'spec/**/schedules_spec.rb'
   t.warning = false
 end
 
