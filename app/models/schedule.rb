@@ -23,7 +23,7 @@ module No2Date
     end
 
     def content
-      SecureDB.decrypt(content_secure)
+      SecureDB.decrypt(location_secure)
     end
 
     def content=(plaintext)
