@@ -44,9 +44,9 @@ describe 'Test Meeting Handling' do
     end
 
     it 'SECURITY: should prevent basic SQL injection targeting IDs' do
-      No2Date::Meeting.create(name: 'New Meeting')
-      No2Date::Meeting.create(name: 'Newer Meeting')
-      get 'api/v1/projects/2%20or%20id%3E0'
+      No2Date::Meeting.create(name: 'New Meeting', organizer: 'Me', attendees: 'You')
+      No2Date::Meeting.create(name: 'Newer Meeting', organizer: 'Me2', attendees: 'You2')
+      get 'api/v1/meetings/2%20or%20id%3E0'
 
       # deliberately not reporting error -- don't give attacker information
       _(last_response.status).must_equal 404
@@ -57,11 +57,11 @@ describe 'Test Meeting Handling' do
   describe 'Creating New Meetings' do
     before do
       @req_header = { 'CONTENT_TYPE' => 'application/json' }
-      @proj_data = DATA[:meetings][1]
+      @meet_data = DATA[:meetings][1]
     end
 
     it 'HAPPY: should be able to create new meetings' do
-      post 'api/v1/meetings', @proj_data.to_json, req_header
+      post 'api/v1/meetings', @meet_data.to_json, @req_header
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
@@ -69,15 +69,15 @@ describe 'Test Meeting Handling' do
       meet = No2Date::Meeting.first
 
       _(created['id']).must_equal meet.id
-      _(created['name']).must_equal @proj_data['name']
-      _(created['description']).must_equal @proj_data['description']
-      _(created['organizer']).must_equal @proj_data['organizer']
-      _(created['attendees']).must_equal @proj_data['attendees']
+      _(created['name']).must_equal @meet_data['name']
+      _(created['description']).must_equal @meet_data['description']
+      _(created['organizer']).must_equal @meet_data['organizer']
+      _(created['attendees']).must_equal @meet_data['attendees']
     end
 
     it 'SECURITY: should not create project with mass assignment' do
-      bad_data = @proj_data.clone
-      bad_data['organizer'] = 'Nobody'
+      bad_data = @meet_data.clone
+      bad_data['created_at'] = '1990-01-01'
       post 'api/v1/meetings', bad_data.to_json, @req_header
 
       _(last_response.status).must_equal 400
