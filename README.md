@@ -50,6 +50,12 @@ Setup test database once:
 RACK_ENV=test rake db:migrate
 ```
 
+Drop DB and migrate again if database structre has been modified:
+
+```shell
+RACK_ENV=test rake db:drop
+```
+
 Run the test specification script in `Rakefile`:
 
 ```shell

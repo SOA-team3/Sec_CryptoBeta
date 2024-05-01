@@ -5,7 +5,8 @@ require 'sequel'
 Sequel.migration do
   change do
     create_table(:schedules) do
-      primary_key :id
+      # primary_key :id
+      uuid :id, primary_key: true
       foreign_key :meeting_id, table: :meetings
 
       String :title
