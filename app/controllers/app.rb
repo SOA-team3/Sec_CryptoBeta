@@ -44,16 +44,16 @@ module No2Date
                 new_data = JSON.parse(routing.body.read)
                 meet = Meeting.first(id: meet_id)
                 new_sched = meet.add_schedule(new_data)
+                raise 'Could not save schedule' unless new_sched
 
-                if new_sched
-                  response.status = 201
-                  response['Location'] = "#{@sched_route}/#{new_sched.id}"
-                  { message: 'Schedule saved', data: new_sched }.to_json
-                else
-                  routing.halt 400, 'Could not save schedule'
-                end
-              rescue StandardError
-                routing.halt 500, { message: 'Database error' }.to_json
+                response.status = 201
+                response['Location'] = "#{@sched_route}/#{new_sched.id}"
+                { message: 'Schedule saved', data: new_sched }.to_json
+              rescue Sequel::MassAssignmentRestriction
+                Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+                routing.halt 400, { message: 'Illegal Attributes' }.to_json
+              rescue StandardError => e
+                routing.halt 500, { message: e.message }.to_json
               end
             end
 
@@ -83,8 +83,12 @@ module No2Date
             response.status = 201
             response['Location'] = "#{@meet_route}/#{new_meet.id}"
             { message: 'Meeting saved', data: new_meet }.to_json
+          rescue Sequel::MassAssignmentRestriction
+            Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+            routing.halt 400, { message: 'Illegal Attributes' }.to_json
           rescue StandardError => e
-            routing.halt 400, { message: e.message }.to_json
+            Api.logger.error "UNKOWN ERROR: #{e.message}"
+            routing.halt 500, { message: 'Unknown server error' }.to_json
           end
         end
       end

@@ -9,7 +9,9 @@ module No2Date
     one_to_many :schedules
     plugin :association_dependencies, schedules: :destroy
 
+    plugin :whitelist_security
     plugin :timestamps
+    set_allowed_columns :name, :repo_url, :description, :organizer, :attendees
 
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})

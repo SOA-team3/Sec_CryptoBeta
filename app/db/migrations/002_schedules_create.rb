@@ -9,12 +9,12 @@ Sequel.migration do
       foreign_key :meeting_id, table: :meetings
 
       String :title
-      String :description
-      String :location
-      Date :start_date, null: false
-      DateTime :start_datetime, null: false
-      Date :end_date, null: false
-      DateTime :end_datetime, null: false
+      String :secure_description
+      String :secure_location
+      Date :start_date, null: false # Date :start_date, null: false
+      DateTime :start_datetime, null: false # DateTime :start_datetime, null: false
+      Date :end_date, null: false # Date :end_date, null: false
+      DateTime :end_datetime, null: false # DateTime :end_datetime, null: false
       TrueClass :is_regular # bool
       TrueClass :is_flexible
 
