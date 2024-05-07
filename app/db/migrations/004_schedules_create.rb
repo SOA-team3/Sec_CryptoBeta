@@ -7,7 +7,7 @@ Sequel.migration do
     create_table(:schedules) do
       # primary_key :id
       uuid :id, primary_key: true
-      foreign_key :meeting_id, table: :meetings
+      foreign_key :account_id, table: :accounts
 
       String :title
       String :secure_description

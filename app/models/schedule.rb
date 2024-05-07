@@ -6,7 +6,7 @@ require 'sequel'
 module No2Date
   # Models a secret document
   class Schedule < Sequel::Model
-    many_to_one :meeting
+    many_to_one :account
 
     plugin :uuid, field: :id
     plugin :timestamps, update_on_create: true
