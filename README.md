@@ -33,15 +33,6 @@ Setup development database once:
 ```shell
 rake db:migrate
 ```
-
-## Execute
-
-Run this API using:
-
-```shell
-puma
-```
-
 ## Test
 
 Drop DB and migrate again if database structre has been modified:
@@ -62,13 +53,6 @@ Run the test specification script in `Rakefile`:
 rake spec
 ```
 
-Run the test script:
-
-```shell
-# Run all spec
-rake spec
-```
-
 ```shell
 # Run spec and audit tasks first before rubocop
 rake style
@@ -78,6 +62,22 @@ rake style
 # List all rake tasks
 rake -T
 ```
+## Develop/Debug
+
+Add fake data to the development database to work on this project:
+
+```shell
+rake db:seed
+```
+
+## Execute
+
+Launch the API using:
+
+```shell
+puma
+```
+
 ## Release check
 
 Before submitting pull requests, please check if specs, style, and dependency audits pass:
