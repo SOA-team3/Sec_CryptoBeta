@@ -9,7 +9,8 @@ module No2Date
     many_to_one :meeting
 
     plugin :uuid, field: :id
-    plugin :timestamps
+    plugin :timestamps, update_on_create: true
+    
     plugin :whitelist_security
     set_allowed_columns :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime,
                         :is_regular, :is_flexible
