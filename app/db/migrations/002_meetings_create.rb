@@ -6,6 +6,7 @@ Sequel.migration do
   change do
     create_table(:meetings) do
       primary_key :id
+      foreign_key :owner_id, :accounts #owner_id not sure
 
       String :name, null: false
       String :description
