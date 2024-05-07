@@ -44,6 +44,12 @@ puma
 
 ## Test
 
+Drop DB and migrate again if database structre has been modified:
+
+```shell
+RACK_ENV=test rake db:drop
+```
+
 Setup test database once:
 
 ```shell
@@ -57,10 +63,6 @@ rake spec
 ```
 
 Run the test script:
-
-```shell
-rake api_spec
-```
 
 ```shell
 # Run all spec

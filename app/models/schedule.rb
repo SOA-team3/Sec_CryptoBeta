@@ -8,6 +8,7 @@ module No2Date
   class Schedule < Sequel::Model
     many_to_one :meeting
 
+    plugin :uuid, field: :id
     plugin :timestamps
     plugin :whitelist_security
     set_allowed_columns :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime,

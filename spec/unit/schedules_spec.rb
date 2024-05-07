@@ -28,14 +28,14 @@ describe 'Test Schedule Handling' do
     _(sched.is_flexible).must_equal sched_data['is_flexible']
   end
 
-  # Test for UUID?
-  # it 'SECURITY: should not use deterministic integers' do
-  #   sched_data = DATA[:schedules][1]
-  #   meet = No2Date::Meeting.first
-  #   new_sched = meet.add_schedule(sched_data)
+  # Test for UUID
+  it 'SECURITY: should not use deterministic integers' do
+    sched_data = DATA[:schedules][1]
+    meet = No2Date::Meeting.first
+    new_sched = meet.add_schedule(sched_data)
 
-  #   _(new_sched.id.is_a?(Numeric)).must_equal false
-  # end
+    _(new_sched.id.is_a?(Numeric)).must_equal false
+  end
 
   it 'SECURITY: should secure sensitive attributes' do
     sched_data = DATA[:schedules][0]
