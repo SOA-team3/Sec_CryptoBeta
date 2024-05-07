@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/calendar.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="site-header autocomplete">
+        <!-- <div class="input-wrapper"> -->
+          <!-- <input type="text" placeholder="Search" class="search-field"> -->
+            <!-- <span class="close">Cancel</span> -->
+          
+        <form class="max-w-md mx-auto">   
+          <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+          <div class="relative ">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <!-- <svg class="mr-px w-4 h-4 text-gray-500 dark:text-gray-400 pr-px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                  </svg> -->
+              </div>
+              <input type="search" id="default-search" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 placeholder-right-10" placeholder="Search Regualar, Flexible Task..." required />
+              <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+          </div>
+        </form>
+
+        <div class="focus-background"></div>
+<!--       
+        <div class="dialog">   
+        </div> -->
+        
+      </div>
+      
+        
+      <div id='calendar'></div>
+      
+      <div id="calendar-popup">
+       
+        <form id="event-form">
+           <div class='calander_popip_title'><i class="fa fa-calendar" aria-hidden="true"></i>
+      Add Event</div>
+          <ul>
+            <li>
+              <label for="event-start"><i class="fa fa-bell-o" aria-hidden="true"></i>
+      
+      From</label>
+              <input id="event-start"  class='form-control' type="datetime-local" name="start"/>
+            </li>
+            <li>
+              <label for="event-end"><i class="fa fa-bell-slash" aria-hidden="true"></i>
+      
+      To</label>
+              <input id="event-end"  class='form-control' type="datetime-local" name="end"/>
+            </li>
+            <li>
+              <label for="event-title"><i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
+      Event Name</label>
+              <input id="event-title"  class='form-control' type="text" name="title"/>
+            </li>
+            <li>
+              <label for="event-location"><i class="fa fa-map-marker" aria-hidden="true"></i>
+      Location</label>
+              <input id="event-location"   class='form-control' type="text" name="location"/>
+            </li>
+            <li>
+              <label for="event-details"><i class="fa fa-info-circle" aria-hidden="true"></i>
+      Description</label>
+              <textarea id="event-details"  class='form-control' name="details"></textarea>
+            </li>
+            <div class="button">
+              <input type="submit"  class='form-control submit_btn'/>
+            </div>
+          </ul>
+        </form>
+        
+        <div id="event">
+          <header></header>
+          <ul>
+          <li class="start-time"> 
+            <p>
+        Start at</p>
+              <time></time>
+            </li>
+             <li class="end-time">
+            <p>
+       End</p>
+              <time></time>
+            </li>
+            <li>
+              <p>
+                <i class="fa fa-map-marker" aria-hidden="true"></i>Location</p>
+      <p class="location"></p>
+            </li>
+            <li>
+              <p><i class="fa fa-info" aria-hidden="true"></i>
+      Details:</p>
+              <p class="details"></p>
+            </li>
+          </ul>
+         
+        </div>
+      
+        <div class="prong">
+          <div class="bottom-prong-dk"></div>
+          <div class="bottom-prong-lt"></div>
+        </div>
+      </div>
+      
+      
+      <div class='modle' id='simplemodal'>
+        <div class='modle-continer'>
+            <form id="edit-form">
+      
+          <div class='modal-header'>
+              <span class='close-btn' id='close-btnid'>&times</span>
+            <h2>Edit Event</h2>
+          </div>
+         <div class='modal-body'>
+        
+           <lable for='eventname'>Event Name</lable>
+           <input type='text' name='eventname' id='eventname' class='form-control'>
+           <lable for='location'>Location</lable>
+           <input type='text' name='location' id='location' class='form-control'>
+           
+           <label for="event-start">From</label><input id="eventstart" type="datetime-local" name="start" class='form-control'/>
+           
+           <label for="event-end">To</label>
+              <input id="eventend" type="datetime-local" name="end" class='form-control'/>
+            <label for="event-details">Details</label>
+           <textarea id="eventdetails" type='text' name="details"  class='form-control'></textarea>
+          
+          </div>
+          <div class='modal-footer'>
+            <button type='submit' class='btn btn-info'>save</button>
+            <button class='btn btn-dafault'>cancel</button>
+            
+          </div>
+          </form>
+        </div>
+        
+      </div>
+      
+      <div id='search_result'>result</div>
+      <button class='btn btn-primary'>Add Events</button>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="js/calendar.js"></script>
+</body>
+</html>
