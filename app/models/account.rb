@@ -2,7 +2,7 @@
 
 require 'sequel'
 require 'json'
-require_relative './password'
+require_relative 'password'
 
 module No2Date
   # Models a registered account
@@ -11,7 +11,7 @@ module No2Date
     many_to_many :attendances,
                  class: :'No2Date::Meeting',
                  join_table: :accounts_meetings,
-                 left_key: :owner_id, right_key: :meeting_id
+                 left_key: :attender_id, right_key: :meeting_id
 
     plugin :association_dependencies,
            owned_meetings: :destroy,

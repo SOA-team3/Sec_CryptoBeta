@@ -13,7 +13,7 @@ module No2Date
       @digest = digest
     end
 
-    # Comparing digest assuming using the same password 
+    # Comparing digest assuming using the same password
     def validate?(password)
       new_digest = StoredPassword.password_hash(@salt, password)
       @digest == new_digest
@@ -33,7 +33,7 @@ module No2Date
       new(salt, hash)
     end
 
-    # Extract and recover the salt, password and set that to create a new password object 
+    # Extract and recover the salt, password and set that to create a new password object
     def self.from_digest(digest)
       digested = JSON.parse(digest)
       salt = Base64.strict_decode64(digested['salt'])

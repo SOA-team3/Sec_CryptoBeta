@@ -16,5 +16,3 @@ def require_app(folders = %w[config lib models controllers], config: true)
     require file
   end
 end
-
-
