@@ -164,7 +164,6 @@ module No2Date
             routing.halt 500, { message: 'Unknown server error' }.to_json
           end
         end
-
       end
     end
   end

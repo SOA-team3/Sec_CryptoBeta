@@ -50,11 +50,11 @@ describe 'Test Schedule Handling' do
 
     it 'SECURITY: should prevent basic SQL injection targeting IDs' do
       No2Date::Schedule.create(title: 'New Schedule', location: 'place1',
-        start_date: '2024-04-19', start_datetime: '2024-04-19 09:00:00 +0800',
-        end_date: '2024-04-20', end_datetime: '2024-04-20 09:00:00 +0800',)
+                               start_date: '2024-04-19', start_datetime: '2024-04-19 09:00:00 +0800',
+                               end_date: '2024-04-20', end_datetime: '2024-04-20 09:00:00 +0800')
       No2Date::Schedule.create(title: 'Newer Schedule', location: 'place2',
-        start_date: '2024-05-19', start_datetime: '2024-05-19 09:00:00 +0800',
-        end_date: '2024-05-20', end_datetime: '2024-05-20 09:00:00 +0800',)
+                               start_date: '2024-05-19', start_datetime: '2024-05-19 09:00:00 +0800',
+                               end_date: '2024-05-20', end_datetime: '2024-05-20 09:00:00 +0800')
       get 'api/v1/schedules/2%20or%20id%3E0'
 
       # deliberately not reporting error -- don't give attacker information

@@ -34,7 +34,7 @@ describe 'Test Schedule Handling' do
 
   # Test for UUID
   it 'SECURITY: should not use deterministic integers' do
-    sched_data = DATA[:schedules][1]
+    DATA[:schedules][1]
     # account = No2Date::Account.first
     # new_sched = account.add_schedule(sched_data)
     new_sched = No2Date::Schedule.first
@@ -42,7 +42,7 @@ describe 'Test Schedule Handling' do
   end
 
   it 'SECURITY: should secure sensitive attributes' do
-    sched_data = DATA[:schedules][0]
+    DATA[:schedules][0]
     # account = No2Date::Account.first
     # new_sched = account.add_schedule(sched_data)
     new_sched = No2Date::Schedule.first

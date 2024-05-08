@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
-require_relative '../../app/services/add_attender_to_meeting.rb'
-require_relative '../../app/services/create_meeting_for_owner.rb'
-require_relative '../../app/services/create_schedule_for_account.rb'
+require_relative '../../app/services/add_attender_to_meeting'
+require_relative '../../app/services/create_meeting_for_owner'
+require_relative '../../app/services/create_schedule_for_account'
 
 describe 'Test AddAttenderToMeeting service' do
   before do

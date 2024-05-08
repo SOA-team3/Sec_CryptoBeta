@@ -29,17 +29,15 @@ describe 'Test Meeting Handling' do
     _(meet.description).must_equal meet_data['description']
     _(meet.organizer).must_equal meet_data['organizer']
     _(meet.attendees).must_equal meet_data['attendees']
-
   end
 
   it 'SECURITY: should secure sensitive attributes' do
-    meet_data = DATA[:meetings][0]
+    DATA[:meetings][0]
     # account = No2Date::Account.first
     # new_meet = account.add_meeting(meet_data)
     new_meet = No2Date::Meeting.first
     stored_meet = app.DB[:meetings].first
 
     _(stored_meet[:secure_attendees]).wont_equal new_meet.attendees
-
   end
 end
