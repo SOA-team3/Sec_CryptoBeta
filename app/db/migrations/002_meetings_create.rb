@@ -11,7 +11,7 @@ Sequel.migration do
       String :name, null: false
       String :description
       String :organizer, null: false
-      String :attendees, null: false # should be array
+      String :secure_attendees, null: false # should be array
 
       DateTime :created_at
       DateTime :updated_at
