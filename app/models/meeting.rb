@@ -6,12 +6,30 @@ require 'sequel'
 module No2Date
   # Models a meeting
   class Meeting < Sequel::Model
-    one_to_many :schedules
-    plugin :association_dependencies, schedules: :destroy
+    many_to_one :owner, class: :'No2Date::Account'
 
-    plugin :whitelist_security
+    many_to_many :attenders,
+                 class: :'No2Date::Account',
+                 join_table: :accounts_meetings,
+                 left_key: :meeting_id, right_key: :attender_id
+
+    one_to_many :accounts
+
+    plugin :association_dependencies,
+           attenders: :nullify
+
     plugin :timestamps
+    plugin :whitelist_security
     set_allowed_columns :name, :description, :organizer, :attendees
+
+    # Secure getters and setters
+    def attendees
+      SecureDB.decrypt(secure_attendees)
+    end
+
+    def attendees=(plaintext)
+      self.secure_attendees = SecureDB.encrypt(plaintext)
+    end
 
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})

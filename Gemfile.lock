@@ -48,7 +48,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    method_source (1.0.0)
+    method_source (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.6)
     minitest (5.22.3)
@@ -60,7 +60,7 @@ GEM
     nio4r (2.7.1)
     os (1.1.4)
     parallel (1.24.0)
-    parser (3.3.0.5)
+    parser (3.3.1.0)
       ast (~> 2.4.1)
       racc
     pry (0.14.2)
@@ -89,9 +89,9 @@ GEM
       listen (~> 3.0)
     retriable (3.1.2)
     rexml (3.2.6)
-    roda (3.78.0)
+    roda (3.79.0)
       rack
-    rubocop (1.63.1)
+    rubocop (1.63.4)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -102,14 +102,16 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.31.2)
-      parser (>= 3.3.0.4)
+    rubocop-ast (1.31.3)
+      parser (>= 3.3.1.0)
     rubocop-performance (1.21.0)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
-    sequel (5.79.0)
+    sequel (5.80.0)
       bigdecimal
+    sequel-seed (1.1.2)
+      sequel (>= 4.49.0)
     signet (0.19.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
@@ -125,27 +127,28 @@ GEM
 
 PLATFORMS
   arm64-darwin-23
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   bundle-audit
   figaro (~> 1.2)
   google-apis-calendar_v3 (~> 0.5.0)
-  hirb
+  hirb (~> 0.7)
   json
   minitest
   minitest-rg
   pry
   puma (~> 6.1)
   rack-test
-  rake
+  rake (~> 13.0)
   rbnacl (~> 7.1)
   rerun
   roda (~> 3.1)
   rubocop
   rubocop-performance
-  sequel (~> 5.55)
-  sqlite3 (~> 1.4)
+  sequel (~> 5.67)
+  sequel-seed
+  sqlite3 (~> 1.6)
 
 BUNDLED WITH
    2.5.3

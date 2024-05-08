@@ -6,10 +6,11 @@ require 'sequel'
 module No2Date
   # Models a secret document
   class Schedule < Sequel::Model
-    many_to_one :meeting
+    many_to_one :account
 
     plugin :uuid, field: :id
-    plugin :timestamps
+    plugin :timestamps, update_on_create: true
+
     plugin :whitelist_security
     set_allowed_columns :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime,
                         :is_regular, :is_flexible
@@ -81,9 +82,6 @@ module No2Date
               is_regular:, # bool
               is_flexible:
             }
-          },
-          included: {
-            meeting:
           }
         }, options
       )
