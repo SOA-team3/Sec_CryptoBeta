@@ -22,6 +22,15 @@ module No2Date
     plugin :whitelist_security
     set_allowed_columns :name, :description, :organizer, :attendees
 
+    # Secure getters and setters
+    def attendees
+      SecureDB.decrypt(secure_attendees)
+    end
+
+    def attendees=(plaintext)
+      self.secure_attendees = SecureDB.encrypt(attendees)
+    end
+
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
