@@ -19,5 +19,3 @@ DATA = {
   schedules: YAML.safe_load_file('app/db/seeds/schedules_seed.yml'),
   meetings: YAML.safe_load_file('app/db/seeds/meetings_seed.yml')
 }.freeze
-
-puts DATA[:meetings][0]

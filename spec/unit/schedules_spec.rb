@@ -6,15 +6,19 @@ describe 'Test Schedule Handling' do
   before do
     wipe_database
 
-    DATA[:accounts].each do |account_data|
-      No2Date::Account.create(account_data)
+    # DATA[:accounts].each do |account_data|
+    #   No2Date::Account.create(account_data)
+    # end
+    DATA[:schedules].each do |schedule_data|
+      No2Date::Schedule.create(schedule_data)
     end
   end
 
   it 'HAPPY: should retrieve correct data from database' do
     sched_data = DATA[:schedules][0]
-    meet = No2Date::Account.first
-    new_sched = meet.add_schedule(sched_data)
+    # account = No2Date::Account.first
+    # new_sched = account.add_schedule(sched_data)
+    new_sched = No2Date::Schedule.first
     sched = No2Date::Schedule.find(id: new_sched.id)
 
     _(sched.title).must_equal sched_data['title']
@@ -31,16 +35,17 @@ describe 'Test Schedule Handling' do
   # Test for UUID
   it 'SECURITY: should not use deterministic integers' do
     sched_data = DATA[:schedules][1]
-    meet = No2Date::Account.first
-    new_sched = meet.add_schedule(sched_data)
-
+    # account = No2Date::Account.first
+    # new_sched = account.add_schedule(sched_data)
+    new_sched = No2Date::Schedule.first
     _(new_sched.id.is_a?(Numeric)).must_equal false
   end
 
   it 'SECURITY: should secure sensitive attributes' do
     sched_data = DATA[:schedules][0]
-    meet = No2Date::Account.first
-    new_sched = meet.add_schedule(sched_data)
+    # account = No2Date::Account.first
+    # new_sched = account.add_schedule(sched_data)
+    new_sched = No2Date::Schedule.first
     stored_sched = app.DB[:schedules].first
 
     _(stored_sched[:secure_description]).wont_equal new_sched.description
