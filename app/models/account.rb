@@ -32,7 +32,7 @@ module No2Date
 
     def password?(try_password)
       password = No2Date::StoredPassword.from_digest(password_digest)
-      password.correct?(try_password)
+      password.validate?(try_password)
     end
 
     def to_json(options = {})

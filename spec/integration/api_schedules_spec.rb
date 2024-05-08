@@ -36,8 +36,8 @@ describe 'Test Schedule Handling' do
       _(result['data']['attributes']['location']).must_equal existing_sched['location']
       _(result['data']['attributes']['start_date']).must_equal existing_sched['start_date']
       _(result['data']['attributes']['start_datetime']).must_equal existing_sched['start_datetime']
-      _(result['data']['attributes']['end_date']).must_equal existing_sched['end_datetime']
-      _(result['data']['attributes']['end_date']).must_equal existing_sched['end_datetime']
+      _(result['data']['attributes']['end_date']).must_equal existing_sched['end_date']
+      _(result['data']['attributes']['end_datetime']).must_equal existing_sched['end_datetime']
       _(result['data']['attributes']['is_regular']).must_equal existing_sched['is_regular']
       _(result['data']['attributes']['is_flexible']).must_equal existing_sched['is_flexible']
     end
@@ -49,8 +49,12 @@ describe 'Test Schedule Handling' do
     end
 
     it 'SECURITY: should prevent basic SQL injection targeting IDs' do
-      No2Date::Schedule.create(name: 'New Schedule', location: 'place1', start_date: 'You')
-      No2Date::Schedule.create(name: 'Newer Schedule', location: 'place2', start_date: 'You2')
+      No2Date::Schedule.create(title: 'New Schedule', location: 'place1',
+        start_date: '2024-04-19', start_datetime: '2024-04-19 09:00:00 +0800',
+        end_date: '2024-04-20', end_datetime: '2024-04-20 09:00:00 +0800',)
+      No2Date::Schedule.create(title: 'Newer Schedule', location: 'place2',
+        start_date: '2024-05-19', start_datetime: '2024-05-19 09:00:00 +0800',
+        end_date: '2024-05-20', end_datetime: '2024-05-20 09:00:00 +0800',)
       get 'api/v1/schedules/2%20or%20id%3E0'
 
       # deliberately not reporting error -- don't give attacker information
@@ -85,7 +89,7 @@ describe 'Test Schedule Handling' do
       _(created['is_flexible']).must_equal @sched_data['is_flexible']
     end
 
-    it 'SECURITY: should not create project with mass assignment' do
+    it 'SECURITY: should not create schedule with mass assignment' do
       bad_data = @sched_data.clone
       bad_data['created_at'] = '1990-01-01'
       post 'api/v1/schedules', bad_data.to_json, @req_header

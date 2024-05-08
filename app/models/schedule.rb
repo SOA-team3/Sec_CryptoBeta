@@ -82,9 +82,6 @@ module No2Date
               is_regular:, # bool
               is_flexible:
             }
-          },
-          included: {
-            meeting:
           }
         }, options
       )

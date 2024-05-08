@@ -28,7 +28,7 @@ module No2Date
     end
 
     def attendees=(plaintext)
-      self.secure_attendees = SecureDB.encrypt(attendees)
+      self.secure_attendees = SecureDB.encrypt(plaintext)
     end
 
     # rubocop:disable Metrics/MethodLength

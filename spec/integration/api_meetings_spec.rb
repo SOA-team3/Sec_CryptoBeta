@@ -75,7 +75,7 @@ describe 'Test Meeting Handling' do
       _(created['attendees']).must_equal @meet_data['attendees']
     end
 
-    it 'SECURITY: should not create project with mass assignment' do
+    it 'SECURITY: should not create meeting with mass assignment' do
       bad_data = @meet_data.clone
       bad_data['created_at'] = '1990-01-01'
       post 'api/v1/meetings', bad_data.to_json, @req_header
