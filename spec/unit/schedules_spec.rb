@@ -6,14 +6,14 @@ describe 'Test Schedule Handling' do
   before do
     wipe_database
 
-    DATA[:meetings].each do |meeting_data|
-      No2Date::Meeting.create(meeting_data)
+    DATA[:accounts].each do |account_data|
+      No2Date::Account.create(account_data)
     end
   end
 
   it 'HAPPY: should retrieve correct data from database' do
     sched_data = DATA[:schedules][0]
-    meet = No2Date::Meeting.first
+    meet = No2Date::Account.first
     new_sched = meet.add_schedule(sched_data)
     sched = No2Date::Schedule.find(id: new_sched.id)
 
@@ -31,7 +31,7 @@ describe 'Test Schedule Handling' do
   # Test for UUID
   it 'SECURITY: should not use deterministic integers' do
     sched_data = DATA[:schedules][1]
-    meet = No2Date::Meeting.first
+    meet = No2Date::Account.first
     new_sched = meet.add_schedule(sched_data)
 
     _(new_sched.id.is_a?(Numeric)).must_equal false
@@ -39,7 +39,7 @@ describe 'Test Schedule Handling' do
 
   it 'SECURITY: should secure sensitive attributes' do
     sched_data = DATA[:schedules][0]
-    meet = No2Date::Meeting.first
+    meet = No2Date::Account.first
     new_sched = meet.add_schedule(sched_data)
     stored_sched = app.DB[:schedules].first
 
