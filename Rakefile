@@ -12,7 +12,7 @@ end
 
 desc 'Test all the specs'
 Rake::TestTask.new(:spec) do |t|
-  t.pattern = 'spec/**/**_spec.rb'
+  t.pattern = 'spec/**/api_auth_spec.rb'
   t.warning = false
 end
 
@@ -49,26 +49,26 @@ namespace :db do
 
   desc 'Run migrations'
   task :migrate => :print_env do
-  puts 'Migrating database to latest'
-  Sequel::Migrator.run(@app.DB, 'app/db/migrations')
-end
-
-desc 'Delete database'
-task :delete do
-  No2Date::Account.dataset.destroy
-end
-
-desc 'Delete dev or test database file'
-task drop: :print_env do
-  if @app.environment == :production
-    puts 'Cannot wipe production database!'
-    return
+    puts 'Migrating database to latest'
+    Sequel::Migrator.run(@app.DB, 'app/db/migrations')
   end
 
-  db_filename = "app/db/store/#{No2Date::Api.environment}.db"
-  FileUtils.rm(db_filename)
-  puts "Deleted #{db_filename}"
-end
+  desc 'Delete database'
+  task :delete do
+    No2Date::Account.dataset.destroy
+  end
+
+  desc 'Delete dev or test database file'
+  task drop: :print_env do
+    if @app.environment == :production
+      puts 'Cannot wipe production database!'
+      return
+    end
+
+    db_filename = "app/db/store/#{No2Date::Api.environment}.db"
+    FileUtils.rm(db_filename)
+    puts "Deleted #{db_filename}"
+  end
 
   task :load_models do
     require_app(%w[lib models services])

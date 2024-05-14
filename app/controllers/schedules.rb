@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
 require 'roda'
-require_relative './app'
+require_relative 'app'
 
 module No2Date
   # Web controller for No2Date API
   class Api < Roda
-    # rubocop:disable Metrics/BlockLength
     route('schedules') do |routing|
-        @sched_route = "#{@api_root}/schedules"
-  
-    # if the "account" is directing to "schedules"
+      @sched_route = "#{@api_root}/schedules"
+
+      # if the "account" is directing to "schedules"
       routing.on String do |sched_id|
         # GET api/v1/schedules/[ID]
         routing.get do

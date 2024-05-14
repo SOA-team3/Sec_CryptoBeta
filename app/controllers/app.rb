@@ -17,7 +17,7 @@ module No2Date
       response['Content-Type'] = 'application/json'
 
       secure_request?(routing) ||
-      routing.halt(403, { message: 'TLS/SSL Required' }.to_json)
+        routing.halt(403, { message: 'TLS/SSL Required' }.to_json)
 
       routing.root do
         { message: 'No2DateAPI up at /api/v1' }.to_json
@@ -32,5 +32,3 @@ module No2Date
     end
   end
 end
-
-      

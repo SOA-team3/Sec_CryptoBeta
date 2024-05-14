@@ -39,7 +39,6 @@ module No2Date
           attributes: {
             id:,
             name:,
-            relative_path:,
             description:,
             organizer:,
             attendees:

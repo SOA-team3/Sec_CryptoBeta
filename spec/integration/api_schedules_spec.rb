@@ -30,16 +30,16 @@ describe 'Test Schedule Handling' do
       _(last_response.status).must_equal 200
 
       result = JSON.parse last_response.body
-       _(result['attributes']['id']).must_equal id
-       _(result['attributes']['title']).must_equal existing_sched['title']
-       _(result['attributes']['description']).must_equal existing_sched['description']
-       _(result['attributes']['location']).must_equal existing_sched['location']
-       _(result['attributes']['start_date']).must_equal existing_sched['start_date']
-       _(result['attributes']['start_datetime']).must_equal existing_sched['start_datetime']
-       _(result['attributes']['end_date']).must_equal existing_sched['end_date']
-       _(result['attributes']['end_datetime']).must_equal existing_sched['end_datetime']
-       _(result['attributes']['is_regular']).must_equal existing_sched['is_regular']
-       _(result['attributes']['is_flexible']).must_equal existing_sched['is_flexible']
+      _(result['attributes']['id']).must_equal id
+      _(result['attributes']['title']).must_equal existing_sched['title']
+      _(result['attributes']['description']).must_equal existing_sched['description']
+      _(result['attributes']['location']).must_equal existing_sched['location']
+      _(result['attributes']['start_date']).must_equal existing_sched['start_date']
+      _(result['attributes']['start_datetime']).must_equal existing_sched['start_datetime']
+      _(result['attributes']['end_date']).must_equal existing_sched['end_date']
+      _(result['attributes']['end_datetime']).must_equal existing_sched['end_datetime']
+      _(result['attributes']['is_regular']).must_equal existing_sched['is_regular']
+      _(result['attributes']['is_flexible']).must_equal existing_sched['is_flexible']
     end
 
     it 'SAD: should return error if unknown schedule requested' do
