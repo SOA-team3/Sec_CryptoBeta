@@ -12,33 +12,35 @@ gem 'figaro', '~>1.2'
 gem 'rake', '~>13.0'
 
 # Security
-gem 'bundle-audit'
+gem 'bundler-audit'
 gem 'rbnacl', '~>7.1'
 
 # Database
 gem 'hirb', '~>0.7'
 gem 'sequel', '~>5.67'
-group :development, :test do
-  gem 'sequel-seed'
-  gem 'sqlite3', '~>1.6'
-end
 
 # Performance
-
-# Run `sudo apt-get install pkg-config`` to solve the issue of:
-# "Could not find gem 'rubocup-performance' in rubygems repository https://rubygems.org/ or installed locally."
 gem 'rubocop-performance'
 
 # Testing
 group :test do
   gem 'minitest'
   gem 'minitest-rg'
-  gem 'rack-test'
 end
 
 # Development
-gem 'pry'
-gem 'rerun'
+group :development do
+  gem 'pry'
+  gem 'rerun'
+  gem 'rubocop'
+  gem 'rubocop-performance'
+end
+
+group :development, :test do
+  gem 'rack-test'
+  gem 'sequel-seed'
+  gem 'sqlite3', '~>1.6'
+end
 
 # Quality
 gem 'rubocop'

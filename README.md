@@ -75,7 +75,7 @@ rake db:seed
 Launch the API using:
 
 ```shell
-puma
+rake run:dev
 ```
 
 ## Release check
