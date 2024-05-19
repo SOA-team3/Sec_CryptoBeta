@@ -31,7 +31,15 @@ bundle install
 Setup development database once:
 
 ```shell
+rake db:drop
+```
+
+```shell
 rake db:migrate
+```
+
+```shell
+puma
 ```
 ## Test
 
@@ -103,26 +111,25 @@ The id will be generated automatically in numerical order.
 The empty colomns will be noted as null.
 
 The response message would be:
+
 ```shell
 {
   "message": "Meeting saved",
-  "data":
+  "data": 
   {
-    "data":
+    "type": "meeting",
+    "attributes": 
     {
-      "type": "meeting",
-      "attributes":
-      {
-        "id": 2,
-        "name": "Security meetings",
-        "description": null,
-        "organizer": "Brian",
-        "attendees": "Ella"
-      }
+      "id": 1,
+      "name": "Security meetings",
+      "description": null,
+      "organizer": "Brian",
+      "attendees": "Ella"
     }
   }
 }
 ```
+
 ### Get a meeting
 Retrieve the details of a specific meeting by its id.
 Run the GET message with the specific id and your local endpoint address.
@@ -139,18 +146,15 @@ http://localhost:9292/api/v1/meetings/[ID]
 The response message would be (for example):
 ```shell
 {
-  "data":
-    {
-      "type": "meeting",
-      "attributes":
-        {
-          "id": 1,
-          "name": "Security meetings",
-          "description": null,
-          "organizer": "Brian",
-          "attendees": "Ella"
-        }
-    }
+  "type": "meeting",
+  "attributes": 
+  {
+    "id": 1,
+    "name": "Security meetings",
+    "description": null,
+    "organizer": "Brian",
+    "attendees": "Ella"
+  }
 }
 ```
 
@@ -172,31 +176,25 @@ The response message would be a list of sched_ids:
 {
   "data": [
     {
-      "data":
-        {
-        "type": "meeting",
-          "attributes":
-          {
-            "id": 1,
-            "name": "Security meetings",
-            "description": null,
-            "organizer": "Brian",
-            "attendees": "Ella"
-          }
-        }
+      "type": "meeting",
+      "attributes": 
+      {
+        "id": 1,
+        "name": "Security meetings",
+        "description": null,
+        "organizer": "Brian",
+        "attendees": "Ella"
+      }
     },
     {
-      "data":
-        {
-          "type": "meeting",
-          "attributes":
-          {
-            "id": 2,
-            "name": "Security meetings",
-            "description": null,
-            "organizer": "Brian",
-            "attendees": "Ella"
-          }
+      "type": "meeting",
+      "attributes": 
+      {
+        "id": 2,
+        "name": "Security meetings",
+        "description": null,
+        "organizer": "Brian",
+        "attendees": "Ella"
       }
     }
   ]
@@ -206,7 +204,7 @@ The response message would be a list of sched_ids:
 ### Create a schedule
 After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:9292
 Run the POST message with new information and your local endpoint address.
-You should assign the [ID] to the specific ID to save your info to the specific meeting.
+You should assign the [uuid] to the specific ID to save your info to the specific meeting.
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{
@@ -219,7 +217,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "end_datetime": "2024-04-19 10:00:00 +0800",
   "is_regular": true,
   "is_flexible": false
-}' http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules
+}' http://0.0.0.0:9292/api/v1/schedules
 ```
 The id will be generated automatically in numerical order.
 The empty colomns will be noted as null.
@@ -228,98 +226,55 @@ The response message would be:
 ```shell
 {
   "message": "Schedule saved",
-  "data":
+  "data": 
+  {
+    "type": "schedule",
+    "attributes": 
     {
-      "data":
-      {
-        "type": "schedule",
-        "attributes":
-        {
-          "id": 3,
-          "title": "Discussion for SOA project",
-          "description": null,
-          "location": "TSMC building, NTHU",
-          "start_date": "2024-04-19",
-          "start_datetime": "2024-04-19 09:00:00 +0800",
-          "end_date": "2024-04-19",
-          "end_datetime": "2024-04-19 10:00:00 +0800",
-          "is_regular": true,
-          "is_flexible": false
-        }
-      },
-      "included":
-        {
-        "meeting":
-          {
-          "data":
-            {
-              "type": "meeting",
-              "attributes":
-                {
-                  "id": 1,
-                  "name": "Security meetings",
-                  "description": null,
-                  "organizer": "Brian",
-                  "attendees": "Ella"
-                }
-            }
-          }
-        }
+      "id": "152d30ff-1f63-49a0-b08e-425e45dbbbad",
+      "title": "Discussion for SOA project",
+      "description": null,
+      "location": "TSMC building, NTHU",
+      "start_date": "2024-04-19",
+      "start_datetime": "2024-04-19 09:00:00 +0800",
+      "end_date": "2024-04-19",
+      "end_datetime": "2024-04-19 10:00:00 +0800",
+      "is_regular": true,
+      "is_flexible": false
     }
+  }
 }
 ```
 ### Get a schedule
 Retrieve the details of a specific schedule by its id.
 Run the GET message with the specific id and your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules/[ID]
+curl -X GET http://0.0.0.0:9292/api/v1/schedules/[uuid]
 # or
-curl http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules/[ID]
+curl http://0.0.0.0:9292/api/v1/schedules/[uuid]
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:9292/api/v1/meetings/[ID]/schedules/[ID]
+http://localhost:9292/api/v1/schedules/[uuid]
 ```
 
 The response message would be (for example):
 ```shell
-# http://localhost:9292/api/v1/meetings/1/schedules/1
 {
-  "data":
-    {
-      "type": "schedule",
-      "attributes":
-        {
-          "id": 1,
-          "title": "Discussion for SEC project",
-          "description": null,
-          "location": "TSMC building, NTHU",
-          "start_date": "2024-04-19",
-          "start_datetime": "2024-04-19 09:00:00 +0800",
-          "end_date": "2024-04-19",
-          "end_datetime": "2024-04-19 10:00:00 +0800",
-          "is_regular": null,
-          "is_flexible": null
-        }
-    },
-  "included":
-    {
-      "meeting":
-        {
-          "data":
-            {
-              "type": "meeting",
-              "attributes":
-                {
-                  "id": 1,
-                  "name": "Security meetings",
-                  "description": null,
-                  "organizer": "Brian",
-                  "attendees": "Ella"
-                }
-            }
-        }
-    }
+  "type": "schedule",
+  "attributes": 
+  {
+    "id": "bbaf6b6c-d97b-4d3c-ad36-4a9531a8d8b5",
+    "title": "Discussion for SOA project",
+    "description": null,
+    "location": "TSMC building, NTHU",
+    "start_date": "2024-04-19",
+    "start_datetime": "2024-04-19 09:00:00 +0800",
+    "end_date": "2024-04-19",
+    "end_datetime": "2024-04-19 10:00:00 +0800",
+    "is_regular": true,
+    "is_flexible": false
+  }
 }
 ```
 
@@ -327,94 +282,111 @@ The response message would be (for example):
 Retrieve all schedules' ids.
 Run the GET message with your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules/
+curl -X GET http://0.0.0.0:9292/api/v1/schedules
 # or
-curl http://0.0.0.0:9292/api/v1/meetings/[ID]/schedules/
+curl http://0.0.0.0:9292/api/v1/schedules
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:9292/api/v1/meetings/[ID]/schedules/
+http://localhost:9292/api/v1/schedules
 ```
 
 The response message would be a list of sched_ids:
 ```shell
-# http://0.0.0.0:9292/api/v1/meetings/1/schedules
 {
   "data": [
     {
-      "data":
-        {
-          "type": "schedule",
-          "attributes":
-            {
-              "id": 1,
-              "title": "Discussion for SEC project",
-              "description": null,
-              "location": "TSMC building, NTHU",
-              "start_date": "2024-04-19",
-              "start_datetime": "2024-04-19 09:00:00 +0800",
-              "end_date": "2024-04-19",
-              "end_datetime": "2024-04-19 10:00:00 +0800",
-              "is_regular": null,
-              "is_flexible": null
-            }
-        },
-      "included":
-        {
-          "meeting":
-            {
-              "data":
-                {
-                  "type": "meeting",
-                  "attributes":
-                    {
-                      "id": 1,
-                      "name": "Security meetings",
-                      "description": null,
-                      "organizer": "Brian",
-                      "attendees": "Ella"
-                    }
-                }
-            }
-        }
+      "type": "schedule",
+      "attributes": 
+      {
+        "id": "152d30ff-1f63-49a0-b08e-425e45dbbbad",
+        "title": "Discussion for SOA project",
+        "description": null,
+        "location": "TSMC building, NTHU",
+        "start_date": "2024-04-19",
+        "start_datetime": "2024-04-19 09:00:00 +0800",
+        "end_date": "2024-04-19",
+        "end_datetime": "2024-04-19 10:00:00 +0800",
+        "is_regular": true,
+        "is_flexible": false
+      }
     },
     {
-      "data":
-        {
-          "type": "schedule",
-          "attributes":
-            {
-              "id": 2,
-              "title": "Discussion for SOA project",
-              "description": null,
-              "location": "TSMC building, NTHU",
-              "start_date": "2024-04-20",
-              "start_datetime": "2024-04-19 09:00:00 +0800",
-              "end_date": "2024-04-20",
-              "end_datetime": "2024-04-19 10:00:00 +0800",
-              "is_regular": true,
-              "is_flexible": false
-            }
-        },
-      "included":
-        {
-          "meeting":
-            {
-              "data":
-                {
-                  "type": "meeting",
-                  "attributes":
-                    {
-                      "id": 1,
-                      "name": "Security meetings",
-                      "description": null,
-                      "organizer": "Brian",
-                      "attendees": "Ella"
-                    }
-                }
-            }
-        }
+      "type": "schedule",
+      "attributes": 
+      {
+        "id": "bbaf6b6c-d97b-4d3c-ad36-4a9531a8d8b5",
+        "title": "Discussion for SOA project",
+        "description": null,
+        "location": "TSMC building, NTHU",
+        "start_date": "2024-04-19",
+        "start_datetime": "2024-04-19 09:00:00 +0800",
+        "end_date": "2024-04-19",
+        "end_datetime": "2024-04-19 10:00:00 +0800",
+        "is_regular": true,
+        "is_flexible": false
+      }
     }
   ]
+}
+```
+
+### Create a account
+After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:9292
+Run the POST message with new information and your local endpoint address.
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{
+  "username": "brian",
+  "email": "brian@nthu.edu.tw",
+  "password": "mypa$$w0rda"
+}' http://0.0.0.0:9292/api/v1/accounts
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "username": "1",
+  "email": "1@nthu.edu.tw",
+  "password": "1"
+}' http://0.0.0.0:9292/api/v1/accounts
+```
+The id will be generated automatically in numerical order.
+The empty colomns will be noted as null.
+
+The response message would be:
+```shell
+{
+  "message":"Account saved",
+  "data":
+  {
+    "type":"account",
+    "attributes":
+    {
+      "username":"brian",
+      "email":"brian@nthu.edu.tw"
+    }
+  }
+}
+```
+### Get a account
+Retrieve the details of a specific account by its username.
+Run the GET message with the specific usernam and your local endpoint address.
+```shell
+curl -X GET http://0.0.0.0:9292/api/v1/accounts/[username]
+# or
+curl http://0.0.0.0:9292/api/v1/accounts/[username]
+```
+Or we can enter the GET message on browser's address bar (URL bar).
+```shell
+http://localhost:9292/api/v1/accounts/[username]
+```
+
+The response message would be (for example):
+```shell
+{
+  "type": "account",
+  "attributes": 
+  {
+    "username": "brian",
+    "email": "brian@nthu.edu.tw"
+  }
 }
 ```
