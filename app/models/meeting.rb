@@ -35,17 +35,16 @@ module No2Date
     def to_json(options = {})
       JSON(
         {
-          data: {
-            type: 'meeting',
-            attributes: {
-              id:,
-              name:,
-              description:,
-              organizer:,
-              attendees:
-            }
+          type: 'meeting',
+          attributes: {
+            id:,
+            name:,
+            description:,
+            organizer:,
+            attendees:
           }
-        }, options
+        },
+        options
       )
     end
     # rubocop:enable Metrics/MethodLength

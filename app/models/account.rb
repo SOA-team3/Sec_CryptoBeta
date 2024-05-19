@@ -39,9 +39,10 @@ module No2Date
       JSON(
         {
           type: 'account',
-          id:,
-          username:,
-          email:
+          attributes: {
+            username:,
+            email:
+          }
         }, options
       )
     end

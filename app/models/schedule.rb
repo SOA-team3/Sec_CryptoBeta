@@ -68,22 +68,21 @@ module No2Date
     def to_json(options = {})
       JSON(
         {
-          data: {
-            type: 'schedule',
-            attributes: {
-              id:,
-              title:,
-              description:,
-              location:,
-              start_date:,
-              start_datetime:,
-              end_date:,
-              end_datetime:,
-              is_regular:, # bool
-              is_flexible:
-            }
+          type: 'schedule',
+          attributes: {
+            id:,
+            title:,
+            description:,
+            location:,
+            start_date:,
+            start_datetime:,
+            end_date:,
+            end_datetime:,
+            is_regular:, # bool
+            is_flexible:
           }
-        }, options
+        },
+        options
       )
     end
     # rubocop:enable Metrics/MethodLength

@@ -30,6 +30,7 @@ desc 'Checks for release'
 task release?: %i[spec style audit] do
   puts "\nReady for release!"
 end
+
 task :print_env do
   puts "Environment: #{ENV['RACK_ENV'] || 'development'}"
 end
@@ -40,31 +41,25 @@ task console: :print_env do
 end
 
 namespace :db do
-  task :load do
-    require_app(nil) # load nothing by default
-    require 'sequel'
+  require_app(nil) # load nothing by default
+  require 'sequel'
 
-    Sequel.extension :migration
-    @app = No2Date::Api
-  end
-
-  task :load_models do
-    require_app('models')
-  end
+  Sequel.extension :migration
+  @app = No2Date::Api
 
   desc 'Run migrations'
-  task migrate: %i[load print_env] do
+  task :migrate => :print_env do
     puts 'Migrating database to latest'
     Sequel::Migrator.run(@app.DB, 'app/db/migrations')
   end
 
-  desc 'Destroy data in database; maintain tables'
-  task delete: :load_models do
-    No2Date::Calendar.dataset.destroy
+  desc 'Delete database'
+  task :delete do
+    No2Date::Account.dataset.destroy
   end
 
   desc 'Delete dev or test database file'
-  task drop: :load do
+  task drop: :print_env do
     if @app.environment == :production
       puts 'Cannot wipe production database!'
       return
@@ -74,6 +69,26 @@ namespace :db do
     FileUtils.rm(db_filename)
     puts "Deleted #{db_filename}"
   end
+
+  task :load_models do
+    require_app(%w[lib models services])
+  end
+
+  task :reset_seeds => [:load_models] do
+    app.DB[:schema_seeds].delete if app.DB.tables.include?(:schema_seeds)
+    No2Date::Account.dataset.destroy
+  end
+
+  desc 'Seeds the development database'
+  task :seed => [:load_models] do
+    require 'sequel/extensions/seed'
+    Sequel::Seed.setup(:development)
+    Sequel.extension :seed
+    Sequel::Seeder.apply(app.DB, 'app/db/seeds')
+  end
+
+  desc 'Delete all data and reseed'
+  task reseed: [:reset_seeds, :seed]
 end
 
 namespace :newkey do
@@ -81,5 +96,13 @@ namespace :newkey do
   task :db do
     require_app('lib', config: false)
     puts "DB_KEY: #{SecureDB.generate_key}"
+  end
+end
+
+namespace :run do
+  # Run in development mode
+  desc 'Run API in development mode'
+  task :dev do
+    sh 'puma -p 3000'
   end
 end
