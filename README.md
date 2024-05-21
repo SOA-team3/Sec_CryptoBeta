@@ -105,20 +105,20 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "name": "Security meetings",
     "organizer": "Brian",
     "attendees": "Ella"
-}' http://0.0.0.0:9292/api/v1/meetings
+}' http://0.0.0.0:3000/api/v1/meetings
 ```
 The id will be generated automatically in numerical order.
-The empty colomns will be noted as null.
+The empty columns will be noted as null.
 
 The response message would be:
 
 ```shell
 {
   "message": "Meeting saved",
-  "data": 
+  "data":
   {
     "type": "meeting",
-    "attributes": 
+    "attributes":
     {
       "id": 1,
       "name": "Security meetings",
@@ -134,9 +134,9 @@ The response message would be:
 Retrieve the details of a specific meeting by its id.
 Run the GET message with the specific id and your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:9292/api/v1/meetings/[ID]
+curl -X GET http://0.0.0.0:3000/api/v1/meetings/[ID]
 # or
-curl http://0.0.0.0:9292/api/v1/meetings/[ID]
+curl http://0.0.0.0:3000/api/v1/meetings/[ID]
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
@@ -147,7 +147,7 @@ The response message would be (for example):
 ```shell
 {
   "type": "meeting",
-  "attributes": 
+  "attributes":
   {
     "id": 1,
     "name": "Security meetings",
@@ -162,13 +162,13 @@ The response message would be (for example):
 Retrieve all meetings' ids.
 Run the GET message with your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:9292/api/v1/meetings
+curl -X GET http://0.0.0.0:3000/api/v1/meetings
 # or
-curl http://0.0.0.0:9292/api/v1/meetings
+curl http://0.0.0.0:3000/api/v1/meetings
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:9292/api/v1/meetings
+http://localhost:3000/api/v1/meetings
 ```
 
 The response message would be a list of sched_ids:
@@ -177,7 +177,7 @@ The response message would be a list of sched_ids:
   "data": [
     {
       "type": "meeting",
-      "attributes": 
+      "attributes":
       {
         "id": 1,
         "name": "Security meetings",
@@ -188,7 +188,7 @@ The response message would be a list of sched_ids:
     },
     {
       "type": "meeting",
-      "attributes": 
+      "attributes":
       {
         "id": 2,
         "name": "Security meetings",
@@ -217,7 +217,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "end_datetime": "2024-04-19 10:00:00 +0800",
   "is_regular": true,
   "is_flexible": false
-}' http://0.0.0.0:9292/api/v1/schedules
+}' http://0.0.0.0:3000/api/v1/schedules
 ```
 The id will be generated automatically in numerical order.
 The empty colomns will be noted as null.
@@ -226,10 +226,10 @@ The response message would be:
 ```shell
 {
   "message": "Schedule saved",
-  "data": 
+  "data":
   {
     "type": "schedule",
-    "attributes": 
+    "attributes":
     {
       "id": "152d30ff-1f63-49a0-b08e-425e45dbbbad",
       "title": "Discussion for SOA project",
@@ -249,20 +249,20 @@ The response message would be:
 Retrieve the details of a specific schedule by its id.
 Run the GET message with the specific id and your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:9292/api/v1/schedules/[uuid]
+curl -X GET http://0.0.0.0:3000/api/v1/schedules/[uuid]
 # or
-curl http://0.0.0.0:9292/api/v1/schedules/[uuid]
+curl http://0.0.0.0:3000/api/v1/schedules/[uuid]
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:9292/api/v1/schedules/[uuid]
+http://localhost:3000/api/v1/schedules/[uuid]
 ```
 
 The response message would be (for example):
 ```shell
 {
   "type": "schedule",
-  "attributes": 
+  "attributes":
   {
     "id": "bbaf6b6c-d97b-4d3c-ad36-4a9531a8d8b5",
     "title": "Discussion for SOA project",
@@ -282,13 +282,13 @@ The response message would be (for example):
 Retrieve all schedules' ids.
 Run the GET message with your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:9292/api/v1/schedules
+curl -X GET http://0.0.0.0:3000/api/v1/schedules
 # or
-curl http://0.0.0.0:9292/api/v1/schedules
+curl http://0.0.0.0:3000/api/v1/schedules
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:9292/api/v1/schedules
+http://localhost:3000/api/v1/schedules
 ```
 
 The response message would be a list of sched_ids:
@@ -297,7 +297,7 @@ The response message would be a list of sched_ids:
   "data": [
     {
       "type": "schedule",
-      "attributes": 
+      "attributes":
       {
         "id": "152d30ff-1f63-49a0-b08e-425e45dbbbad",
         "title": "Discussion for SOA project",
@@ -313,7 +313,7 @@ The response message would be a list of sched_ids:
     },
     {
       "type": "schedule",
-      "attributes": 
+      "attributes":
       {
         "id": "bbaf6b6c-d97b-4d3c-ad36-4a9531a8d8b5",
         "title": "Discussion for SOA project",
@@ -332,7 +332,7 @@ The response message would be a list of sched_ids:
 ```
 
 ### Create a account
-After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:9292
+After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:3000
 Run the POST message with new information and your local endpoint address.
 
 ```shell
@@ -340,13 +340,13 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "username": "brian",
   "email": "brian@nthu.edu.tw",
   "password": "mypa$$w0rda"
-}' http://0.0.0.0:9292/api/v1/accounts
+}' http://0.0.0.0:3000/api/v1/accounts
 
 curl -X POST -H "Content-Type: application/json" -d '{
-  "username": "1",
-  "email": "1@nthu.edu.tw",
-  "password": "1"
-}' http://0.0.0.0:9292/api/v1/accounts
+  "username": "ella",
+  "email": "ella@nthu.edu.tw",
+  "password": "123"
+}' http://0.0.0.0:3000/api/v1/accounts
 ```
 The id will be generated automatically in numerical order.
 The empty colomns will be noted as null.
@@ -366,24 +366,24 @@ The response message would be:
   }
 }
 ```
-### Get a account
+### Get an account
 Retrieve the details of a specific account by its username.
 Run the GET message with the specific usernam and your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:9292/api/v1/accounts/[username]
+curl -X GET http://0.0.0.0:3000/api/v1/accounts/[username]
 # or
-curl http://0.0.0.0:9292/api/v1/accounts/[username]
+curl http://0.0.0.0:3000/api/v1/accounts/[username]
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:9292/api/v1/accounts/[username]
+http://localhost:3000/api/v1/accounts/[username]
 ```
 
 The response message would be (for example):
 ```shell
 {
   "type": "account",
-  "attributes": 
+  "attributes":
   {
     "username": "brian",
     "email": "brian@nthu.edu.tw"
