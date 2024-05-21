@@ -26,13 +26,16 @@ module No2Date
         raise('Could not save account') unless new_account.save
 
         response.status = 201
-        response['Location'] = "#{@account_route}/#{new_account.username}"
-        { message: 'Account saved', data: new_account }.to_json
+        response['Location'] = "#{@account_route}/#{new_account.id}"
+        # response['Location'] = "#{@account_route}/#{new_account.username}"
+        { message: 'Account created', data: new_account }.to_json
       rescue Sequel::MassAssignmentRestriction
-        Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
+        # Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
         routing.halt 400, { message: 'Illegal Request' }.to_json
       rescue StandardError => e
-        Api.logger.error 'Unknown error saving account'
+        # Api.logger.error 'Unknown error saving account'
+        puts "ERROR CREATING ACCOUNT: #{e.inspect}"
+        puts e.backtrace
         routing.halt 500, { message: e.message }.to_json
       end
     end

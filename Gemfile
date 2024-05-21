@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
+ruby File.read('.ruby-version').strip
 
 # Web API
 gem 'json'
-gem 'puma', '~>6.1'
-gem 'roda', '~>3.1'
+gem 'puma', '~>6.2'
+gem 'roda', '~>3.54'
 
 # Configuration
 gem 'figaro', '~>1.2'
@@ -22,9 +23,6 @@ group :production do
   gem 'pg'
 end
 
-# Performance
-gem 'rubocop-performance'
-
 # Encoding
 gem 'base64', '~>0.2'
 
@@ -36,7 +34,6 @@ end
 
 # Debugging
 gem 'pry' # necessary for rake console
-
 
 # Development
 group :development do

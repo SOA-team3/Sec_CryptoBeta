@@ -43,7 +43,7 @@ puma
 ```
 ## Test
 
-Drop DB and migrate again if database structre has been modified:
+Drop DB and migrate again if database structure has been modified:
 
 ```shell
 RACK_ENV=test rake db:drop
@@ -86,9 +86,13 @@ Launch the API using:
 rake run:dev
 ```
 
+```shell
+rakeup
+```
+
 ## Release check
 
-Before submitting pull requests, please check if specs, style, and dependency audits pass:
+Before submitting pull requests, please check if specs, style, and dependency audits pass (will need to be online to update dependency database):
 
 ```shell
 # List all rake tasks
