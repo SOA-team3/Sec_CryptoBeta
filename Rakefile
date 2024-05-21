@@ -109,6 +109,6 @@ namespace :run do
   # Run in development mode
   desc 'Run API in development mode'
   task :dev do
-    sh 'puma -p 3000'
+    sh 'rackup -p 3000'
   end
 end
