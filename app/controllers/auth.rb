@@ -17,7 +17,7 @@ module No2Date
           { message: 'Verification email sent' }.to_json
         rescue VerifyRegistration::InvalidRegistration => e
           routing.halt 400, { message: e.message }.to_json
-        rescue VerifyRegistration::EmailProviderError 
+        rescue VerifyRegistration::EmailProviderError
           Api.logger.error "Could not send registration email: #{e.inspect}"
           routing.halt 500, { message: 'Error sending email' }.to_json
         rescue StandardError => e
@@ -32,7 +32,7 @@ module No2Date
           credentials = JSON.parse(request.body.read, symbolize_names: true)
           auth_account = AuthenticateAccount.call(credentials)
           auth_account.to_json
-        rescue UnauthorizedError
+        rescue AuthenticateAccount::UnauthorizedError
           # puts [e.class, e.message].join ': '
           routing.halt '403', { message: 'Invalid credentials' }.to_json
         end

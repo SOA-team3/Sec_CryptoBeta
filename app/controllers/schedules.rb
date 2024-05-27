@@ -22,8 +22,9 @@ module No2Date
 
       # GET api/v1/schedules
       routing.get do
-        output = { data: Schedule.all }
-        JSON.pretty_generate(output)
+        account = Account.first(username: @auth_account['username'])
+        schedules = account.schedules
+        JSON.pretty_generate(data: schedules)
       rescue StandardError
         routing.halt 404, { message: 'Could not find schedules' }.to_json
       end

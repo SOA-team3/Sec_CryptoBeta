@@ -7,7 +7,7 @@ require 'roda'
 require 'figaro'
 require 'logger'
 require 'sequel'
-require './app/lib/secure_db'
+require_app('lib')
 
 module No2Date
   # Configuration for the No2Date API
