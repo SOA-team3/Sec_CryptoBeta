@@ -8,6 +8,7 @@ module No2Date
   # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_meetings, class: :'No2Date::Meeting', key: :owner_id
+
     many_to_many :attendances,
                  class: :'No2Date::Meeting',
                  join_table: :accounts_meetings,
