@@ -31,7 +31,6 @@ module No2Date
         routing.post do
           credentials = JSON.parse(request.body.read, symbolize_names: true)
           auth_account = AuthenticateAccount.call(credentials)
-          puts auth_account
           auth_account.to_json
         rescue AuthenticateAccount::UnauthorizedError
           # puts [e.class, e.message].join ': '

@@ -43,7 +43,7 @@ gem 'rack-test'
 group :development do
   # debugging
   gem 'rerun'
-  
+
   # Quality
   gem 'rubocop'
 

@@ -25,6 +25,7 @@ describe 'Test Meeting Handling' do
         )
 
         header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
+
         get 'api/v1/meetings'
         _(last_response.status).must_equal 200
 
