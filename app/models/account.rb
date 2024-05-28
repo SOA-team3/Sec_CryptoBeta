@@ -29,6 +29,10 @@ module No2Date
       owned_meetings + attendances
     end
 
+    def schedules
+      owned_schedules
+    end
+
     def password=(new_password)
       self.password_digest = StoredPassword.digest(new_password)
     end

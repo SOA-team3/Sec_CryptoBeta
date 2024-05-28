@@ -24,10 +24,11 @@ describe 'Test Schedule Handling' do
           password: @account_data['password']
         )
 
-        puts "schedule_spec.rb: #{auth}"
-
         header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
+        puts "\n schedule_spec.rb: Bearer #{auth[:attributes][:auth_token]} \n"
+
         get 'api/v1/schedules'
+        puts "\n schedule_spec.rb: #{last_response.inspect} \n"
         _(last_response.status).must_equal 200
 
         result = JSON.parse last_response.body
