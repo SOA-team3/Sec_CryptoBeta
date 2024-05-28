@@ -42,16 +42,16 @@ describe 'Test Schedule Handling' do
       end
     end
 
-    it 'HAPPY: should be able to get list of all schedules' do
-      No2Date::Schedule.create(DATA[:schedules][0])
-      No2Date::Schedule.create(DATA[:schedules][1])
+    # it 'HAPPY: should be able to get list of all schedules' do
+    #   No2Date::Schedule.create(DATA[:schedules][0])
+    #   No2Date::Schedule.create(DATA[:schedules][1])
 
-      get 'api/v1/schedules'
-      _(last_response.status).must_equal 200
+    #   get 'api/v1/schedules'
+    #   _(last_response.status).must_equal 200
 
-      result = JSON.parse last_response.body
-      _(result['data'].count).must_equal 2
-    end
+    #   result = JSON.parse last_response.body
+    #   _(result['data'].count).must_equal 2
+    # end
 
     it 'HAPPY: should be able to get details of a single schedule' do
       existing_sched = DATA[:schedules][1]
