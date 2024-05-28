@@ -23,7 +23,6 @@ module No2Date
       # GET api/v1/schedules
       routing.get do
         account = Account.first(username: @auth_account['username'])
-        puts"\n schedules.rb: problem #{account.schedules} \n"
         schedules = account.schedules
         JSON.pretty_generate(data: schedules)
       rescue StandardError

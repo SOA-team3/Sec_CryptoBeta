@@ -25,11 +25,8 @@ describe 'Test Meeting Handling' do
         )
 
         header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
-        puts "\n meeting_spec.rb: Bearer #{auth[:attributes][:auth_token]} \n"
 
         get 'api/v1/meetings'
-        puts "\n meeting_spec.rb: #{last_response.status} \n"
-
         _(last_response.status).must_equal 200
 
         result = JSON.parse last_response.body
