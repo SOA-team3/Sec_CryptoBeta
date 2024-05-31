@@ -4,9 +4,9 @@ require 'json'
 require 'sequel'
 
 module No2Date
-  # Models a secret document
+  # Models a meeting
   class Schedule < Sequel::Model
-    many_to_one :account
+    many_to_one :account, class: :'No2Date::Account'
 
     plugin :uuid, field: :id
     plugin :timestamps, update_on_create: true

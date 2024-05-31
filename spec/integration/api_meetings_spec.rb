@@ -9,17 +9,50 @@ describe 'Test Meeting Handling' do
     wipe_database
   end
 
-  describe 'Getting Meeting' do
-    it 'HAPPY: should be able to get list of all meetings' do
-      No2Date::Meeting.create(DATA[:meetings][0])
-      No2Date::Meeting.create(DATA[:meetings][1])
+  describe 'Getting Meetings' do
+    describe 'Getting list of meetings' do
+      before do
+        @account_data = DATA[:accounts][0]
+        account = No2Date::Account.create(@account_data)
+        account.add_owned_meeting(DATA[:meetings][0])
+        account.add_owned_meeting(DATA[:meetings][1])
+      end
 
-      get 'api/v1/meetings'
-      _(last_response.status).must_equal 200
+      it 'HAPPY: should get list for authorized account' do
+        auth = No2Date::AuthenticateAccount.call(
+          username: @account_data['username'],
+          password: @account_data['password']
+        )
 
-      result = JSON.parse last_response.body
-      _(result['data'].count).must_equal 2
+        header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
+
+        get 'api/v1/meetings'
+        _(last_response.status).must_equal 200
+
+        result = JSON.parse last_response.body
+        _(result['data'].count).must_equal 2
+      end
+
+      it 'BAD: should not process for unauthorized account' do
+        header 'AUTHORIZATION', 'Bearer bad_token'
+        get 'api/v1/meetings'
+        _(last_response.status).must_equal 403
+
+        result = JSON.parse last_response.body
+        _(result['data']).must_be_nil
+      end
     end
+
+    # it 'HAPPY: should be able to get list of all meetings' do
+    #   No2Date::Meeting.create(DATA[:meetings][0])
+    #   No2Date::Meeting.create(DATA[:meetings][1])
+
+    #   get 'api/v1/meetings'
+    #   _(last_response.status).must_equal 200
+
+    #   result = JSON.parse last_response.body
+    #   _(result['data'].count).must_equal 2
+    # end
 
     it 'HAPPY: should be able to get details of a single meeting' do
       existing_meet = DATA[:meetings][1]

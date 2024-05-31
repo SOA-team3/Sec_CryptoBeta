@@ -22,8 +22,9 @@ module No2Date
 
       # GET api/v1/meetings
       routing.get do
-        output = { data: Meeting.all }
-        JSON.pretty_generate(output)
+        account = Account.first(username: @auth_account['username'])
+        meetings = account.meetings
+        JSON.pretty_generate(data: meetings)
       rescue StandardError
         routing.halt 404, { message: 'Could not find meetings' }.to_json
       end

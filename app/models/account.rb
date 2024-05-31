@@ -8,6 +8,9 @@ module No2Date
   # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_meetings, class: :'No2Date::Meeting', key: :owner_id
+
+    one_to_many :owned_schedules, class: :'No2Date::Schedule', key: :account_id
+
     many_to_many :attendances,
                  class: :'No2Date::Meeting',
                  join_table: :accounts_meetings,
@@ -24,6 +27,10 @@ module No2Date
 
     def meetings
       owned_meetings + attendances
+    end
+
+    def schedules
+      owned_schedules
     end
 
     def password=(new_password)
