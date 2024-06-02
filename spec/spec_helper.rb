@@ -14,6 +14,15 @@ def wipe_database
   No2Date::Account.map(&:destroy)
 end
 
+def auth_header(account_data)
+  auth = No2Date::AuthenticateAccount.call(
+    username: account_data['username'],
+    password: account_data['password']
+  )
+
+  "Bearer #{auth[:attributes][:auth_token]}"
+end
+
 DATA = {
   accounts: YAML.safe_load_file('app/db/seeds/accounts_seed.yml'),
   schedules: YAML.safe_load_file('app/db/seeds/schedules_seed.yml'),

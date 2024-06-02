@@ -13,12 +13,13 @@ module No2Date
       @meet_route = "#{@api_root}/meetings"
       # if the "account" is directing to "meetings"
       routing.on String do |meet_id|
+        account = Account.first(username: @auth_account['username'])
         @req_meeting = Meeting.first(id: meet_id)
 
         # GET api/v1/meetings/[ID]
         routing.get do
           meeting = GetMeetingQuery.call(
-            account: @auth_account, meeting: @req_meeting
+            account:, meeting: @req_meeting
           )
 
           { data: meeting }.to_json
@@ -30,7 +31,6 @@ module No2Date
           puts "FIND MEETING ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API server error' }.to_json
         end
-      
 
         routing.on('attenders') do
           # PUT api/v1/projects/[proj_id]/attenders
@@ -56,7 +56,7 @@ module No2Date
             attender = RemoveAttender.call(
               req_username: @auth_account.username,
               attend_email: req_data['email'],
-              meet_id: meet_id
+              meet_id:
             )
 
             { message: "#{attender.username} removed from projet",
@@ -69,30 +69,33 @@ module No2Date
         end
       end
 
-      # GET api/v1/meetings
-      routing.get do
-        account = Account.first(username: @auth_account['username'])
-        meetings = account.meetings
-        JSON.pretty_generate(data: meetings)
-      rescue StandardError
-        routing.halt 404, { message: 'Could not find meetings' }.to_json
-      end
+      routing.is do
+        # GET api/v1/meetings
+        routing.get do
+          account = Account.first(username: @auth_account['username'])
+          meetings = MeetingPolicy::AccountScope.new(account).viewable
 
-      # POST api/v1/meetings
-      routing.post do
-        new_data = JSON.parse(routing.body.read)
-        new_meet = Meeting.new(new_data)
-        raise('Could not save meeting') unless new_meet.save
+          JSON.pretty_generate(data: meetings)
+        rescue StandardError
+          routing.halt 403, { message: 'Could not find any meetings' }.to_json
+        end
 
-        response.status = 201
-        response['Location'] = "#{@meet_route}/#{new_meet.id}"
-        { message: 'Meeting saved', data: new_meet }.to_json
-      rescue Sequel::MassAssignmentRestriction
-        Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-        routing.halt 400, { message: 'Illegal Attributes' }.to_json
-      rescue StandardError => e
-        Api.logger.error "UNKNOWN ERROR: #{e.message}"
-        routing.halt 500, { message: 'Unknown server error' }.to_json
+        # POST api/v1/meetings
+        routing.post do
+          new_data = JSON.parse(routing.body.read)
+          account = Account.first(username: @auth_account['username'])
+          new_meet = account.add_owned_meeting(new_data)
+
+          response.status = 201
+          response['Location'] = "#{@meet_route}/#{new_meet.id}"
+          { message: 'Meeting saved', data: new_meet }.to_json
+        rescue Sequel::MassAssignmentRestriction
+          Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+          routing.halt 400, { message: 'Illegal Attributes' }.to_json
+        rescue StandardError => e
+          Api.logger.error "UNKNOWN ERROR: #{e.message}"
+          routing.halt 500, { message: 'Unknown server error' }.to_json
+        end
       end
     end
   end

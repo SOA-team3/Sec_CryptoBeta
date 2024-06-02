@@ -31,18 +31,17 @@ module No2Date
       self.secure_attendees = SecureDB.encrypt(plaintext)
     end
 
-    # rubocop:disable Metrics/MethodLength
     def to_h
-        {
-          type: 'meeting',
-          attributes: {
-            id:,
-            name:,
-            description:,
-            organizer:,
-            attendees:
-          }
-        },
+      {
+        type: 'meeting',
+        attributes: {
+          id:,
+          name:,
+          description:,
+          organizer:,
+          attendees:
+        }
+      }
     end
 
     def full_details
@@ -53,10 +52,9 @@ module No2Date
         }
       )
     end
-    
+
     def to_json(options = {})
       JSON(to_h, options)
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end
