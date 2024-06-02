@@ -32,8 +32,7 @@ module No2Date
     end
 
     # rubocop:disable Metrics/MethodLength
-    def to_json(options = {})
-      JSON(
+    def to_h
         {
           type: 'meeting',
           attributes: {
@@ -44,8 +43,19 @@ module No2Date
             attendees:
           }
         },
-        options
+    end
+
+    def full_details
+      to_h.merge(
+        relationships: {
+          owner:,
+          attenders:
+        }
       )
+    end
+    
+    def to_json(options = {})
+      JSON(to_h, options)
     end
     # rubocop:enable Metrics/MethodLength
   end

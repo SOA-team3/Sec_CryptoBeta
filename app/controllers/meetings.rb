@@ -7,16 +7,65 @@ module No2Date
   # Web controller for No2Date API
   class Api < Roda
     route('meetings') do |routing|
-      @meet_route = "#{@api_root}/meetings"
+      unauthorized_message = { message: 'Unauthorized Request' }.to_json
+      routing.halt(403, unauthorized_message) unless @auth_account
 
+      @meet_route = "#{@api_root}/meetings"
       # if the "account" is directing to "meetings"
       routing.on String do |meet_id|
+        @req_meeting = Meeting.first(id: meet_id)
+
         # GET api/v1/meetings/[ID]
         routing.get do
-          meet = Meeting.first(id: meet_id)
-          meet ? meet.to_json : raise('Meeting not found')
-        rescue StandardError => e
+          meeting = GetMeetingQuery.call(
+            account: @auth_account, meeting: @req_meeting
+          )
+
+          { data: meeting }.to_json
+        rescue GetMeetingQuery::ForbiddenError => e
+          routing.halt 403, { message: e.message }.to_json
+        rescue GetMeetingQuery::NotFoundError => e
           routing.halt 404, { message: e.message }.to_json
+        rescue StandardError => e
+          puts "FIND MEETING ERROR: #{e.inspect}"
+          routing.halt 500, { message: 'API server error' }.to_json
+        end
+      
+
+        routing.on('attenders') do
+          # PUT api/v1/projects/[proj_id]/attenders
+          routing.put do
+            req_data = JSON.parse(routing.body.read)
+
+            attender = AddAttender.call(
+              account: @auth_account,
+              meeting: @req_meeting,
+              attend_email: req_data['email']
+            )
+
+            { data: attender }.to_json
+          rescue AddAttender::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue StandardError
+            routing.halt 500, { message: 'API server error' }.to_json
+          end
+
+          # DELETE api/v1/projects/[proj_id]/attenders
+          routing.delete do
+            req_data = JSON.parse(routing.body.read)
+            attender = RemoveAttender.call(
+              req_username: @auth_account.username,
+              attend_email: req_data['email'],
+              meet_id: meet_id
+            )
+
+            { message: "#{attender.username} removed from projet",
+              data: attender }.to_json
+          rescue RemoveAttender::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue StandardError
+            routing.halt 500, { message: 'API server error' }.to_json
+          end
         end
       end
 
