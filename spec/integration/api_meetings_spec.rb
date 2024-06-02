@@ -7,25 +7,30 @@ describe 'Test Meeting Handling' do
 
   before do
     wipe_database
+
+    @account_data = DATA[:accounts][0]
+    @wrong_account_data = DATA[:accounts][1]
+
+    @account = No2Date::Account.create(@account_data)
+    @wrong_account = No2Date::Account.create(@wrong_account_data)
+
+    header 'CONTENT_TYPE', 'application/json'
   end
 
   describe 'Getting Meetings' do
     describe 'Getting list of meetings' do
       before do
-        @account_data = DATA[:accounts][0]
-        account = No2Date::Account.create(@account_data)
-        account.add_owned_meeting(DATA[:meetings][0])
-        account.add_owned_meeting(DATA[:meetings][1])
+        @account.add_owned_meeting(DATA[:meetings][0])
+        @account.add_owned_meeting(DATA[:meetings][1])
       end
 
       it 'HAPPY: should get list for authorized account' do
-        auth = No2Date::AuthenticateAccount.call(
-          username: @account_data['username'],
-          password: @account_data['password']
-        )
+        # auth = No2Date::AuthenticateAccount.call(
+        #   username: @account_data['username'],
+        #   password: @account_data['password']
+        # )
 
-        header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
-
+        header 'AUTHORIZATION', auth_header(@account_data)
         get 'api/v1/meetings'
         _(last_response.status).must_equal 200
 
@@ -33,8 +38,7 @@ describe 'Test Meeting Handling' do
         _(result['data'].count).must_equal 2
       end
 
-      it 'BAD: should not process for unauthorized account' do
-        header 'AUTHORIZATION', 'Bearer bad_token'
+      it 'BAD: should not process without authorization' do
         get 'api/v1/meetings'
         _(last_response.status).must_equal 403
 
@@ -55,30 +59,43 @@ describe 'Test Meeting Handling' do
     # end
 
     it 'HAPPY: should be able to get details of a single meeting' do
-      existing_meet = DATA[:meetings][1]
-      No2Date::Meeting.create(existing_meet).save
-      id = No2Date::Meeting.first.id
+      meet = @account.add_owned_meeting(DATA[:meetings][0])
 
-      get "/api/v1/meetings/#{id}"
+      header 'AUTHORIZATION', auth_header(@account_data)
+      get "/api/v1/meetings/#{meet.id}"
       _(last_response.status).must_equal 200
 
-      result = JSON.parse last_response.body
-      _(result['attributes']['id']).must_equal id
-      _(result['attributes']['name']).must_equal existing_meet['name']
-      _(result['attributes']['description']).must_equal existing_meet['description']
-      _(result['attributes']['organizer']).must_equal existing_meet['organizer']
-      _(result['attributes']['attendees']).must_equal existing_meet['attendees']
+      result = JSON.parse(last_response.body)['data']
+      _(result['attributes']['id']).must_equal meet.id
+      _(result['attributes']['name']).must_equal meet.name
+      _(result['attributes']['description']).must_equal meet.description
+      _(result['attributes']['organizer']).must_equal meet.organizer
+      _(result['attributes']['attendees']).must_equal meet.attendees
     end
 
     it 'SAD: should return error if unknown meeting requested' do
+      header 'AUTHORIZATION', auth_header(@account_data)
       get '/api/v1/meetings/foobar'
 
       _(last_response.status).must_equal 404
     end
 
-    it 'SECURITY: should prevent basic SQL injection targeting IDs' do
-      No2Date::Meeting.create(name: 'New Meeting', organizer: 'Me', attendees: 'You')
-      No2Date::Meeting.create(name: 'Newer Meeting', organizer: 'Me2', attendees: 'You2')
+    it 'BAD AUTHORIZATION: should not get meeting with wrong authorization' do
+      meet = @account.add_owned_meeting(DATA[:meetings][0])
+
+      header 'AUTHORIZATION', auth_header(@wrong_account_data)
+      get "/api/v1/meetings/#{meet.id}"
+      _(last_response.status).must_equal 403
+
+      result = JSON.parse last_response.body
+      _(result['attributes']).must_be_nil
+    end
+
+    it 'BAD SQL VULNERABILTY: should prevent basic SQL injection of IDs' do
+      @account.add_owned_meeting(DATA[:meetings][0])
+      @account.add_owned_meeting(DATA[:meetings][1])
+
+      header 'AUTHORIZATION', auth_header(@account_data)
       get 'api/v1/meetings/2%20or%20id%3E0'
 
       # deliberately not reporting error -- don't give attacker information
@@ -89,12 +106,13 @@ describe 'Test Meeting Handling' do
 
   describe 'Creating New Meetings' do
     before do
-      @req_header = { 'CONTENT_TYPE' => 'application/json' }
       @meet_data = DATA[:meetings][1]
     end
 
     it 'HAPPY: should be able to create new meetings' do
-      post 'api/v1/meetings', @meet_data.to_json, @req_header
+      header 'AUTHORIZATION', auth_header(@account_data)
+      post 'api/v1/meetings', @meet_data.to_json
+
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
@@ -108,10 +126,22 @@ describe 'Test Meeting Handling' do
       _(created['attendees']).must_equal @meet_data['attendees']
     end
 
+    it 'SAD: should not create new meeting without authorization' do
+      post 'api/v1/meetings', @meet_data.to_json
+
+      created = JSON.parse(last_response.body)['data']
+
+      _(last_response.status).must_equal 403
+      _(last_response.headers['Location']).must_be_nil
+      _(created).must_be_nil
+    end
+
     it 'SECURITY: should not create meeting with mass assignment' do
       bad_data = @meet_data.clone
       bad_data['created_at'] = '1990-01-01'
-      post 'api/v1/meetings', bad_data.to_json, @req_header
+
+      header 'AUTHORIZATION', auth_header(@account_data)
+      post 'api/v1/meetings', bad_data.to_json
 
       _(last_response.status).must_equal 400
       _(last_response.headers['Location']).must_be_nil

@@ -80,6 +80,9 @@ module No2Date
             end_datetime:,
             is_regular:, # bool
             is_flexible:
+          },
+          created: {
+            account:
           }
         },
         options

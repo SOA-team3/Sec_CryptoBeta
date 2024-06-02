@@ -31,22 +31,30 @@ module No2Date
       self.secure_attendees = SecureDB.encrypt(plaintext)
     end
 
-    # rubocop:disable Metrics/MethodLength
-    def to_json(options = {})
-      JSON(
-        {
-          type: 'meeting',
-          attributes: {
-            id:,
-            name:,
-            description:,
-            organizer:,
-            attendees:
-          }
-        },
-        options
+    def to_h
+      {
+        type: 'meeting',
+        attributes: {
+          id:,
+          name:,
+          description:,
+          organizer:,
+          attendees:
+        }
+      }
+    end
+
+    def full_details
+      to_h.merge(
+        relationships: {
+          owner:,
+          attenders:
+        }
       )
     end
-    # rubocop:enable Metrics/MethodLength
+
+    def to_json(options = {})
+      JSON(to_h, options)
+    end
   end
 end
