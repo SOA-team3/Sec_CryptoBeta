@@ -20,9 +20,10 @@ describe 'Test AddAttenderToMeeting service' do
   end
 
   it 'HAPPY: should be able to add a attender to a meeting' do
-    No2Date::AddAttenderToMeeting.call(
-      email: @attender.email,
-      meeting_id: @meeting.id
+    No2Date::AddAttender.call(
+      account: @owner,
+      meeting: @meeting,
+      attend_email: @attender.email
     )
 
     _(@attender.meetings.count).must_equal 1
@@ -31,10 +32,11 @@ describe 'Test AddAttenderToMeeting service' do
 
   it 'BAD: should not add owner as an attender' do
     _(proc {
-      No2Date::AddAttenderToMeeting.call(
-        email: @owner.email,
-        meeting_id: @meeting.id
+      No2Date::AddAttender.call(
+        account: @owner,
+        meeting: @meeting,
+        attend_email: @owner.email
       )
-    }).must_raise No2Date::AddAttenderToMeeting::OwnerNotAttenderError
+    }).must_raise No2Date::AddAttender::ForbiddenError
   end
 end

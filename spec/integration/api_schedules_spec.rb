@@ -7,24 +7,32 @@ describe 'Test Schedule Handling' do
 
   before do
     wipe_database
+
+    @account_data = DATA[:accounts][0]
+    @wrong_account_data = DATA[:accounts][1]
+
+    @account = No2Date::Account.create(@account_data)
+    @wrong_account = No2Date::Account.create(@wrong_account_data)
+
+    header 'CONTENT_TYPE', 'application/json'
   end
 
   describe 'Getting Schedules' do
     describe 'Getting list of schedules' do
       before do
-        @account_data = DATA[:accounts][0]
-        account = No2Date::Account.create(@account_data)
-        account.add_owned_schedule(DATA[:schedules][0])
-        account.add_owned_schedule(DATA[:schedules][1])
+        @account.add_owned_schedule(DATA[:schedules][0])
+        @account.add_owned_schedule(DATA[:schedules][1])
       end
 
       it 'HAPPY: should get list for authorized account' do
-        auth = No2Date::AuthenticateAccount.call(
-          username: @account_data['username'],
-          password: @account_data['password']
-        )
+        header 'AUTHORIZATION', auth_header(@account_data)
 
-        header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
+        # auth = No2Date::AuthenticateAccount.call(
+        #   username: @account_data['username'],
+        #   password: @account_data['password']
+        # )
+
+        # header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
 
         get 'api/v1/schedules'
         _(last_response.status).must_equal 200
@@ -33,8 +41,7 @@ describe 'Test Schedule Handling' do
         _(result['data'].count).must_equal 2
       end
 
-      it 'BAD: should not process for unauthorized account' do
-        header 'AUTHORIZATION', 'Bearer bad_token'
+      it 'BAD: should not process without authorization' do
         get 'api/v1/schedules'
         _(last_response.status).must_equal 403
 
@@ -55,39 +62,48 @@ describe 'Test Schedule Handling' do
     # end
 
     it 'HAPPY: should be able to get details of a single schedule' do
-      existing_sched = DATA[:schedules][1]
-      No2Date::Schedule.create(existing_sched).save
-      id = No2Date::Schedule.first.id
+      sched = @account.add_owned_schedule(DATA[:schedules][0])
 
-      get "/api/v1/schedules/#{id}"
+      header 'AUTHORIZATION', auth_header(@account_data)
+      get "/api/v1/schedules/#{sched.id}"
       _(last_response.status).must_equal 200
 
-      result = JSON.parse last_response.body
-      _(result['attributes']['id']).must_equal id
-      _(result['attributes']['title']).must_equal existing_sched['title']
-      _(result['attributes']['description']).must_equal existing_sched['description']
-      _(result['attributes']['location']).must_equal existing_sched['location']
-      _(result['attributes']['start_date']).must_equal existing_sched['start_date']
-      _(result['attributes']['start_datetime']).must_equal existing_sched['start_datetime']
-      _(result['attributes']['end_date']).must_equal existing_sched['end_date']
-      _(result['attributes']['end_datetime']).must_equal existing_sched['end_datetime']
-      _(result['attributes']['is_regular']).must_equal existing_sched['is_regular']
-      _(result['attributes']['is_flexible']).must_equal existing_sched['is_flexible']
+      result = JSON.parse(last_response.body)['data']
+      _(result['attributes']['id']).must_equal sched.id
+      _(result['attributes']['title']).must_equal sched.title
+      _(result['attributes']['description']).must_equal sched.description
+      _(result['attributes']['location']).must_equal sched.location
+      _(result['attributes']['start_date']).must_equal sched.start_date.to_s
+      _(result['attributes']['start_datetime']).must_equal sched.start_datetime.to_s
+      _(result['attributes']['end_date']).must_equal sched.end_date.to_s
+      _(result['attributes']['end_datetime']).must_equal sched.end_datetime.to_s
+      _(result['attributes']['is_regular']).must_equal sched.is_regular
+      _(result['attributes']['is_flexible']).must_equal sched.is_flexible
     end
 
     it 'SAD: should return error if unknown schedule requested' do
+      header 'AUTHORIZATION', auth_header(@account_data)
       get '/api/v1/schedules/foobar'
 
       _(last_response.status).must_equal 404
     end
 
-    it 'SECURITY: should prevent basic SQL injection targeting IDs' do
-      No2Date::Schedule.create(title: 'New Schedule', location: 'place1',
-                               start_date: '2024-04-19', start_datetime: '2024-04-19 09:00:00 +0800',
-                               end_date: '2024-04-20', end_datetime: '2024-04-20 09:00:00 +0800')
-      No2Date::Schedule.create(title: 'Newer Schedule', location: 'place2',
-                               start_date: '2024-05-19', start_datetime: '2024-05-19 09:00:00 +0800',
-                               end_date: '2024-05-20', end_datetime: '2024-05-20 09:00:00 +0800')
+    it 'BAD AUTHORIZATION: should not get schedule with wrong authorization' do
+      sched = @account.add_owned_schedule(DATA[:schedules][0])
+
+      header 'AUTHORIZATION', auth_header(@wrong_account_data)
+      get "/api/v1/schedules/#{sched.id}"
+      _(last_response.status).must_equal 403
+
+      result = JSON.parse last_response.body
+      _(result['attributes']).must_be_nil
+    end
+
+    it 'BAD SQL VULNERABILTY: should prevent basic SQL injection of id' do
+      @account.add_owned_schedule(DATA[:schedules][0])
+      @account.add_owned_schedule(DATA[:schedules][1])
+
+      header 'AUTHORIZATION', auth_header(@account_data)
       get 'api/v1/schedules/2%20or%20id%3E0'
 
       # deliberately not reporting error -- don't give attacker information
@@ -98,12 +114,13 @@ describe 'Test Schedule Handling' do
 
   describe 'Creating New Schedules' do
     before do
-      @req_header = { 'CONTENT_TYPE' => 'application/json' }
       @sched_data = DATA[:schedules][1]
     end
 
     it 'HAPPY: should be able to create new schedules' do
-      post 'api/v1/schedules', @sched_data.to_json, @req_header
+      header 'AUTHORIZATION', auth_header(@account_data)
+      post 'api/v1/schedules', @sched_data.to_json
+
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
@@ -122,10 +139,22 @@ describe 'Test Schedule Handling' do
       _(created['is_flexible']).must_equal @sched_data['is_flexible']
     end
 
+    it 'SAD: should not create new schedule without authorization' do
+      post 'api/v1/schedules', @sched_data.to_json
+
+      created = JSON.parse(last_response.body)['data']
+
+      _(last_response.status).must_equal 403
+      _(last_response.headers['Location']).must_be_nil
+      _(created).must_be_nil
+    end
+
     it 'SECURITY: should not create schedule with mass assignment' do
       bad_data = @sched_data.clone
       bad_data['created_at'] = '1990-01-01'
-      post 'api/v1/schedules', bad_data.to_json, @req_header
+
+      header 'AUTHORIZATION', auth_header(@account_data)
+      post 'api/v1/schedules', bad_data.to_json
 
       _(last_response.status).must_equal 400
       _(last_response.headers['Location']).must_be_nil
