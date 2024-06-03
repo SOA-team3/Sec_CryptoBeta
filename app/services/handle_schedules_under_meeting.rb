@@ -6,12 +6,12 @@ module No2Date
   # get all schedules of all participants in a meeting
   class HandleSchedulesUnderMeeting
     def initialize(account, meeting)
-      @account = account 
+      @account = account
       @meeting = meeting
       @all_schedules = []
     end
 
-    def find_schedules(@meeting)
+    def find_schedules
       # Retrieve schedules for the meeting owner
       @meeting.owner.schedules.each do |schedule|
         schedule_data = schedule.to_json
