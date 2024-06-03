@@ -5,7 +5,7 @@ require 'json'
 require_relative 'helpers'
 
 module No2Date
-  # Web controller for No2Date API
+  ## Web controller for No2Date API
   class Api < Roda
     plugin :halt
     plugin :multi_route
