@@ -11,7 +11,7 @@ module No2Date
       @all_schedules = []
     end
 
-    def find_schedules(@meeting)
+    def find_schedules
       # Retrieve schedules for the meeting owner
       @meeting.owner.schedules.each do |schedule|
         schedule_data = schedule.to_json
