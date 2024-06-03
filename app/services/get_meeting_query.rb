@@ -23,13 +23,13 @@ module No2Date
       policy = MeetingPolicy.new(account, meeting)
       raise ForbiddenError unless policy.can_view?
 
-      meeting.full_details.merge(policies: policy.summary)
+      meeting_with_policy = meeting.full_details.merge(policies: policy.summary)
 
-      schedules_under_meeting = FindSchedulesUnderMeeting.new.find_schedules(meeting)
+      schedules_under_meeting = HandleSchedulesUnderMeeting.new(account, meeting).find_schedules
 
-      meeting_with_schedule = meeting.full_details.merge(schedules_under_meeting:)
+      meeting_json = meeting_with_policy.full_details.merge(schedules_under_meeting:)
 
-      meeting_with_schedule.merge(policies: policy.summary)
+      meeting_json
     end
   end
 end
