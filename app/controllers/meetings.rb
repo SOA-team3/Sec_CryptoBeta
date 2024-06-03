@@ -3,6 +3,7 @@
 require 'roda'
 require_relative 'app'
 
+# rubocop:disable Metrics/BlockLength
 module No2Date
   # Web controller for No2Date API
   class Api < Roda
@@ -13,7 +14,7 @@ module No2Date
       @meet_route = "#{@api_root}/meetings"
       # if the "account" is directing to "meetings"
       routing.on String do |meet_id|
-        account = Account.first(username: @auth_account['username'])
+        # account = Account.first(username: @auth_account['username'])
         @req_meeting = Meeting.first(id: meet_id)
 
         # GET api/v1/meetings/[ID]
@@ -72,7 +73,7 @@ module No2Date
       routing.is do
         # GET api/v1/meetings
         routing.get do
-          account = Account.first(username: @auth_account['username'])
+          # account = Account.first(username: @auth_account['username'])
           meetings = MeetingPolicy::AccountScope.new(account).viewable
 
           JSON.pretty_generate(data: meetings)
@@ -83,7 +84,7 @@ module No2Date
         # POST api/v1/meetings
         routing.post do
           new_data = JSON.parse(routing.body.read)
-          account = Account.first(username: @auth_account['username'])
+          # account = Account.first(username: @auth_account['username'])
           new_meet = account.add_owned_meeting(new_data)
 
           response.status = 201
