@@ -73,10 +73,10 @@ describe 'Test Schedule Handling' do
       _(result['attributes']['title']).must_equal sched.title
       _(result['attributes']['description']).must_equal sched.description
       _(result['attributes']['location']).must_equal sched.location
-      _(result['attributes']['start_date']).must_equal sched.start_date
-      _(result['attributes']['start_datetime']).must_equal sched.start_datetime
-      _(result['attributes']['end_date']).must_equal sched.end_date
-      _(result['attributes']['end_datetime']).must_equal sched.end_datetime
+      _(result['attributes']['start_date']).must_equal sched.start_date.to_s
+      _(result['attributes']['start_datetime']).must_equal sched.start_datetime.to_s
+      _(result['attributes']['end_date']).must_equal sched.end_date.to_s
+      _(result['attributes']['end_datetime']).must_equal sched.end_datetime.to_s
       _(result['attributes']['is_regular']).must_equal sched.is_regular
       _(result['attributes']['is_flexible']).must_equal sched.is_flexible
     end
