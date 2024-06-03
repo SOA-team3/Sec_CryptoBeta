@@ -27,7 +27,7 @@ module No2Date
 
       schedules_under_meeting = HandleSchedulesUnderMeeting.new(account, meeting).find_schedules
 
-      meeting_json = meeting_with_policy.full_details.merge(schedules_under_meeting:)
+      meeting_json = meeting_with_policy.merge(schedules_under_meeting:)
 
       meeting_json
     end
