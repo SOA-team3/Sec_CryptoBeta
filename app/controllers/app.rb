@@ -35,6 +35,7 @@ module No2Date
       routing.on 'api' do
         routing.on 'v1' do
           @api_root = 'api/v1'
+          puts "api app.rb routing"
           routing.multi_route
         end
       end
