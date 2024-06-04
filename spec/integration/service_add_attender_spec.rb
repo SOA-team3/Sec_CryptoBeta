@@ -2,7 +2,7 @@
 
 require_relative '../spec_helper'
 
-describe 'Test AddAttenderToMeeting service' do
+describe 'Test AddAttender service' do
   before do
     wipe_database
 

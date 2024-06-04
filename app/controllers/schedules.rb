@@ -3,6 +3,7 @@
 require 'roda'
 require_relative 'app'
 
+# rubocop:disable Metrics/BlockLength
 module No2Date
   # Web controller for No2Date API
   class Api < Roda
@@ -13,7 +14,7 @@ module No2Date
       @sched_route = "#{@api_root}/schedules"
       # if the "account" is directing to "schedules"
       routing.on String do |sched_id|
-        account = Account.first(username: @auth_account['username'])
+        # account = Account.first(username: @auth_account['username'])
         @req_schedule = Schedule.first(id: sched_id)
 
         # GET api/v1/schedules/[ID]
@@ -34,7 +35,7 @@ module No2Date
       routing.is do
         # GET api/v1/schedules
         routing.get do
-          account = Account.first(username: @auth_account['username'])
+          # account = Account.first(username: @auth_account['username'])
           schedules = SchedulePolicy::AccountScope.new(account).viewable
 
           JSON.pretty_generate(data: schedules)
@@ -45,7 +46,7 @@ module No2Date
         # POST api/v1/schedules
         routing.post do
           new_data = JSON.parse(routing.body.read)
-          account = Account.first(username: @auth_account['username'])
+          # account = Account.first(username: @auth_account['username'])
           new_sched = account.add_owned_schedule(new_data)
 
           response.status = 201

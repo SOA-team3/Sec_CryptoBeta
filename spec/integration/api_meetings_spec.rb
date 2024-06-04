@@ -106,7 +106,7 @@ describe 'Test Meeting Handling' do
 
   describe 'Creating New Meetings' do
     before do
-      @meet_data = DATA[:meetings][1]
+      @meet_data = DATA[:meetings][0]
     end
 
     it 'HAPPY: should be able to create new meetings' do
