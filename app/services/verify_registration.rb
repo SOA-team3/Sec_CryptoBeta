@@ -15,9 +15,11 @@ module No2Date
       @registration = registration
     end
 
-    def from_email = ENV.fetch('SENDGRID_FROM_EMAIL')
-    def mail_api_key = ENV.fetch('SENDGRID_API_KEY')
-    def mail_url = 'https://api.sendgrid.com/v3/mail/send'
+    # rubocop:disable Layout/EmptyLineBetweenDefs
+    def from_email() = ENV['SENDGRID_FROM_EMAIL']
+    def mail_api_key() = ENV['SENDGRID_API_KEY']
+    def mail_url() = ENV['SENDGRID_API_URL']
+    # rubocop:enable Layout/EmptyLineBetweenDefs
 
     def call
       raise(InvalidRegistration, 'Username exists') unless username_available?
@@ -58,11 +60,8 @@ module No2Date
     end
 
     def send_email_verification
-      res = HTTP.auth("Bearer #{mail_api_key}")
-                .post(mail_url, json: mail_json)
+      res = HTTP.auth("Bearer #{mail_api_key}").post(mail_url, json: mail_json)
       raise EmailProviderError if res.status >= 300
-    rescue EmailProviderError
-      raise EmailProviderError
     rescue StandardError
       raise(InvalidRegistration,
             'Could not send verification email; please check email address')

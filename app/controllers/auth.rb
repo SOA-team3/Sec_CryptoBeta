@@ -11,6 +11,7 @@ module No2Date
         # POST /api/v1/auth/register
         routing.post do
           reg_data = JSON.parse(request.body.read, symbolize_names: true)
+
           VerifyRegistration.new(reg_data).call
 
           response.status = 202
@@ -31,7 +32,7 @@ module No2Date
         routing.post do
           credentials = JSON.parse(request.body.read, symbolize_names: true)
           auth_account = AuthenticateAccount.call(credentials)
-          auth_account.to_json
+          { data: auth_account }.to_json
         rescue AuthenticateAccount::UnauthorizedError
           # puts [e.class, e.message].join ': '
           routing.halt '403', { message: 'Invalid credentials' }.to_json
