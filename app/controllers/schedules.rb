@@ -19,7 +19,9 @@ module No2Date
 
         # GET api/v1/schedules/[ID]
         routing.get do
-          schedule = GetScheduleQuery.call(account:, schedule: @req_schedule)
+          schedule = GetScheduleQuery.call(
+            account: @auth_account, schedule: @req_schedule
+          )
 
           { data: schedule }.to_json
         rescue GetScheduleQuery::ForbiddenError => e
@@ -36,7 +38,7 @@ module No2Date
         # GET api/v1/schedules
         routing.get do
           # account = Account.first(username: @auth_account['username'])
-          schedules = SchedulePolicy::AccountScope.new(account).viewable
+          schedules = SchedulePolicy::AccountScope.new(@auth_account).viewable
 
           JSON.pretty_generate(data: schedules)
         rescue StandardError
@@ -47,7 +49,7 @@ module No2Date
         routing.post do
           new_data = JSON.parse(routing.body.read)
           # account = Account.first(username: @auth_account['username'])
-          new_sched = account.add_owned_schedule(new_data)
+          new_sched = @auth_account.add_owned_schedule(new_data)
 
           response.status = 201
           response['Location'] = "#{@sched_route}/#{new_sched.id}"

@@ -20,7 +20,7 @@ module No2Date
         # GET api/v1/meetings/[ID]
         routing.get do
           meeting = GetMeetingQuery.call(
-            account:, meeting: @req_meeting
+            account: @auth_account, meeting: @req_meeting
           )
 
           { data: meeting }.to_json
@@ -57,10 +57,10 @@ module No2Date
             attender = RemoveAttender.call(
               req_username: @auth_account.username,
               attend_email: req_data['email'],
-              meet_id:
+              project_id: proj_id
             )
 
-            { message: "#{attender.username} removed from projet",
+            { message: "#{attender.username} removed from meeting",
               data: attender }.to_json
           rescue RemoveAttender::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
@@ -74,7 +74,7 @@ module No2Date
         # GET api/v1/meetings
         routing.get do
           # account = Account.first(username: @auth_account['username'])
-          meetings = MeetingPolicy::AccountScope.new(account).viewable
+          meetings = MeetingPolicy::AccountScope.new(@auth_account).viewable
 
           JSON.pretty_generate(data: meetings)
         rescue StandardError
@@ -85,7 +85,7 @@ module No2Date
         routing.post do
           new_data = JSON.parse(routing.body.read)
           # account = Account.first(username: @auth_account['username'])
-          new_meet = account.add_owned_meeting(new_data)
+          new_meet = @auth_account.add_owned_meeting(new_data)
 
           response.status = 201
           response['Location'] = "#{@meet_route}/#{new_meet.id}"

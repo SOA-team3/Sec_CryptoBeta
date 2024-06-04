@@ -52,8 +52,6 @@ module No2Date
     private
 
     def account_is_owner?
-      puts "meeting_policy.rb, 1, #{@meeting.owner}, #{@account}"
-      puts "meeting_policy.rb, 2, #{@meeting.owner == @account}"
       @meeting.owner == @account
     end
 
