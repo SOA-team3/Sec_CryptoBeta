@@ -22,6 +22,7 @@ module No2Date
     # rubocop:enable Layout/EmptyLineBetweenDefs
 
     def call
+      puts "verify_registration.rb: call #{@registration[:username]}, #{@registration[:email]}"
       raise(InvalidRegistration, 'Username exists') unless username_available?
       raise(InvalidRegistration, 'Email already used') unless email_available?
 
@@ -29,10 +30,14 @@ module No2Date
     end
 
     def username_available?
+      puts "username_check"
+      puts "username_check: #{Account.first(username: @registration[:username]).inspect}"
       Account.first(username: @registration[:username]).nil?
     end
 
     def email_available?
+      puts "email_check"
+      puts "email_check: #{Account.first(email: @registration[:email]).inspect}"
       Account.first(email: @registration[:email]).nil?
     end
 
@@ -60,6 +65,7 @@ module No2Date
     end
 
     def send_email_verification
+      puts "verify_registration.rb: send #{mail_api_key}, #{mail_url}, #{mail_json}"
       res = HTTP.auth("Bearer #{mail_api_key}").post(mail_url, json: mail_json)
       raise EmailProviderError if res.status >= 300
     rescue StandardError

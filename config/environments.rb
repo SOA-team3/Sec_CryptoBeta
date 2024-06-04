@@ -18,7 +18,7 @@ module No2Date
     configure do
       # Load config secrets into local environment variables (ENV)
       Figaro.application = Figaro::Application.new(
-        environment:,
+        environment: environment, # rubocop:disable Style/HashSyntax
         path: File.expand_path('config/secrets.yml')
       )
       Figaro.load
