@@ -4,6 +4,6 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_join_table(attender_id: :accounts, meeting_id: :meetings)
+    create_join_table(participant_id: :accounts, appointment_id: :appointments)
   end
 end

@@ -9,8 +9,8 @@ require 'yaml'
 require_relative 'test_load_all'
 
 def wipe_database
-  No2Date::Schedule.map(&:destroy)
-  No2Date::Meeting.map(&:destroy)
+  No2Date::Event.map(&:destroy)
+  No2Date::Appointment.map(&:destroy)
   No2Date::Account.map(&:destroy)
 end
 
@@ -25,6 +25,6 @@ end
 
 DATA = {
   accounts: YAML.safe_load_file('app/db/seeds/accounts_seed.yml'),
-  schedules: YAML.safe_load_file('app/db/seeds/schedules_seed.yml'),
-  meetings: YAML.safe_load_file('app/db/seeds/meetings_seed.yml')
+  events: YAML.safe_load_file('app/db/seeds/events_seed.yml'),
+  appointments: YAML.safe_load_file('app/db/seeds/appointments_seed.yml')
 }.freeze

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Policy to determine if account can view a meeting
+# Policy to determine if account can view a appointment
 class AccountPolicy
   def initialize(requestor, account)
     @requestor = requestor

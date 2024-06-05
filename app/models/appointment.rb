@@ -4,42 +4,40 @@ require 'json'
 require 'sequel'
 
 module No2Date
-  # Models a meeting
-  class Meeting < Sequel::Model
+  # Models a appointment
+  class Appointment < Sequel::Model
     many_to_one :owner, class: :'No2Date::Account'
 
-    many_to_many :attenders,
+    many_to_many :participants,
                  class: :'No2Date::Account',
-                 join_table: :accounts_meetings,
-                 left_key: :meeting_id, right_key: :attender_id
+                 join_table: :accounts_appointments,
+                 left_key: :appointment_id, right_key: :participant_id
 
     one_to_many :accounts
 
     plugin :association_dependencies,
-           attenders: :nullify
+           participants: :nullify
 
     plugin :timestamps
     plugin :whitelist_security
-    set_allowed_columns :name, :description, :organizer, :attendees
+    set_allowed_columns :name, :description
 
     # Secure getters and setters
-    def attendees
-      SecureDB.decrypt(secure_attendees)
-    end
+    # def attendees
+    #   SecureDB.decrypt(secure_attendees)
+    # end
 
-    def attendees=(plaintext)
-      self.secure_attendees = SecureDB.encrypt(plaintext)
-    end
+    # def attendees=(plaintext)
+    #   self.secure_attendees = SecureDB.encrypt(plaintext)
+    # end
 
     def to_h
       {
-        type: 'meeting',
+        type: 'appointment',
         attributes: {
           id:,
           name:,
-          description:,
-          organizer:,
-          attendees:
+          description:
         }
       }
     end
@@ -48,7 +46,7 @@ module No2Date
       to_h.merge(
         relationships: {
           owner:,
-          attenders:
+          participants:
         }
       )
     end
