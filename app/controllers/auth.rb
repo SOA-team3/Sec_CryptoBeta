@@ -10,6 +10,8 @@ module No2Date
       routing.on 'register' do
         # POST /api/v1/auth/register
         routing.post do
+          puts "/api/v1/auth/register"
+          puts "Request body: #{request.body.read}"
           reg_data = JSON.parse(request.body.read, symbolize_names: true)
 
           VerifyRegistration.new(reg_data).call
