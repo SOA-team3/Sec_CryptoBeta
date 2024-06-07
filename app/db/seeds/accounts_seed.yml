@@ -1,10 +1,10 @@
 ---
 - username: ella
   email: ella@nthu.edu.tw
-  password: mypa$$w0rd
+  password: Aa`123456
 - username: brian
   email: brian@nthu.edu.tw
-  password: randompass
+  password: Long_password
 - username: adrian
   email: adrian@gmail.com
-  password: passrand
+  password: Entropy_pwd
