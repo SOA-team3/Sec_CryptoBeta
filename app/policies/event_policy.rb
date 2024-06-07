@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
 module No2Date
-  # Policy to determine if account can view a schedule
-  class SchedulePolicy
-    def initialize(account, schedule)
+  # Policy to determine if account can view a event
+  class EventPolicy
+    def initialize(account, event)
       @account = account
-      @schedule = schedule
+      @event = event
     end
 
     def can_view?
-      account_owns_schedule?
+      account_owns_event?
     end
 
     def can_edit?
-      account_owns_schedule?
+      account_owns_event?
     end
 
     def can_delete?
-      account_owns_schedule?
+      account_owns_event?
     end
 
     def summary
@@ -30,8 +30,8 @@ module No2Date
 
     private
 
-    def account_owns_schedule?
-      @schedule.account == @account
+    def account_owns_event?
+      @event.account == @account
     end
   end
 end

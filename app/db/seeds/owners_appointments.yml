@@ -1,12 +1,12 @@
 ---
   - username: Ella
-    meet_name:
+    appt_name:
       - Data Meeting
   - username: Brian
-    meet_name:
+    appt_name:
       - Sec Meeting
       - Other Meeting
   - username: Adrian
-    meet_name:
+    appt_name:
       - SOA Meeting
       - Other Meeting

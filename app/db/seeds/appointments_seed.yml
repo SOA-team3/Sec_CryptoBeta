@@ -1,10 +1,5 @@
 ---
 - name: Security meetings
   description: Discuss homework
-  organizer: Ella
-  attendees: Brian
 - name: SOA meetings
   description: Discuss project requirements and timelines
-  organizer: Adrian
-  attendees: Brian
-

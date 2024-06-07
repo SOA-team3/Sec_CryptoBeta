@@ -7,53 +7,53 @@ require_relative 'app'
 module No2Date
   # Web controller for No2Date API
   class Api < Roda
-    route('schedules') do |routing|
+    route('events') do |routing|
       unauthorized_message = { message: 'Unauthorized Request' }.to_json
       routing.halt(403, unauthorized_message) unless @auth_account
 
-      @sched_route = "#{@api_root}/schedules"
-      # if the "account" is directing to "schedules"
-      routing.on String do |sched_id|
+      @evnt_route = "#{@api_root}/events"
+      # if the "account" is directing to "events"
+      routing.on String do |evnt_id|
         # account = Account.first(username: @auth_account['username'])
-        @req_schedule = Schedule.first(id: sched_id)
+        @req_event = Event.first(id: evnt_id)
 
-        # GET api/v1/schedules/[ID]
+        # GET api/v1/events/[ID]
         routing.get do
-          schedule = GetScheduleQuery.call(
-            account: @auth_account, schedule: @req_schedule
+          event = GetEventQuery.call(
+            account: @auth_account, event: @req_event
           )
 
-          { data: schedule }.to_json
-        rescue GetScheduleQuery::ForbiddenError => e
+          { data: event }.to_json
+        rescue GetEventQuery::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
-        rescue GetScheduleQuery::NotFoundError => e
+        rescue GetEventQuery::NotFoundError => e
           routing.halt 404, { message: e.message }.to_json
         rescue StandardError => e
-          puts "FIND SCHEDULE ERROR: #{e.inspect}"
+          puts "FIND EVENT ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API server error' }.to_json
         end
       end
 
       routing.is do
-        # GET api/v1/schedules
+        # GET api/v1/events
         routing.get do
           # account = Account.first(username: @auth_account['username'])
-          schedules = SchedulePolicy::AccountScope.new(@auth_account).viewable
+          events = EventPolicy::AccountScope.new(@auth_account).viewable
 
-          JSON.pretty_generate(data: schedules)
+          JSON.pretty_generate(data: events)
         rescue StandardError
-          routing.halt 403, { message: 'Could not find any schedules' }.to_json
+          routing.halt 403, { message: 'Could not find any events' }.to_json
         end
 
-        # POST api/v1/schedules
+        # POST api/v1/events
         routing.post do
           new_data = JSON.parse(routing.body.read)
           # account = Account.first(username: @auth_account['username'])
-          new_sched = @auth_account.add_owned_schedule(new_data)
+          new_evnt = @auth_account.add_owned_event(new_data)
 
           response.status = 201
-          response['Location'] = "#{@sched_route}/#{new_sched.id}"
-          { message: 'Schedule saved', data: new_sched }.to_json
+          response['Location'] = "#{@evnt_route}/#{new_evnt.id}"
+          { message: 'Event saved', data: new_evnt }.to_json
         rescue Sequel::MassAssignmentRestriction
           Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
           routing.halt 400, { message: 'Illegal Attributes' }.to_json

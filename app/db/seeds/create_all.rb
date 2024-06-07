@@ -2,10 +2,10 @@
 
 Sequel.seed(:development) do
   def run
-    puts 'Seeding accounts, meetings, schedules'
+    puts 'Seeding accounts, appointments, events'
     create_accounts
-    create_owned_meetings
-    create_schedules
+    create_owned_appointments
+    create_events
     add_collaborators
   end
 end
@@ -13,10 +13,10 @@ end
 require 'yaml'
 DIR = File.dirname(__FILE__)
 ACCOUNTS_INFO = YAML.load_file("#{DIR}/accounts_seed.yml")
-OWNER_INFO = YAML.load_file("#{DIR}/owners_meetings.yml")
-MEET_INFO = YAML.load_file("#{DIR}/meetings_seed.yml")
-SCHEDULE_INFO = YAML.load_file("#{DIR}/schedules_seed.yml")
-CONTRIB_INFO = YAML.load_file("#{DIR}/meetings_collaborators.yml")
+OWNER_INFO = YAML.load_file("#{DIR}/owners_appointments.yml")
+APPT_INFO = YAML.load_file("#{DIR}/appointments_seed.yml")
+EVENT_INFO = YAML.load_file("#{DIR}/events_seed.yml")
+CONTRIB_INFO = YAML.load_file("#{DIR}/appointments_collaborators.yml")
 
 def create_accounts
   ACCOUNTS_INFO.each do |account_info|
@@ -24,26 +24,26 @@ def create_accounts
   end
 end
 
-def create_owned_meetings
+def create_owned_appointments
   OWNER_INFO.each do |owner|
     account = No2Date::Account.first(username: owner['username'])
-    owner['meet_name'].each do |meet_name|
-      meet_data = MEET_INFO.find { |meet| meet['name'] == meet_name }
-      No2Date::CreateMeetingForOwner.call(
-        owner_id: account.id, meeting_data: meet_data
+    owner['appt_name'].each do |appt_name|
+      appt_data = APPT_INFO.find { |appt| appt['name'] == appt_name }
+      No2Date::CreateAppointmentForOwner.call(
+        owner_id: account.id, appointment_data: appt_data
       )
     end
   end
 end
 
-def create_schedules
-  sched_info_each = SCHEDULE_INFO.each
-  meetings_cycle = No2Date::Meeting.all.cycle
+def create_events
+  evnt_info_each = EVENT_INFO.each
+  appointments_cycle = No2Date::Appointment.all.cycle
   loop do
-    sched_info = sched_info_each.next
-    meeting = meetings_cycle.next
-    No2Date::CreateScheduleForMeeting.call(
-      meeting_id: meeting.id, schedule_data: sched_info
+    evnt_info = evnt_info_each.next
+    appointment = appointments_cycle.next
+    No2Date::CreateEventForAppointment.call(
+      appointment_id: appointment.id, event_data: evnt_info
     )
   end
 end
@@ -51,10 +51,10 @@ end
 def add_collaborators
   contrib_info = CONTRIB_INFO
   contrib_info.each do |contrib|
-    meet = No2Date::Meeting.first(name: contrib['meet_name'])
+    appt = No2Date::Appointment.first(name: contrib['appt_name'])
     contrib['collaborator_email'].each do |email|
-      No2Date::AddCollaboratorToMeeting.call(
-        email:, meeting_id: meet.id
+      No2Date::AddCollaboratorToAppointment.call(
+        email:, appointment_id: appt.id
       )
     end
   end

@@ -4,8 +4,8 @@ require 'json'
 require 'sequel'
 
 module No2Date
-  # Models a meeting
-  class Schedule < Sequel::Model
+  # Models a event
+  class Event < Sequel::Model
     many_to_one :account, class: :'No2Date::Account'
 
     plugin :uuid, field: :id
@@ -13,7 +13,7 @@ module No2Date
 
     plugin :whitelist_security
     set_allowed_columns :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime,
-                        :is_regular, :is_flexible
+                        :is_google, :is_flexible
 
     # Secure getters and setters
     def description
@@ -68,17 +68,15 @@ module No2Date
     def to_json(options = {})
       JSON(
         {
-          type: 'schedule',
+          type: 'event',
           attributes: {
             id:,
             title:,
             description:,
             location:,
-            start_date:,
             start_datetime:,
-            end_date:,
             end_datetime:,
-            is_regular:, # bool
+            is_google:, # bool
             is_flexible:
           },
           created: {

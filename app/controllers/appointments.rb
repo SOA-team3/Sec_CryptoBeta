@@ -7,62 +7,62 @@ require_relative 'app'
 module No2Date
   # Web controller for No2Date API
   class Api < Roda
-    route('meetings') do |routing|
+    route('appointments') do |routing|
       unauthorized_message = { message: 'Unauthorized Request' }.to_json
       routing.halt(403, unauthorized_message) unless @auth_account
 
-      @meet_route = "#{@api_root}/meetings"
-      # if the "account" is directing to "meetings"
-      routing.on String do |meet_id|
+      @appt_route = "#{@api_root}/appointments"
+      # if the "account" is directing to "appointments"
+      routing.on String do |appt_id|
         # account = Account.first(username: @auth_account['username'])
-        @req_meeting = Meeting.first(id: meet_id)
+        @req_appointment = Appointment.first(id: appt_id)
 
-        # GET api/v1/meetings/[ID]
+        # GET api/v1/appointments/[ID]
         routing.get do
-          meeting = GetMeetingQuery.call(
-            account: @auth_account, meeting: @req_meeting
+          appointment = GetAppointmentQuery.call(
+            account: @auth_account, appointment: @req_appointment
           )
 
-          { data: meeting }.to_json
-        rescue GetMeetingQuery::ForbiddenError => e
+          { data: appointment }.to_json
+        rescue GetAppointmentQuery::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
-        rescue GetMeetingQuery::NotFoundError => e
+        rescue GetAppointmentQuery::NotFoundError => e
           routing.halt 404, { message: e.message }.to_json
         rescue StandardError => e
-          puts "FIND MEETING ERROR: #{e.inspect}"
+          puts "FIND APPOINTMENT ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API server error' }.to_json
         end
 
-        routing.on('attenders') do
-          # PUT api/v1/projects/[proj_id]/attenders
+        routing.on('participants') do
+          # PUT api/v1/appointments/[appt_id]/participants
           routing.put do
             req_data = JSON.parse(routing.body.read)
 
-            attender = AddAttender.call(
+            participant = AddParticipant.call(
               account: @auth_account,
-              meeting: @req_meeting,
-              attend_email: req_data['email']
+              appointment: @req_appointment,
+              part_email: req_data['email']
             )
 
-            { data: attender }.to_json
-          rescue AddAttender::ForbiddenError => e
+            { data: participant }.to_json
+          rescue AddParticipant::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
           rescue StandardError
             routing.halt 500, { message: 'API server error' }.to_json
           end
 
-          # DELETE api/v1/projects/[proj_id]/attenders
+          # DELETE api/v1/projects/[proj_id]/participants
           routing.delete do
             req_data = JSON.parse(routing.body.read)
-            attender = RemoveAttender.call(
+            participant = RemoveParticipant.call(
               req_username: @auth_account.username,
-              attend_email: req_data['email'],
+              part_email: req_data['email'],
               project_id: proj_id
             )
 
-            { message: "#{attender.username} removed from meeting",
-              data: attender }.to_json
-          rescue RemoveAttender::ForbiddenError => e
+            { message: "#{participant.username} removed from appointment",
+              data: participant }.to_json
+          rescue RemoveParticipant::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
           rescue StandardError
             routing.halt 500, { message: 'API server error' }.to_json
@@ -71,25 +71,25 @@ module No2Date
       end
 
       routing.is do
-        # GET api/v1/meetings
+        # GET api/v1/appointments
         routing.get do
           # account = Account.first(username: @auth_account['username'])
-          meetings = MeetingPolicy::AccountScope.new(@auth_account).viewable
+          appointments = AppointmentPolicy::AccountScope.new(@auth_account).viewable
 
-          JSON.pretty_generate(data: meetings)
+          JSON.pretty_generate(data: appointments)
         rescue StandardError
-          routing.halt 403, { message: 'Could not find any meetings' }.to_json
+          routing.halt 403, { message: 'Could not find any appointments' }.to_json
         end
 
-        # POST api/v1/meetings
+        # POST api/v1/appointments
         routing.post do
           new_data = JSON.parse(routing.body.read)
           # account = Account.first(username: @auth_account['username'])
-          new_meet = @auth_account.add_owned_meeting(new_data)
+          new_appt = @auth_account.add_owned_appointment(new_data)
 
           response.status = 201
-          response['Location'] = "#{@meet_route}/#{new_meet.id}"
-          { message: 'Meeting saved', data: new_meet }.to_json
+          response['Location'] = "#{@appt_route}/#{new_appt.id}"
+          { message: 'Appointment saved', data: new_appt }.to_json
         rescue Sequel::MassAssignmentRestriction
           Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
           routing.halt 400, { message: 'Illegal Attributes' }.to_json
