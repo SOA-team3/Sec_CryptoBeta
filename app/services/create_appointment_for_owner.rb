@@ -3,9 +3,17 @@
 module No2Date
   # Service object to create a new appointment for an owner
   class CreateAppointmentForOwner
-    def self.call(owner_id:, appointment_data:)
-      Account.find(id: owner_id)
-             .add_owned_appointment(appointment_data)
+    # Error for owner cannot be collaborator
+    class ForbiddenError < StandardError
+      def message
+        'You are not allowed to add more appointments'
+      end
+    end
+
+    def self.call(auth:, appointment_data:)
+      raise ForbiddenError unless auth[:scope].can_write?('appointments')
+
+      auth[:account].add_owned_appointment(appointment_data)
     end
   end
 end

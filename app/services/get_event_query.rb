@@ -18,10 +18,10 @@ module No2Date
     end
 
     # Document for given requestor account
-    def self.call(account:, event:)
+    def self.call(auth:, event:)
       raise NotFoundError unless event
 
-      policy = EventPolicy.new(account, event)
+      policy = EventPolicy.new(auth[:account], event, auth[:scope])
       raise ForbiddenError unless policy.can_view?
 
       event

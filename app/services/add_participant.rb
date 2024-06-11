@@ -10,9 +10,11 @@ module No2Date
       end
     end
 
-    def self.call(account:, appointment:, part_email:)
+    def self.call(auth:, appointment:, part_email:)
       invitee = Account.first(email: part_email)
-      policy = ParticipationRequestPolicy.new(appointment, account, invitee)
+      policy = ParticipationRequestPolic.new(
+        appointment, auth[:account], invitee, auth[:scope]
+      )
       raise ForbiddenError unless policy.can_invite?
 
       appointment.add_participant(invitee)
