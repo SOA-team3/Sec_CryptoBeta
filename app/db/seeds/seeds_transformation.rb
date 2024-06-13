@@ -3,7 +3,7 @@
 require 'json'
 require 'yaml'
 
-json_data = '{"type":"event","id":"XcqOOSSR3S","title":"Meeting with Client","description":"Discuss project requirements and timelines.","location":"123 Main Street, Cityville","start_date":"2024-05-01","start_datetime":"2024-05-01T09:00:00","end_date":"2024-05-01","end_datetime":null,"organizer":"John Doe","attendees":["Jane Smith","Mike Johnson"]}'
+json_data = '{"type":"event","id":"XcqOOSSR3S","title":"Meeting with Client","description":"Discuss project requirements and timelines.","location":"123 Main Street, Cityville", "start_datetime":"2024-05-01T09:00:00", "end_datetime":null}'
 
 # json to yaml
 parsed_data = JSON.parse(json_data)
