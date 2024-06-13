@@ -17,8 +17,8 @@ module No2Date
       def get_available_meettimes(attendees_scheds, week)
         available_meettimes = []
         week.each do |date|
-          overlapped_times(attendees_scheds, date)
-          available_meettimes.push(overlapped_times)
+          times = overlapped_times(attendees_scheds, date)
+          available_meettimes.push(times)
         end
 
         # available_meettimes would be an 2d array, each small array refers to 7 days;
@@ -30,7 +30,7 @@ module No2Date
         available_meettimes
       end
 
-      def get_attendees_schedules_by_date(_attendees_scheds, _date)
+      def get_attendees_schedules_by_date(attendees_scheds, date)
         # get attendees' schedules with the same date from db
         # attendees_scheds would be a hash-array of all attendees' schedules
         # date, e.g: '2024-05-01', need to consider crossing days
@@ -48,30 +48,31 @@ module No2Date
 
         # some code...
 
-        #  return ideal overlapped times
+        #  return ideal overlapped times (all are available)
         return overlapped_times if (overlap_counts + 1) == ATTENDEES
 
         # some code...
 
-        flexible_overlapped_times = flexible_adjustment
-        if flexible_overlapped_times != overlapped_times
-          flexible_overlapped_times
-        elsif majortiy_meet == true
-          majority_meet(overlap_counts)
-        else
-          overlapped_times
-        end
+        # temp removed
+        # flexible_overlapped_times = flexible_adjustment
+        # if flexible_overlapped_times != overlapped_times
+        #   flexible_overlapped_times
+        # elsif majortiy_meet == true
+        #   majority_meet(overlap_counts)
+        # else
+        #   overlapped_times
+        # end
       end
 
       # Consider the case of no available meetime for total overlapping
       # Create a majority vote that at least n attendees overlap the available meetime
-      def majority_meet(_n)
+      def majority_meet(n)
         # some code...
         majority_overlapped_time
       end
 
       # Some code about check the is_flexible in attendees_scheds and make(unblock) them able to overlap
-      def flexible_adjustment(_attendees_scheds)
+      def flexible_adjustment(attendees_scheds)
         # some code...
         flexible_overlapped_times
       end
@@ -80,4 +81,20 @@ module No2Date
 end
 
 # Test the module
-# No2Date::Value::Available_MeetTime.new(...).get_available_meettimes(attendees_scheds, week)
+attendees_scheds = {
+  "ella" => [
+    ["2024-04-19 09:00:00 +0800", "2024-04-19 10:00:00 +0800"],
+    ["2024-04-20 09:00:00 +0800", "2024-04-20 10:00:00 +0800"]
+  ],
+  "brian" => [
+    ["2024-04-19 09:00:00 +0800", "2024-04-19 10:00:00 +0800"],
+    ["2024-04-20 09:00:00 +0800", "2024-04-20 10:00:00 +0800"]
+  ],
+  "adrian" => [
+    ["2024-04-19 09:00:00 +0800", "2024-04-19 10:00:00 +0800"],
+    ["2024-04-20 09:00:00 +0800", "2024-04-20 10:00:00 +0800"]
+  ]
+}
+week = ['2024-04-19', '2024-04-20'...]
+meettime = No2Date::Value::Available_MeetTime.new(attendees_scheds, week)
+puts meettime
