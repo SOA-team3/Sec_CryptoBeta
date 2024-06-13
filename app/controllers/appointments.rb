@@ -18,7 +18,7 @@ module No2Date
 
         # GET api/v1/appointments/[ID]
         routing.get do
-          appointment = GetAppointmentQuery.call( account: @auth_account, appointment: @req_appointment)
+          appointment = GetAppointmentQuery.call( auth: @auth, appointment: @req_appointment)
 
           { data: appointment }.to_json
         rescue GetAppointmentQuery::ForbiddenError => e
@@ -85,6 +85,7 @@ module No2Date
           new_appt = CreateAppointmentForOwner.call(
             auth: @auth, appointment_data: new_data
           )
+
           response.status = 201
           response['Location'] = "#{@appt_route}/#{new_appt.id}"
           { message: 'Appointment saved', data: new_appt }.to_json

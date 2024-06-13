@@ -36,6 +36,6 @@ describe 'Test AuthScope' do
     _(scope.can_read?('appointments')).must_equal true
     _(scope.can_write?('appointments')).must_equal false
     _(scope.can_read?('events')).must_equal true
-    _(scope.can_write?('events')).must_equal true
+    _(scope.can_write?('events')).must_equal false
   end
 end

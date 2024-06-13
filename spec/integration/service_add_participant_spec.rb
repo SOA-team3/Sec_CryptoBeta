@@ -15,10 +15,10 @@ describe 'Test AddParticipant service' do
     @owner_data = DATA[:accounts][0]
     @owner = No2Date::Account.all[0]
     @participant = No2Date::Account.all[1]
-    @appointment = @owner.add_owned_project(appointment_data)
+    @appointment = @owner.add_owned_appointment(appointment_data)
   end
 
-  it 'HAPPY: should be able to add a participant to a appointment' do
+  it 'HAPPY: should be able to add a participant to an appointment' do
     auth = authorization(@owner_data)
 
     No2Date::AddParticipant.call(
