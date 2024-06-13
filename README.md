@@ -215,13 +215,11 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "title": "Discussion for SOA project",
   "description": null,
   "location": "TSMC building, NTHU",
-  "start_date": "2024-04-19",
   "start_datetime": "2024-04-19 09:00:00 +0800",
-  "end_date": "2024-04-19",
   "end_datetime": "2024-04-19 10:00:00 +0800",
-  "is_regular": true,
+  "is_google": true,
   "is_flexible": false
-}' http://0.0.0.0:3000/api/v1/schedules
+}' http://0.0.0.0:3000/api/v1/events
 ```
 The id will be generated automatically in numerical order.
 The empty colomns will be noted as null.
@@ -239,11 +237,9 @@ The response message would be:
       "title": "Discussion for SOA project",
       "description": null,
       "location": "TSMC building, NTHU",
-      "start_date": "2024-04-19",
       "start_datetime": "2024-04-19 09:00:00 +0800",
-      "end_date": "2024-04-19",
       "end_datetime": "2024-04-19 10:00:00 +0800",
-      "is_regular": true,
+      "is_google": true,
       "is_flexible": false
     }
   }
@@ -272,11 +268,9 @@ The response message would be (for example):
     "title": "Discussion for SOA project",
     "description": null,
     "location": "TSMC building, NTHU",
-    "start_date": "2024-04-19",
     "start_datetime": "2024-04-19 09:00:00 +0800",
-    "end_date": "2024-04-19",
     "end_datetime": "2024-04-19 10:00:00 +0800",
-    "is_regular": true,
+    "is_google": true,
     "is_flexible": false
   }
 }
@@ -311,7 +305,7 @@ The response message would be a list of sched_ids:
         "start_datetime": "2024-04-19 09:00:00 +0800",
         "end_date": "2024-04-19",
         "end_datetime": "2024-04-19 10:00:00 +0800",
-        "is_regular": true,
+        "is_google": true,
         "is_flexible": false
       }
     },
@@ -327,7 +321,7 @@ The response message would be a list of sched_ids:
         "start_datetime": "2024-04-19 09:00:00 +0800",
         "end_date": "2024-04-19",
         "end_datetime": "2024-04-19 10:00:00 +0800",
-        "is_regular": true,
+        "is_google": true,
         "is_flexible": false
       }
     }

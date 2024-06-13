@@ -12,7 +12,7 @@ module No2Date
     plugin :timestamps, update_on_create: true
 
     plugin :whitelist_security
-    set_allowed_columns :title, :description, :location, :start_date, :start_datetime, :end_date, :end_datetime,
+    set_allowed_columns :title, :description, :location, :start_datetime, :end_datetime,
                         :is_google, :is_flexible
 
     # Secure getters and setters
@@ -32,28 +32,12 @@ module No2Date
       self.secure_location = SecureDB.encrypt(plaintext)
     end
 
-    # def start_date
-    #   SecureDB.decrypt(secure_start_date)
-    # end
-
-    # def start_date=(plaintext)
-    #   self.secure_start_date = SecureDB.encrypt(plaintext)
-    # end
-
     # def start_datetime
     #   SecureDB.decrypt(secure_start_datetime)
     # end
 
     # def start_datetime=(plaintext)
     #   self.secure_start_datetime = SecureDB.encrypt(plaintext)
-    # end
-
-    # def end_date
-    #   SecureDB.decrypt(secure_end_date)
-    # end
-
-    # def end_date=(plaintext)
-    #   self.secure_end_date = SecureDB.encrypt(plaintext)
     # end
 
     # def end_datetime
@@ -77,7 +61,7 @@ module No2Date
             start_datetime:,
             end_datetime:,
             is_google:, # bool
-            is_flexible:
+            is_flexible: # bool
           },
           created: {
             account:
