@@ -10,12 +10,12 @@ https://docs.google.com/document/d/1_DufdMLVxXIdT0sk0V0GbFlayJkandcalPLfxe_eugo/
 All routes return Json
 
 - GET `/`: Root route shows if Web API is running
-- GET `api/v1/meetings/[ID]`: Get information about a meeting
-- GET `api/v1/meetings`: Get list of all meetings
-- POST `api/v1/meetings`: Create new meeting
-- GET `api/v1/meetings/[meet_id]/schedules/[sched_id]`: Get a schedule
-- GET `api/v1/meetings/[meet_id]/schedules`: Get list of schedules for meeting
-- POST `api/v1/meetings/[ID]/schedules`: Create a schedule for a meeting (ID would be where the schedule should be saved in)
+- GET `api/v1/appointments/[ID]`: Get information about a appointment
+- GET `api/v1/appointments`: Get list of all appointments
+- POST `api/v1/appointments`: Create new appointment
+- GET `api/v1/appointments/[appt_id]/events/[evnt_id]`: Get a event
+- GET `api/v1/appointments/[appt_id]/events`: Get list of events for appointment
+- POST `api/v1/appointments/[ID]/events`: Create a event for a appointment (ID would be where the event should be saved in)
 
 ## google-apis-calendar_v3
 - ref: https://rubygems.org/gems/google-apis-calendar_v3/versions/0.5.0?locale=zh-TW
@@ -101,15 +101,15 @@ rake release?
 
 ##  Sequel DB POST / GET Usage
 
-### Create a meeting
+### Create a appointment
 After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:9292
 Run the POST message with new information and your local endpoint address.
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{
-    "name": "Security meetings",
+    "name": "Security appointments",
     "organizer": "Brian",
     "attendees": "Ella"
-}' http://0.0.0.0:3000/api/v1/meetings
+}' http://0.0.0.0:3000/api/v1/appointments
 ```
 The id will be generated automatically in numerical order.
 The empty columns will be noted as null.
@@ -118,14 +118,14 @@ The response message would be:
 
 ```shell
 {
-  "message": "Meeting saved",
+  "message": "appointment saved",
   "data":
   {
-    "type": "meeting",
+    "type": "appointment",
     "attributes":
     {
       "id": 1,
-      "name": "Security meetings",
+      "name": "Security appointments",
       "description": null,
       "organizer": "Brian",
       "attendees": "Ella"
@@ -134,27 +134,27 @@ The response message would be:
 }
 ```
 
-### Get a meeting
-Retrieve the details of a specific meeting by its id.
+### Get a appointment
+Retrieve the details of a specific appointment by its id.
 Run the GET message with the specific id and your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:3000/api/v1/meetings/[ID]
+curl -X GET http://0.0.0.0:3000/api/v1/appointments/[ID]
 # or
-curl http://0.0.0.0:3000/api/v1/meetings/[ID]
+curl http://0.0.0.0:3000/api/v1/appointments/[ID]
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:9292/api/v1/meetings/[ID]
+http://localhost:9292/api/v1/appointments/[ID]
 ```
 
 The response message would be (for example):
 ```shell
 {
-  "type": "meeting",
+  "type": "appointment",
   "attributes":
   {
     "id": 1,
-    "name": "Security meetings",
+    "name": "Security appointments",
     "description": null,
     "organizer": "Brian",
     "attendees": "Ella"
@@ -162,40 +162,40 @@ The response message would be (for example):
 }
 ```
 
-### Listing all meetings
-Retrieve all meetings' ids.
+### Listing all appointments
+Retrieve all appointments' ids.
 Run the GET message with your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:3000/api/v1/meetings
+curl -X GET http://0.0.0.0:3000/api/v1/appointments
 # or
-curl http://0.0.0.0:3000/api/v1/meetings
+curl http://0.0.0.0:3000/api/v1/appointments
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:3000/api/v1/meetings
+http://localhost:3000/api/v1/appointments
 ```
 
-The response message would be a list of sched_ids:
+The response message would be a list of evnt_ids:
 ```shell
 {
   "data": [
     {
-      "type": "meeting",
+      "type": "appointment",
       "attributes":
       {
         "id": 1,
-        "name": "Security meetings",
+        "name": "Security appointments",
         "description": null,
         "organizer": "Brian",
         "attendees": "Ella"
       }
     },
     {
-      "type": "meeting",
+      "type": "appointment",
       "attributes":
       {
         "id": 2,
-        "name": "Security meetings",
+        "name": "Security appointments",
         "description": null,
         "organizer": "Brian",
         "attendees": "Ella"
@@ -205,10 +205,10 @@ The response message would be a list of sched_ids:
 }
 ```
 
-### Create a schedule
+### Create a event
 After running puma, open up a new local terminal and check up your local endpoint address. e.g. http://0.0.0.0:9292
 Run the POST message with new information and your local endpoint address.
-You should assign the [uuid] to the specific ID to save your info to the specific meeting.
+You should assign the [uuid] to the specific ID to save your info to the specific appointment.
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{
@@ -227,10 +227,10 @@ The empty colomns will be noted as null.
 The response message would be:
 ```shell
 {
-  "message": "Schedule saved",
+  "message": "event saved",
   "data":
   {
-    "type": "schedule",
+    "type": "event",
     "attributes":
     {
       "id": "152d30ff-1f63-49a0-b08e-425e45dbbbad",
@@ -245,23 +245,23 @@ The response message would be:
   }
 }
 ```
-### Get a schedule
-Retrieve the details of a specific schedule by its id.
+### Get a event
+Retrieve the details of a specific event by its id.
 Run the GET message with the specific id and your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:3000/api/v1/schedules/[uuid]
+curl -X GET http://0.0.0.0:3000/api/v1/events/[uuid]
 # or
-curl http://0.0.0.0:3000/api/v1/schedules/[uuid]
+curl http://0.0.0.0:3000/api/v1/events/[uuid]
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:3000/api/v1/schedules/[uuid]
+http://localhost:3000/api/v1/events/[uuid]
 ```
 
 The response message would be (for example):
 ```shell
 {
-  "type": "schedule",
+  "type": "event",
   "attributes":
   {
     "id": "bbaf6b6c-d97b-4d3c-ad36-4a9531a8d8b5",
@@ -276,50 +276,46 @@ The response message would be (for example):
 }
 ```
 
-### Listing all schedules
-Retrieve all schedules' ids.
+### Listing all events
+Retrieve all events' ids.
 Run the GET message with your local endpoint address.
 ```shell
-curl -X GET http://0.0.0.0:3000/api/v1/schedules
+curl -X GET http://0.0.0.0:3000/api/v1/events
 # or
-curl http://0.0.0.0:3000/api/v1/schedules
+curl http://0.0.0.0:3000/api/v1/events
 ```
 Or we can enter the GET message on browser's address bar (URL bar).
 ```shell
-http://localhost:3000/api/v1/schedules
+http://localhost:3000/api/v1/events
 ```
 
-The response message would be a list of sched_ids:
+The response message would be a list of evnt_ids:
 ```shell
 {
   "data": [
     {
-      "type": "schedule",
+      "type": "event",
       "attributes":
       {
         "id": "152d30ff-1f63-49a0-b08e-425e45dbbbad",
         "title": "Discussion for SOA project",
         "description": null,
         "location": "TSMC building, NTHU",
-        "start_date": "2024-04-19",
         "start_datetime": "2024-04-19 09:00:00 +0800",
-        "end_date": "2024-04-19",
         "end_datetime": "2024-04-19 10:00:00 +0800",
         "is_google": true,
         "is_flexible": false
       }
     },
     {
-      "type": "schedule",
+      "type": "event",
       "attributes":
       {
         "id": "bbaf6b6c-d97b-4d3c-ad36-4a9531a8d8b5",
         "title": "Discussion for SOA project",
         "description": null,
         "location": "TSMC building, NTHU",
-        "start_date": "2024-04-19",
         "start_datetime": "2024-04-19 09:00:00 +0800",
-        "end_date": "2024-04-19",
         "end_datetime": "2024-04-19 10:00:00 +0800",
         "is_google": true,
         "is_flexible": false
