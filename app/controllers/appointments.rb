@@ -8,8 +8,7 @@ module No2Date
   # Web controller for No2Date API
   class Api < Roda
     route('appointments') do |routing|
-      unauthorized_message = { message: 'Unauthorized Request' }.to_json
-      routing.halt(403, unauthorized_message) unless @auth_account
+      routing.halt(403, UNAUTH_MSG) unless @auth_account
 
       @appt_route = "#{@api_root}/appointments"
       # if the "account" is directing to "appointments"
@@ -19,9 +18,7 @@ module No2Date
 
         # GET api/v1/appointments/[ID]
         routing.get do
-          appointment = GetAppointmentQuery.call(
-            account: @auth_account, appointment: @req_appointment
-          )
+          appointment = GetAppointmentQuery.call( account: @auth_account, appointment: @req_appointment)
 
           { data: appointment }.to_json
         rescue GetAppointmentQuery::ForbiddenError => e
@@ -39,7 +36,7 @@ module No2Date
             req_data = JSON.parse(routing.body.read)
 
             participant = AddParticipant.call(
-              account: @auth_account,
+              auth: @auth,
               appointment: @req_appointment,
               part_email: req_data['email']
             )
@@ -55,7 +52,7 @@ module No2Date
           routing.delete do
             req_data = JSON.parse(routing.body.read)
             participant = RemoveParticipant.call(
-              req_username: @auth_account.username,
+              auth: @auth,
               part_email: req_data['email'],
               project_id: proj_id
             )
@@ -85,14 +82,17 @@ module No2Date
         routing.post do
           new_data = JSON.parse(routing.body.read)
           # account = Account.first(username: @auth_account['username'])
-          new_appt = @auth_account.add_owned_appointment(new_data)
-
+          new_appt = CreateAppointmentForOwner.call(
+            auth: @auth, appointment_data: new_data
+          )
           response.status = 201
           response['Location'] = "#{@appt_route}/#{new_appt.id}"
           { message: 'Appointment saved', data: new_appt }.to_json
         rescue Sequel::MassAssignmentRestriction
           Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
           routing.halt 400, { message: 'Illegal Attributes' }.to_json
+        rescue CreateProjectForOwner::ForbiddenError => e
+          routing.halt 403, { message: e.message }.to_json
         rescue StandardError => e
           Api.logger.error "UNKNOWN ERROR: #{e.message}"
           routing.halt 500, { message: 'Unknown server error' }.to_json

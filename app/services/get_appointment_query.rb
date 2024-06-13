@@ -17,11 +17,13 @@ module No2Date
       end
     end
 
-    def self.call(account:, appointment:)
+    def self.call(auth:, appointment:)
       raise NotFoundError unless appointment
 
-      policy = AppointmentPolicy.new(account, appointment)
+      policy = AppointmentPolicy.new(auth[:account], appointment, auth[:scope])
       raise ForbiddenError unless policy.can_view?
+
+      appointment.full_details.merge(policies: policy.summary)
 
       appointment_with_policy = appointment.full_details.merge(policies: policy.summary)
 

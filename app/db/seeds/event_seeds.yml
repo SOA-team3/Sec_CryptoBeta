@@ -1,7 +1,7 @@
 ---
 - title: Meeting with Client
   description: Discuss project requirements and timelines.
-  location: 123 Main Street, Cityville
+  location: 123 Main Street, Taipei
   start_datetime: '2024-04-19 09:00:00 +0800'
   end_datetime: '2024-04-19 10:00:00 +0800'
   is_google: false

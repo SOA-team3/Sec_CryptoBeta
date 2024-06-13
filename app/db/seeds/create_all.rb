@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require './app/controllers/helpers.rb'
+include No2Date::SecureRequestHelpers
 
 Sequel.seed(:development) do
   def run
@@ -29,9 +31,8 @@ def create_owned_appointments
     account = No2Date::Account.first(username: owner['username'])
     owner['appt_name'].each do |appt_name|
       appt_data = APPT_INFO.find { |appt| appt['name'] == appt_name }
-      No2Date::CreateAppointmentForOwner.call(
-        owner_id: account.id, appointment_data: appt_data
-      )
+      
+      account.add_owned_project(appt_data)
     end
   end
 end
@@ -42,8 +43,12 @@ def create_events
   loop do
     evnt_info = evnt_info_each.next
     appointment = appointments_cycle.next
+
+    auth_token = AuthToken.create(appointment.owner)
+    auth = scoped_auth(auth_token)
+    
     No2Date::CreateEventForAppointment.call(
-      appointment_id: appointment.id, event_data: evnt_info
+      auth: auth, appointment_id: appointment.id, event_data: evnt_info
     )
   end
 end
@@ -51,10 +56,14 @@ end
 def add_collaborators
   contrib_info = CONTRIB_INFO
   contrib_info.each do |contrib|
-    appt = No2Date::Appointment.first(name: contrib['appt_name'])
+    appointment = No2Date::Appointment.first(name: contrib['appt_name'])
+
+    auth_token = AuthToken.create(appointment.owner)
+    auth = scoped_auth(auth_token)
+
     contrib['collaborator_email'].each do |email|
       No2Date::AddCollaboratorToAppointment.call(
-        email:, appointment_id: appt.id
+        auth: auth,  appointment: appointment, part_email: email
       )
     end
   end

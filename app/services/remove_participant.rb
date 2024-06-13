@@ -10,12 +10,13 @@ module No2Date
       end
     end
 
-    def self.call(req_username:, collab_email:, appointment_id:)
-      account = Account.first(username: req_username)
+      def self.call(auth:, collab_email:, appointment_id:)
       appointment = Appointment.first(id: appointment_id)
       participant = Account.first(email: collab_email)
 
-      policy = ParticipationRequestPolicy.new(appointment, account, participant)
+      policy = ParticipationRequestPolicy.new(
+        appointment, auth[:account], participant, auth[:scope]
+      )
       raise ForbiddenError unless policy.can_remove?
 
       appointment.remove_participant(participant)

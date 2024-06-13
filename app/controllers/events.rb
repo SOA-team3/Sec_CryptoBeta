@@ -8,8 +8,7 @@ module No2Date
   # Web controller for No2Date API
   class Api < Roda
     route('events') do |routing|
-      unauthorized_message = { message: 'Unauthorized Request' }.to_json
-      routing.halt(403, unauthorized_message) unless @auth_account
+      routing.halt(403, UNAUTH_MSG) unless @auth_account
 
       @evnt_route = "#{@api_root}/events"
       # if the "account" is directing to "events"
@@ -19,11 +18,9 @@ module No2Date
 
         # GET api/v1/events/[ID]
         routing.get do
-          event = GetEventQuery.call(
-            account: @auth_account, event: @req_event
-          )
+          event = GetEventQuery.call(account: @auth_account, event: @req_event)
 
-          { data: event }.to_json
+          { data: event}.to_json
         rescue GetEventQuery::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
         rescue GetEventQuery::NotFoundError => e
