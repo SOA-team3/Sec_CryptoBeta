@@ -18,7 +18,7 @@ module No2Date
 
         # GET api/v1/events/[ID]
         routing.get do
-          event = GetEventQuery.call(account: @auth_account, event: @req_event)
+          event = GetEventQuery.call(auth: @auth, event: @req_event)
 
           { data: event}.to_json
         rescue GetEventQuery::ForbiddenError => e
@@ -46,7 +46,9 @@ module No2Date
         routing.post do
           new_data = JSON.parse(routing.body.read)
           # account = Account.first(username: @auth_account['username'])
-          new_evnt = @auth_account.add_owned_event(new_data)
+          new_evnt = CreateEventForAccount.call(
+            auth: @auth, event_data: new_data
+          )
 
           response.status = 201
           response['Location'] = "#{@evnt_route}/#{new_evnt.id}"

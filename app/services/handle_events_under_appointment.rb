@@ -3,37 +3,35 @@
 require 'json'
 
 module No2Date
-  # get all events of all participants in a appointment
   class HandleEventsUnderAppointment
     def initialize(account, appointment)
       @account = account
       @appointment = appointment
-      @all_events = []
+      @all_events = {}
     end
 
     def find_events
-      # Retrieve events for the appointment owner
-      @appointment.owner.events.each do |event|
-        event_data = event.to_json
+      # Initialize the owner's events
+      add_events_for_user(@appointment.owner)
 
-        # Add the event data to the array
-        @all_events << event_data
-      end
-
+      # Initialize each participant's events
       @appointment.participants.each do |participant|
-        # Retrieve events for each participant
-        participant.events.each do |event|
-          event_data = event.to_json
-
-          # Add the event data to the array
-          @all_events << event_data
-        end
+        add_events_for_user(participant)
       end
 
-      # Return collected events
       @all_events
     end
 
-    # SHOULD HAVE METHOD TO SEND TO VALUE TO CALCULATE AVAILABLE TIME
+    def add_events_for_user(user)
+      user.events.each do |event|
+        # Format the event data as start and end datetimes
+        event_data = [event.start_datetime.to_s, event.end_datetime.to_s]
+
+        # If the user's username is already a key in @all_events, append the event data
+        # Otherwise, create a new array for this user
+        @all_events[user.username] ||= []
+        @all_events[user.username] << event_data
+      end
+    end
   end
 end

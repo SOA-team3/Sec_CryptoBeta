@@ -12,7 +12,7 @@ module No2Date
 
     def self.call(auth:, appointment:, part_email:)
       invitee = Account.first(email: part_email)
-      policy = ParticipationRequestPolic.new(
+      policy = ParticipationRequestPolicy.new(
         appointment, auth[:account], invitee, auth[:scope]
       )
       raise ForbiddenError unless policy.can_invite?
