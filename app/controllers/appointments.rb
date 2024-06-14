@@ -54,7 +54,7 @@ module No2Date
             participant = RemoveParticipant.call(
               auth: @auth,
               part_email: req_data['email'],
-              project_id: proj_id
+              appointment_id: appt_id
             )
 
             { message: "#{participant.username} removed from appointment",
@@ -92,7 +92,7 @@ module No2Date
         rescue Sequel::MassAssignmentRestriction
           Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
           routing.halt 400, { message: 'Illegal Attributes' }.to_json
-        rescue CreateProjectForOwner::ForbiddenError => e
+        rescue CreateAppointmentForOwner::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
         rescue StandardError => e
           Api.logger.error "UNKNOWN ERROR: #{e.message}"
