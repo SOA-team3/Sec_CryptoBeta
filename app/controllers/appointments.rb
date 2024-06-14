@@ -33,6 +33,7 @@ module No2Date
         routing.on('participants') do
           # PUT api/v1/appointments/[appt_id]/participants
           routing.put do
+            puts "PUT /api/v1/appointments/#{appt_id}/participants"
             req_data = JSON.parse(routing.body.read)
 
             participant = AddParticipant.call(
