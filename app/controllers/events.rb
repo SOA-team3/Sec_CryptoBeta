@@ -46,8 +46,8 @@ module No2Date
         routing.post do
           new_data = JSON.parse(routing.body.read)
           # account = Account.first(username: @auth_account['username'])
-          new_evnt = CreateEventForOwner.call(
-            auth: @auth, event_data: new_event
+          new_evnt = CreateEventForAccount.call(
+            auth: @auth, event_data: new_data
           )
 
           response.status = 201
