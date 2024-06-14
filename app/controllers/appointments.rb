@@ -26,7 +26,8 @@ module No2Date
         rescue GetAppointmentQuery::NotFoundError => e
           routing.halt 404, { message: e.message }.to_json
         rescue StandardError => e
-          puts "FIND APPOINTMENT ERROR: #{e.inspect}"
+          # puts "FIND APPOINTMENT ERROR: #{e.inspect}"
+          Api.logger.error "FIND APPOINTMENT ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API server error' }.to_json
         end
 

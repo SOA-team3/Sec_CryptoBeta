@@ -41,3 +41,10 @@ DATA = {
   events: YAML.safe_load_file('app/db/seeds/events_seed.yml'),
   appointments: YAML.safe_load_file('app/db/seeds/appointments_seed.yml')
 }.freeze
+
+## SSO fixtures
+GOOG_ACCOUNT_RESPONSE = YAML.load(
+  File.read('spec/fixtures/google_token_response.yml')
+)
+GOOD_GOOG_ACCESS_TOKEN = GOOG_ACCOUNT_RESPONSE.keys.first
+SSO_ACCOUNT = YAML.load(File.read('spec/fixtures/sso_account.yml'))
