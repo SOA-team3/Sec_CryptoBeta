@@ -1,10 +1,14 @@
+# frozen_string_literal: true
+
 require 'date'
+require 'active_support/all'
 
 module No2Date
   class CalculateFreeTime
     def initialize(start_date, end_date, events_under_appointment)
-      @start_date = start_date
-      @end_date = end_date
+      @current_time = Time.now.in_time_zone('Asia/Taipei') 
+      @start_date = @current_time.strftime("%Y-%m-%d")
+      @end_date = (@current_time + 6.days).strftime("%Y-%m-%d")
       @all_events = events_under_appointment
     end
 
@@ -17,6 +21,7 @@ module No2Date
           puts "  Free from #{free_time[:start].strftime('%H:%M')} to #{free_time[:end].strftime('%H:%M')}"
         end
       end
+      free_times
     end
 
     def parse_events(data)
