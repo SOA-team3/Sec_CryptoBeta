@@ -28,6 +28,7 @@ gem 'base64', '~>0.2'
 
 # External Services
 gem 'http'
+gem 'tzinfo'
 
 # Testing
 group :test do

@@ -10,9 +10,9 @@ module No2Date
       end
     end
 
-      def self.call(auth:, collab_email:, appointment_id:)
+      def self.call(auth:, part_email:, appointment_id:)
       appointment = Appointment.first(id: appointment_id)
-      participant = Account.first(email: collab_email)
+      participant = Account.first(email: part_email)
 
       policy = ParticipationRequestPolicy.new(
         appointment, auth[:account], participant, auth[:scope]
