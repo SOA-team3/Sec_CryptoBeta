@@ -18,7 +18,7 @@ module No2Date
 
         # GET api/v1/appointments/[ID]
         routing.get do
-          appointment = GetAppointmentQuery.call( auth: @auth, appointment: @req_appointment)
+          appointment = GetAppointmentQuery.call(auth: @auth, appointment: @req_appointment)
 
           { data: appointment }.to_json
         rescue GetAppointmentQuery::ForbiddenError => e

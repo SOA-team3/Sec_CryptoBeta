@@ -27,7 +27,7 @@ module No2Date
 
       appointment_with_policy = appointment.full_details.merge(policies: policy.summary)
 
-      events_under_appointment = HandleEventsUnderAppointment.new(account, appointment).find_events
+      events_under_appointment = HandleEventsUnderAppointment.new(auth[:account], appointment).find_events
 
       appointment_json = appointment_with_policy.merge(events_under_appointment:)
 
