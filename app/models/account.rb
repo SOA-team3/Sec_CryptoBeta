@@ -25,6 +25,11 @@ module No2Date
 
     plugin :timestamps, update_on_create: true
 
+    def self.create_google_account(google_account)
+      create(username: google_account[:username],
+             email: google_account[:email])
+    end
+
     def appointments
       owned_appointments + participations
     end

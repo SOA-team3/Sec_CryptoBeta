@@ -28,11 +28,13 @@ gem 'base64', '~>0.2'
 
 # External Services
 gem 'http'
+gem 'tzinfo'
 
 # Testing
 group :test do
   gem 'minitest'
   gem 'minitest-rg'
+  gem 'webmock'
 end
 
 # Debugging

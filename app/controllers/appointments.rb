@@ -26,13 +26,15 @@ module No2Date
         rescue GetAppointmentQuery::NotFoundError => e
           routing.halt 404, { message: e.message }.to_json
         rescue StandardError => e
-          puts "FIND APPOINTMENT ERROR: #{e.inspect}"
+          # puts "FIND APPOINTMENT ERROR: #{e.inspect}"
+          Api.logger.error "FIND APPOINTMENT ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API server error' }.to_json
         end
 
         routing.on('participants') do
           # PUT api/v1/appointments/[appt_id]/participants
           routing.put do
+            puts "PUT /api/v1/appointments/#{appt_id}/participants"
             req_data = JSON.parse(routing.body.read)
 
             participant = AddParticipant.call(

@@ -22,6 +22,7 @@ module No2Date
     def scoped_auth(auth_token)
       token = AuthToken.new(auth_token)
       account_data = token.payload['attributes']
+      puts "helpers.rb Account data: #{account_data}"
 
       { account: Account.first(username: account_data['username']),
         scope: AuthScope.new(token.scope) }
