@@ -74,16 +74,24 @@ module No2Date
     end
 
     def process_day(day, events)
+      # puts "process_day day: #{day}"
+      # puts "process_day events: #{events}"
+
       # Convert UTC time to +08:00 timezone
       day_start = DateTime.parse("#{day}T00:00:00+08:00")
       day_end = DateTime.parse("#{day}T23:59:00+08:00")
+      # puts "process_day day_start: #{day_start}"
+      # puts "process_day day_end: #{day_end}"
 
       day_events = events.select do |event|
-        # event[:start]: 6/24 2 event[:end]:: 6/24 5
-        # day_start: 6/24 0 day_end: 6/24 24
         event[:start] <= day_end && event[:end] >= day_start
       end
+      # puts "process_day day_events: #{day_events}"
+
       merged_events = merge_events(day_events)
+      # puts "process_day merged_events: #{merged_events}"
+      # puts "\n"
+
       find_free_times(merged_events, day_start, day_end)
     end
 
