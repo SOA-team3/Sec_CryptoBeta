@@ -7,14 +7,19 @@ module No2Date
   # Web controller for No2Date API
   class Api < Roda
     route('auth') do |routing| # rubocop:disable Metrics/BlockLength
+      # All requests in this route require signed requests
+      begin
+        @request_data = SignedRequest.new(Api.config).parse(request.body.read)
+      rescue SignedRequest::VerificationError
+        routing.halt '403', { message: 'Must sign request' }.to_json
+      end
+
       routing.on 'register' do
         # POST /api/v1/auth/register
         routing.post do
           puts "/api/v1/auth/register"
           puts "Request body: #{request.body.read}"
-          reg_data = JSON.parse(request.body.read, symbolize_names: true)
-
-          VerifyRegistration.new(reg_data).call
+          VerifyRegistration.new(@request_data).call
 
           response.status = 202
           { message: 'Verification email sent' }.to_json
@@ -32,8 +37,8 @@ module No2Date
       routing.is 'authenticate' do
         # POST /api/v1/auth/authenticate
         routing.post do
-          credentials = JSON.parse(request.body.read, symbolize_names: true)
-          auth_account = AuthenticateAccount.call(credentials)
+          auth_account = AuthenticateAccount.call(@request_data)
+
           { data: auth_account }.to_json
         rescue AuthenticateAccount::UnauthorizedError
           # puts [e.class, e.message].join ': '
@@ -41,20 +46,18 @@ module No2Date
         end
       end
 
+      # POST /api/v1/auth/sso
       routing.post 'sso' do
         puts "auth.rb: POST /api/v1/auth/sso"
-        auth_request = JSON.parse(request.body.read, symbolize_names: true)
+        auth_account = AuthorizeSso.new.call(@request_data[:access_token])
 
-        puts "auth.rb: auth_request: #{auth_request}"
-
-        auth_account = AuthorizeSso.new.call(auth_request[:access_token], auth_request[:id_token])
         { data: auth_account }.to_json
-      rescue StandardError => error
-        Api.logger.warn "FAILED to validate Google account: #{error.inspect}"\
-                        "\n#{error.backtrace}"
+      rescue StandardError => e
+        Api.logger.warn "FAILED to validate Github account: #{e.inspect}" \
+                        "\n#{e.backtrace}"
 
         routing.halt 400
       end
-    end      
+    end
   end
 end
