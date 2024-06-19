@@ -19,6 +19,8 @@ module No2Date
     def call
       events = parse_events(@all_events)
       free_times = find_free_times_for_range(@start_date, @end_date, events)
+      puts "start_date: #{@start_date}"
+      puts "end_date: #{@end_date}"
       free_times.each do |day_info|
         puts "Date: #{day_info[:day]}"
         day_info[:free_times].each do |free_time|
@@ -33,7 +35,9 @@ module No2Date
       data.each do |person, event_times|
         event_times.each do |time_pair|
           start_time, end_time = time_pair
-          events << { start: DateTime.parse(start_time), end: DateTime.parse(end_time) }
+          event_time = { start: DateTime.parse(start_time), end: DateTime.parse(end_time) }
+          # puts "parse_events: #{event_time}"
+          events << event_time
         end
       end
       events
@@ -70,22 +74,35 @@ module No2Date
     end
 
     def process_day(day, events)
-      day_start = DateTime.parse("#{day}T00:00:00")
-      day_end = DateTime.parse("#{day}T23:59:00")
+      # puts "process_day day: #{day}"
+      # puts "process_day events: #{events}"
+
+      # Convert UTC time to +08:00 timezone
+      day_start = DateTime.parse("#{day}T00:00:00+08:00")
+      day_end = DateTime.parse("#{day}T23:59:00+08:00")
+      # puts "process_day day_start: #{day_start}"
+      # puts "process_day day_end: #{day_end}"
+
       day_events = events.select do |event|
         event[:start] <= day_end && event[:end] >= day_start
       end
+      # puts "process_day day_events: #{day_events}"
+
       merged_events = merge_events(day_events)
+      # puts "process_day merged_events: #{merged_events}"
+      # puts "\n"
+
       find_free_times(merged_events, day_start, day_end)
     end
 
     def find_free_times_for_range(start_date, end_date, events)
-      (Date.parse(start_date)..Date.parse(end_date)).map do |day|
+      (Date.parse(start_date)..(Date.parse(end_date)+1)).map do |day|
         {
           day: day,
           free_times: process_day(day, events)
         }
       end
     end
+
   end
 end

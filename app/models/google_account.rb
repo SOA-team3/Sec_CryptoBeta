@@ -8,11 +8,11 @@ module No2Date
       end
   
       def username
-        @goog_account['username'] 
+        @goog_account["given_name"] + '@Google'
       end
   
       def email
-        @goog_account['email'] 
+        @goog_account["email"] 
       end
     end
   end
