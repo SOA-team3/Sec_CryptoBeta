@@ -1,0 +1,5 @@
+---
+- name: Security meetings
+  description: Discuss homework
+- name: SOA meetings
+  description: Discuss project requirements and timelines

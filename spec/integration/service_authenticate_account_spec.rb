@@ -2,7 +2,7 @@
 
 require_relative '../spec_helper'
 
-describe 'Test AddCollaboratorToMeeting service' do
+describe 'Test AddCollaboratorToAppointment service' do
   before do
     wipe_database
 

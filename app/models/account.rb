@@ -7,30 +7,35 @@ require_relative 'password'
 module No2Date
   # Models a registered account
   class Account < Sequel::Model
-    one_to_many :owned_meetings, class: :'No2Date::Meeting', key: :owner_id
+    one_to_many :owned_appointments, class: :'No2Date::Appointment', key: :owner_id
 
-    one_to_many :owned_schedules, class: :'No2Date::Schedule', key: :account_id
+    one_to_many :owned_events, class: :'No2Date::Event', key: :account_id
 
-    many_to_many :attendances,
-                 class: :'No2Date::Meeting',
-                 join_table: :accounts_meetings,
-                 left_key: :attender_id, right_key: :meeting_id
+    many_to_many :participations,
+                 class: :'No2Date::Appointment',
+                 join_table: :accounts_appointments,
+                 left_key: :participant_id, right_key: :appointment_id
 
     plugin :association_dependencies,
-           owned_meetings: :destroy,
-           attendances: :nullify
+           owned_appointments: :destroy,
+           participations: :nullify
 
     plugin :whitelist_security
     set_allowed_columns :username, :email, :password
 
     plugin :timestamps, update_on_create: true
 
-    def meetings
-      owned_meetings + attendances
+    def self.create_google_account(google_account)
+      create(username: google_account[:username],
+             email: google_account[:email])
     end
 
-    def schedules
-      owned_schedules
+    def appointments
+      owned_appointments + participations
+    end
+
+    def events
+      owned_events
     end
 
     def password=(new_password)

@@ -1,0 +1,29 @@
+---
+- title: Meeting with Client
+  description: Discuss project requirements and timelines.
+  location: 123 Main Street, Taipei
+  start_datetime: '2024-04-19 09:00:00 +0800'
+  end_datetime: '2024-04-19 10:00:00 +0800'
+  is_google: false
+  is_flexible: false
+- title: Seminars
+  description: Paper discussion by ISS 1st grade
+  location: online
+  start_datetime: '2024-04-20 19:00:00 +0800'
+  end_datetime: '2024-04-20 20:00:00 +0800'
+  is_google: false
+  is_flexible: false
+- title: Rest time
+  description: Time to rest
+  location: online
+  start_datetime: '2024-04-20 09:00:00 +0800'
+  end_datetime: '2024-04-20 10:00:00 +0800'
+  is_google: true
+  is_flexible: true
+- title: Discussion for SEC project
+  description: null
+  location: TSMC building, NTHU
+  start_datetime: '2024-04-20 09:30:00 +0800'
+  end_datetime: '2024-04-20 10:45:00 +0800'
+  is_google: false
+  is_flexible: false

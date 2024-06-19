@@ -6,7 +6,7 @@ require_relative 'app'
 module No2Date
   # Web controller for No2Date API
   class Api < Roda
-    route('auth') do |routing|
+    route('auth') do |routing| # rubocop:disable Metrics/BlockLength
       routing.on 'register' do
         # POST /api/v1/auth/register
         routing.post do
@@ -37,9 +37,24 @@ module No2Date
           { data: auth_account }.to_json
         rescue AuthenticateAccount::UnauthorizedError
           # puts [e.class, e.message].join ': '
-          routing.halt '403', { message: 'Invalid credentials' }.to_json
+          routing.halt '401', { message: 'Invalid credentials' }.to_json
         end
       end
-    end
+
+      routing.post 'sso' do
+        puts "auth.rb: POST /api/v1/auth/sso"
+        auth_request = JSON.parse(request.body.read, symbolize_names: true)
+
+        puts "auth.rb: auth_request: #{auth_request}"
+
+        auth_account = AuthorizeSso.new.call(auth_request[:access_token], auth_request[:id_token])
+        { data: auth_account }.to_json
+      rescue StandardError => error
+        Api.logger.warn "FAILED to validate Google account: #{error.inspect}"\
+                        "\n#{error.backtrace}"
+
+        routing.halt 400
+      end
+    end      
   end
 end

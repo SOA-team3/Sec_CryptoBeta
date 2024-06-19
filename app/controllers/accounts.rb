@@ -10,14 +10,20 @@ module No2Date
       @account_route = "#{@api_root}/accounts"
 
       routing.on String do |username|
+        routing.halt(403, UNAUTH_MSG) unless @auth_account
+
         # GET api/v1/accounts/[username]
         routing.get do
-          account = GetAccountQuery.call(
-            requestor: @auth_account, username: username
+          auth = AuthorizeAccount.call(
+            auth: @auth, username: username,
+            auth_scope: AuthScope.new(AuthScope::READ_ONLY)
           )
-          account ? account.to_json : raise('Account not found')
-        rescue StandardError => e
-          puts "GET ACCOUNT ERROR: #{e.inspect}"
+          # account ?  { data: auth }.to_json
+          { data: auth }.to_json
+        rescue AuthorizeAccount::ForbiddenError => e
+          routing.halt 404, { message: e.message }.to_json
+        rescue AuthorizeAccount::ForbiddenError => e
+          Api.logger.error "GET ACCOUNT ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API Server Error' }.to_json
         end
 
