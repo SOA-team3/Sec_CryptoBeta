@@ -53,7 +53,7 @@ module No2Date
 
         { data: auth_account }.to_json
       rescue StandardError => e
-        Api.logger.warn "FAILED to validate Github account: #{e.inspect}" \
+        Api.logger.warn "FAILED to validate Google account: #{e.inspect}" \
                         "\n#{e.backtrace}"
 
         routing.halt 400

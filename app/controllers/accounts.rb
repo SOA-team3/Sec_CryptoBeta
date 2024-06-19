@@ -18,6 +18,7 @@ module No2Date
             auth: @auth, username: username,
             auth_scope: AuthScope.new(AuthScope::READ_ONLY)
           )
+
           # account ?  { data: auth }.to_json
           { data: auth }.to_json
         rescue AuthorizeAccount::ForbiddenError => e

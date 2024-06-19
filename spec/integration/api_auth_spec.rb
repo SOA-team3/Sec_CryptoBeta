@@ -49,9 +49,12 @@ describe 'Test Authentication Routes' do
 
   describe 'SSO Authorization' do
     before do
+      puts GOOG_ACCOUNT_RESPONSE[GOOD_GOOG_ACCESS_TOKEN]
+      puts GOOG_ACCOUNT_RESPONSE[GOOD_GOOG_ACCESS_TOKEN].to_json
+
       WebMock.enable!
       WebMock.stub_request(:get, app.config.GOOGLE_ACCOUNT_URL)
-             .to_return(body: GOOG_ACCOUNT_RESPONSE[GOOD_GOOG_ACCESS_TOKEN],
+             .to_return(body: GOOG_ACCOUNT_RESPONSE[GOOD_GOOG_ACCESS_TOKEN].to_json,
                         status: 200,
                         headers: { 'content-type' => 'application/json' })
     end
@@ -60,11 +63,11 @@ describe 'Test Authentication Routes' do
       WebMock.disable!
     end
 
-    it 'HAPPY AUTH SSO: should authenticate+authorize new valid SSO account' do
+    it 'HAPPY AUTH SSO: should authenticate + authorize new valid SSO account' do
       goog_access_token = { access_token: GOOD_GOOG_ACCESS_TOKEN }
 
       post 'api/v1/auth/sso',
-           SignedRequest.new(app.config).sign(gh_access_token).to_json,
+           SignedRequest.new(app.config).sign(goog_access_token).to_json,
            @req_header
 
       auth_account = JSON.parse(last_response.body)['data']
@@ -82,9 +85,9 @@ describe 'Test Authentication Routes' do
         email: SSO_ACCOUNT['email']
       )
 
-      goog_access_token = { access_token: GOOD_GH_ACCESS_TOKEN }
+      goog_access_token = { access_token: GOOD_GOOG_ACCESS_TOKEN }
       post 'api/v1/auth/sso',
-           SignedRequest.new(app.config).sign(gh_access_token).to_json,
+           SignedRequest.new(app.config).sign(goog_access_token).to_json,
            @req_header
 
       auth_account = JSON.parse(last_response.body)['data']

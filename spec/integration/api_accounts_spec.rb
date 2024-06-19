@@ -36,7 +36,9 @@ describe 'Test Account Handling' do
 
     it 'HAPPY: should be able to create new accounts' do
       post 'api/v1/accounts',
-           SignedRequest.new(app.config).sign(@account_data).to_json_(last_response.status).must_equal 201
+           SignedRequest.new(app.config).sign(@account_data).to_json
+
+      _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
       created = JSON.parse(last_response.body)['data']['attributes']
