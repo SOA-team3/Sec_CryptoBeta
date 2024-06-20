@@ -20,7 +20,9 @@ describe 'Test Authentication Routes' do
     it 'HAPPY: should authenticate valid credentials' do
       credentials = { username: @account_data['username'],
                       password: @account_data['password'] }
-      post 'api/v1/auth/authenticate', credentials.to_json, @req_header
+      post 'api/v1/auth/authenticate',
+           SignedRequest.new(app.config).sign(credentials).to_json,
+           @req_header
 
       auth_account = JSON.parse(last_response.body)['data']
       account = auth_account['attributes']['account']['attributes']
@@ -31,9 +33,11 @@ describe 'Test Authentication Routes' do
     end
 
     it 'BAD: should not authenticate invalid password' do
-      credentials = { username: @account_data['username'],
-                      password: 'fakepassword' }
-      post 'api/v1/auth/authenticate', credentials.to_json, @req_header
+      bad_credentials = { username: @account_data['username'],
+        password: 'fakepassword' }
+      post 'api/v1/auth/authenticate',
+            SignedRequest.new(app.config).sign(bad_credentials).to_json,
+            @req_header
 
       result = JSON.parse(last_response.body)
 
@@ -42,11 +46,15 @@ describe 'Test Authentication Routes' do
       _(result['attributes']).must_be_nil
     end
   end
+
   describe 'SSO Authorization' do
     before do
+      puts GOOG_ACCOUNT_RESPONSE[GOOD_GOOG_ACCESS_TOKEN]
+      puts GOOG_ACCOUNT_RESPONSE[GOOD_GOOG_ACCESS_TOKEN].to_json
+
       WebMock.enable!
       WebMock.stub_request(:get, app.config.GOOGLE_ACCOUNT_URL)
-             .to_return(body: GOOG_ACCOUNT_RESPONSE[GOOD_GOOG_ACCESS_TOKEN],
+             .to_return(body: GOOG_ACCOUNT_RESPONSE[GOOD_GOOG_ACCESS_TOKEN].to_json,
                         status: 200,
                         headers: { 'content-type' => 'application/json' })
     end
@@ -55,10 +63,12 @@ describe 'Test Authentication Routes' do
       WebMock.disable!
     end
 
-    it 'HAPPY AUTH SSO: should authenticate+authorize new valid SSO account' do
+    it 'HAPPY AUTH SSO: should authenticate + authorize new valid SSO account' do
       goog_access_token = { access_token: GOOD_GOOG_ACCESS_TOKEN }
 
-      post 'api/v1/auth/sso', goog_access_token.to_json, @req_header
+      post 'api/v1/auth/sso',
+           SignedRequest.new(app.config).sign(goog_access_token).to_json,
+           @req_header
 
       auth_account = JSON.parse(last_response.body)['data']
       account = auth_account['attributes']['account']['attributes']
@@ -75,8 +85,10 @@ describe 'Test Authentication Routes' do
         email: SSO_ACCOUNT['email']
       )
 
-      goog_access_token = { access_token: GOOD_GH_ACCESS_TOKEN }
-      post 'api/v1/auth/sso', goog_access_token.to_json, @req_header
+      goog_access_token = { access_token: GOOD_GOOG_ACCESS_TOKEN }
+      post 'api/v1/auth/sso',
+           SignedRequest.new(app.config).sign(goog_access_token).to_json,
+           @req_header
 
       auth_account = JSON.parse(last_response.body)['data']
       account = auth_account['attributes']['account']['attributes']
