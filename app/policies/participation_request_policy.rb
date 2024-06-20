@@ -14,12 +14,12 @@ module No2Date
 
     def can_invite?
       can_write? &&
-      (@requestor.can_add_participants? && @target.can_participate?)
+        (@requestor.can_add_participants? && @target.can_participate?)
     end
 
     def can_remove?
       can_write? &&
-      (@requestor.can_remove_participants? && target_is_participant?)
+        (@requestor.can_remove_participants? && target_is_participant?)
     end
 
     private

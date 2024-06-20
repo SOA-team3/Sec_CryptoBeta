@@ -6,7 +6,6 @@ require 'sinatra'
 require 'httparty'
 # require_relative '../models/google_account.rb'
 
-
 module No2Date
   # Find or create an SsoAccount based on Google code
   class AuthorizeSso
@@ -18,21 +17,21 @@ module No2Date
     end
 
     def get_goog_account(access_token, id_token)
-      puts "authorize_sso.rb, get_goog_account"
+      puts 'authorize_sso.rb, get_goog_account'
 
       goog_response = HTTParty.get(
         "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=#{access_token}",
-        headers: { "Authorization" => "Bearer #{id_token}" }
+        headers: { 'Authorization' => "Bearer #{id_token}" }
       )
 
       puts "authorize_sso.rb, get_goog_account: goog_response: #{goog_response}"
-      
+
       # raise unless goog_response.status == 200
 
       account_json = JSON.parse(goog_response.body)
 
       puts "authorize_sso.rb, get_goog_account: account_json: #{account_json}"
-      
+
       account = GoogleAccount.new(account_json)
       { username: account.username, email: account.email }
     end
@@ -46,7 +45,7 @@ module No2Date
       {
         type: 'sso_account',
         attributes: {
-          account: account,
+          account:,
           auth_token: AuthToken.create(account)
         }
       }

@@ -6,7 +6,7 @@ require_relative 'app'
 module No2Date
   # Web controller for No2Date API
   class Api < Roda
-    route('auth') do |routing| # rubocop:disable Metrics/BlockLength
+    route('auth') do |routing|
       # All requests in this route require signed requests
       begin
         @request_data = SignedRequest.new(Api.config).parse(request.body.read)
@@ -17,7 +17,7 @@ module No2Date
       routing.on 'register' do
         # POST /api/v1/auth/register
         routing.post do
-          puts "/api/v1/auth/register"
+          puts '/api/v1/auth/register'
           puts "Request body: #{request.body.read}"
           VerifyRegistration.new(@request_data).call
 
@@ -48,7 +48,7 @@ module No2Date
 
       # POST /api/v1/auth/sso
       routing.post 'sso' do
-        puts "auth.rb: POST /api/v1/auth/sso"
+        puts 'auth.rb: POST /api/v1/auth/sso'
         auth_account = AuthorizeSso.new.call(@request_data[:access_token], @request_data[:id_token])
 
         { data: auth_account }.to_json

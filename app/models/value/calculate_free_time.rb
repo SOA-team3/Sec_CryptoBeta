@@ -5,13 +5,14 @@ require 'time'
 require 'tzinfo'
 
 module No2Date
+  # Get Free Meet Time
   class CalculateFreeTime
-    def initialize(start_date, end_date, events_under_appointment)
+    def initialize(_start_date, _end_date, events_under_appointment)
       time_zone = 'Asia/Taipei'
       time_now = Time.now.getlocal(TZInfo::Timezone.get(time_zone).current_period.offset.utc_total_offset)
       intervals = 6
-      unformatted_end_date = time_now + intervals * 24 * 60 * 60
-      @start_date  = time_now.strftime('%Y-%m-%d')
+      unformatted_end_date = time_now + (intervals * 24 * 60 * 60)
+      @start_date = time_now.strftime('%Y-%m-%d')
       @end_date = unformatted_end_date.strftime('%Y-%m-%d')
       @all_events = events_under_appointment
     end
@@ -32,7 +33,7 @@ module No2Date
 
     def parse_events(data)
       events = []
-      data.each do |person, event_times|
+      data.each_value do |event_times|
         event_times.each do |time_pair|
           start_time, end_time = time_pair
           event_time = { start: DateTime.parse(start_time), end: DateTime.parse(end_time) }
@@ -60,15 +61,11 @@ module No2Date
       free_times = []
       last_end_time = day_start
       events.each do |event|
-        if last_end_time < event[:start]
-          free_times << { start: last_end_time, end: event[:start] }
-        end
+        free_times << { start: last_end_time, end: event[:start] } if last_end_time < event[:start]
         last_end_time = event[:end]
       end
 
-      if last_end_time < day_end
-        free_times << { start: last_end_time, end: day_end }
-      end
+      free_times << { start: last_end_time, end: day_end } if last_end_time < day_end
 
       free_times
     end
@@ -96,13 +93,12 @@ module No2Date
     end
 
     def find_free_times_for_range(start_date, end_date, events)
-      (Date.parse(start_date)..(Date.parse(end_date)+1)).map do |day|
+      (Date.parse(start_date)..(Date.parse(end_date) + 1)).map do |day|
         {
-          day: day,
+          day:,
           free_times: process_day(day, events)
         }
       end
     end
-
   end
 end

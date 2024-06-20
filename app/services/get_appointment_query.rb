@@ -27,12 +27,10 @@ module No2Date
 
       events_under_appointment = HandleEventsUnderAppointment.new(auth[:account], appointment).find_events
       free_time_of_appointment = CalculateFreeTime.new('2024-04-19', '2024-04-20',
-        events_under_appointment).call
+                                                       events_under_appointment).call
 
       appointment_json_with_events = appointment_with_policy.merge(events_under_appointment:)
-      appointment_json = appointment_json_with_events.merge(free_time_of_appointment:)
-
-      appointment_json
+      appointment_json_with_events.merge(free_time_of_appointment:)
     end
   end
 end

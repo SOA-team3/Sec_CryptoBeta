@@ -15,11 +15,9 @@ module No2Date
       @registration = registration
     end
 
-    # rubocop:disable Layout/EmptyLineBetweenDefs
-    def from_email() = ENV['SENDGRID_FROM_EMAIL']
-    def mail_api_key() = ENV['SENDGRID_API_KEY']
-    def mail_url() = ENV['SENDGRID_API_URL']
-    # rubocop:enable Layout/EmptyLineBetweenDefs
+    def from_email = ENV.fetch('SENDGRID_FROM_EMAIL', nil)
+    def mail_api_key = ENV.fetch('SENDGRID_API_KEY', nil)
+    def mail_url = ENV.fetch('SENDGRID_API_URL', nil)
 
     def call
       puts "verify_registration.rb: call #{@registration[:username]}, #{@registration[:email]}"
@@ -30,13 +28,13 @@ module No2Date
     end
 
     def username_available?
-      puts "username_check"
+      puts 'username_check'
       puts "username_check: #{Account.first(username: @registration[:username]).inspect}"
       Account.first(username: @registration[:username]).nil?
     end
 
     def email_available?
-      puts "email_check"
+      puts 'email_check'
       puts "email_check: #{Account.first(email: @registration[:email]).inspect}"
       Account.first(email: @registration[:email]).nil?
     end

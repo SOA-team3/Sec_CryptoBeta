@@ -4,10 +4,10 @@ source 'https://rubygems.org'
 ruby File.read('.ruby-version').strip
 
 # Web API
+gem 'httparty'
 gem 'json'
 gem 'puma', '~>6.2'
 gem 'roda', '~>3.54'
-gem 'httparty'
 gem 'sinatra'
 
 # Configuration
@@ -49,6 +49,7 @@ group :development do
   gem 'rerun'
 
   # Quality
+  gem 'rexml', '>= 3.2.7'
   gem 'rubocop'
 
   # Performance

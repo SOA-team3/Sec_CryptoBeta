@@ -3,7 +3,6 @@
 require 'roda'
 require_relative 'app'
 
-# rubocop:disable Metrics/BlockLength
 module No2Date
   # Web controller for No2Date API
   class Api < Roda

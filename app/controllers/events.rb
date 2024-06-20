@@ -3,7 +3,6 @@
 require 'roda'
 require_relative 'app'
 
-# rubocop:disable Metrics/BlockLength
 module No2Date
   # Web controller for No2Date API
   class Api < Roda
@@ -20,7 +19,7 @@ module No2Date
         routing.get do
           event = GetEventQuery.call(auth: @auth, event: @req_event)
 
-          { data: event}.to_json
+          { data: event }.to_json
         rescue GetEventQuery::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
         rescue GetEventQuery::NotFoundError => e
