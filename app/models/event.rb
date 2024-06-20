@@ -32,22 +32,6 @@ module No2Date
       self.secure_location = SecureDB.encrypt(plaintext)
     end
 
-    # def start_datetime
-    #   SecureDB.decrypt(secure_start_datetime)
-    # end
-
-    # def start_datetime=(plaintext)
-    #   self.secure_start_datetime = SecureDB.encrypt(plaintext)
-    # end
-
-    # def end_datetime
-    #   SecureDB.decrypt(secure_end_datetime)
-    # end
-
-    # def end_datetime=(plaintext)
-    #   self.secure_end_datetime = SecureDB.encrypt(plaintext)
-    # end
-
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
