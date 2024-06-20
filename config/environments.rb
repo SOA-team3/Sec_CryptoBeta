@@ -26,6 +26,9 @@ module No2Date
       # Make the environment variables accessible to other classes
       def self.config = Figaro.env
 
+      # Set timezone
+      ENV['TZ'] = 'Asia/Taipei'
+
       # Database setup
       db_url = ENV.delete('DATABASE_URL')
       DB = Sequel.connect("#{db_url}?encoding=utf8")

@@ -22,7 +22,7 @@ describe 'Test AddParticipant service' do
     auth = authorization(@owner_data)
 
     No2Date::AddParticipant.call(
-      auth: auth,
+      auth:,
       appointment: @appointment,
       part_email: @participant.email
     )
@@ -38,7 +38,7 @@ describe 'Test AddParticipant service' do
     )
     _(proc {
       No2Date::AddParticipant.call(
-        auth: auth,
+        auth:,
         appointment: @appointment,
         part_email: @owner.email
       )

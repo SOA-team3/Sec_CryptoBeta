@@ -3,6 +3,7 @@
 require 'json'
 
 module No2Date
+  # Handle Events Under Appointment
   class HandleEventsUnderAppointment
     def initialize(account, appointment)
       @account = account

@@ -12,8 +12,8 @@ Sequel.migration do
       String :title
       String :secure_description
       String :secure_location
-      DateTime :start_datetime, null: false # DateTime :start_datetime, null: false
-      DateTime :end_datetime, null: false # DateTime :end_datetime, null: false
+      DateTime :start_datetime, null: false, timezone: true
+      DateTime :end_datetime, null: false, timezone: true
       TrueClass :is_google # bool
       TrueClass :is_flexible
 

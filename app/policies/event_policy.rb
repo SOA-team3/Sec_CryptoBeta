@@ -34,7 +34,7 @@ module No2Date
     def can_read?
       @auth_scope ? @auth_scope.can_read?('events') : false
     end
-  
+
     def can_write?
       @auth_scope ? @auth_scope.can_write?('events') : false
     end

@@ -3,7 +3,6 @@
 module No2Date
   # Create new event for an account
   class CreateEventForAccount
-
     def self.call(auth:, event_data:)
       raise ForbiddenError unless auth[:scope].can_write?('events')
 

@@ -43,8 +43,6 @@ DATA = {
 }.freeze
 
 ## SSO fixtures
-GOOG_ACCOUNT_RESPONSE = YAML.load(
-  File.read('spec/fixtures/google_token_response.yml')
-)
+GOOG_ACCOUNT_RESPONSE = YAML.load_file('spec/fixtures/google_token_response.yml')
 GOOD_GOOG_ACCESS_TOKEN = GOOG_ACCOUNT_RESPONSE.keys.first
-SSO_ACCOUNT = YAML.load(File.read('spec/fixtures/sso_account.yml'))
+SSO_ACCOUNT = YAML.load_file('spec/fixtures/sso_account.yml')

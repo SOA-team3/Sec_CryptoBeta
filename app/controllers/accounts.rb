@@ -15,19 +15,18 @@ module No2Date
         # GET api/v1/accounts/[username]
         routing.get do
           auth = AuthorizeAccount.call(
-            auth: @auth, username: username,
+            auth: @auth, username:,
             auth_scope: AuthScope.new(AuthScope::READ_ONLY)
           )
 
           # account ?  { data: auth }.to_json
           { data: auth }.to_json
-        rescue AuthorizeAccount::ForbiddenError => e
-          routing.halt 404, { message: e.message }.to_json
+        # rescue AuthorizeAccount::ForbiddenError => e
+        #   routing.halt 404, { message: e.message }.to_json
         rescue AuthorizeAccount::ForbiddenError => e
           Api.logger.error "GET ACCOUNT ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API Server Error' }.to_json
         end
-
       end
 
       # POST api/v1/accounts
@@ -38,15 +37,12 @@ module No2Date
         response.status = 201
         response['Location'] = "#{@account_route}/#{new_account.id}"
         { message: 'Account created', data: new_account }.to_json
-
       rescue Sequel::MassAssignmentRestriction
         Api.logger.warn "MASS-ASSIGNMENT:: #{account_data.keys}"
         routing.halt 400, { message: 'Illegal Request' }.to_json
-
       rescue SignedRequest::VerificationError
         routing.halt 403, { message: 'Must sign request' }.to_json
-
-      rescue StandardError => e
+      rescue StandardError
         Api.logger.error 'Unknown error saving account'
         # puts "ERROR CREATING ACCOUNT: #{e.inspect}"
         # puts e.backtrace

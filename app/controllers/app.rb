@@ -3,8 +3,7 @@
 require 'roda'
 require 'json'
 # require_relative 'helpers'
-require_relative 'helpers.rb'
-
+require_relative 'helpers'
 
 module No2Date
   ## Web controller for No2Date API

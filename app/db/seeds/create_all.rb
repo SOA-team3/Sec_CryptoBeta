@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require './app/controllers/helpers.rb'
+
+require './app/controllers/helpers'
 include No2Date::SecureRequestHelpers
 
 Sequel.seed(:development) do
@@ -31,7 +32,7 @@ def create_owned_appointments
     account = No2Date::Account.first(username: owner['username'])
     owner['appt_name'].each do |appt_name|
       appt_data = APPT_INFO.find { |appt| appt['name'] == appt_name }
-      
+
       account.add_owned_project(appt_data)
     end
   end
@@ -46,9 +47,9 @@ def create_events
 
     auth_token = AuthToken.create(appointment.owner)
     auth = scoped_auth(auth_token)
-    
+
     No2Date::CreateEventForAppointment.call(
-      auth: auth, appointment_id: appointment.id, event_data: evnt_info
+      auth:, appointment_id: appointment.id, event_data: evnt_info
     )
   end
 end
@@ -63,7 +64,7 @@ def add_collaborators
 
     contrib['collaborator_email'].each do |email|
       No2Date::AddCollaboratorToAppointment.call(
-        auth: auth,  appointment: appointment, part_email: email
+        auth:, appointment:, part_email: email
       )
     end
   end

@@ -17,6 +17,13 @@ Metrics/BlockLength:
     - spec/**/* # Minitest's nested test structure requires large blocks
     - Rakefile # Rake namespaces produce large blocks
 
+# ignore method length where unavoidable (e.g., framework requires it)
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - app/models/value/calculate_free_time.rb
+    - app/db/seeds/create_all.rb
+
 Security/YAMLLoad:
   Enabled: true
   Exclude:
@@ -37,3 +44,8 @@ Layout/LineLength:
   Enabled: true
   Exclude:
     - app/db/seeds/seeds_transformation.rb
+
+Style/MixinUsage:
+  Enabled: true
+  Exclude:
+    - app/db/seeds/create_all.rb
