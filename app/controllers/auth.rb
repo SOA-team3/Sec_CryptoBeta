@@ -49,7 +49,7 @@ module No2Date
       # POST /api/v1/auth/sso
       routing.post 'sso' do
         puts "auth.rb: POST /api/v1/auth/sso"
-        auth_account = AuthorizeSso.new.call(@request_data[:access_token])
+        auth_account = AuthorizeSso.new.call(@request_data[:access_token], @request_data[:id_token])
 
         { data: auth_account }.to_json
       rescue StandardError => e
