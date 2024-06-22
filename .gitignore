@@ -4,3 +4,5 @@ _*
 app/db/store/*
 config/secrets.yml
 google_api.json
+coverage/*
+!coverage/.resultset.json

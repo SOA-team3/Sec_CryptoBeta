@@ -36,6 +36,7 @@ gem 'tzinfo'
 group :test do
   gem 'minitest'
   gem 'minitest-rg'
+  gem 'simplecov'
   gem 'webmock'
 end
 
