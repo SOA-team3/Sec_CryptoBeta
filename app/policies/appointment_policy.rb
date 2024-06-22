@@ -27,11 +27,11 @@ module No2Date
     end
 
     def can_add_participants?
-      (account_is_owner? || account_is_participant?)
+      account_is_owner? || account_is_participant?
     end
 
     def can_remove_participants?
-      (account_is_owner? || account_is_participant?)
+      account_is_owner? || account_is_participant?
     end
 
     def can_participate?
