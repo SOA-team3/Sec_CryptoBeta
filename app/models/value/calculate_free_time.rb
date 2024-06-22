@@ -20,12 +20,12 @@ module No2Date
     def call
       events = parse_events(@all_events)
       free_times = find_free_times_for_range(@start_date, @end_date, events)
-      puts "start_date: #{@start_date}"
-      puts "end_date: #{@end_date}"
+      # puts "start_date: #{@start_date}"
+      # puts "end_date: #{@end_date}"
       free_times.each do |day_info|
-        puts "Date: #{day_info[:day]}"
+        # puts "Date: #{day_info[:day]}"
         day_info[:free_times].each do |free_time|
-          puts "  Free from #{free_time[:start].strftime('%H:%M')} to #{free_time[:end].strftime('%H:%M')}"
+          # puts "  Free from #{free_time[:start].strftime('%H:%M')} to #{free_time[:end].strftime('%H:%M')}"
         end
       end
       free_times
